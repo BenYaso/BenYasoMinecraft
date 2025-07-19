@@ -319,6 +319,23 @@
             height: 300px !important;
         }
 
+        /* Mobil/Desktop görünürlük kontrolü */
+        .discord-mobile-info {
+            display: none;
+        }
+        
+        .discord-iframe-container {
+            display: block;
+        }
+        
+        .desktop-only {
+            display: inline;
+        }
+        
+        .mobile-only {
+            display: none;
+        }
+
         /* Live Chat */
         .chat-container {
             background: var(--glass-bg);
@@ -804,11 +821,21 @@
                 overflow: hidden;
             }
             
-            .discord-widget iframe {
-                width: 100% !important;
-                max-width: 100% !important;
-                height: 250px !important; /* Mobilde daha kısa */
-                border-radius: 10px;
+            /* Mobilde iframe gizle, alternatif bilgi göster */
+            .discord-iframe-container {
+                display: none !important;
+            }
+            
+            .discord-mobile-info {
+                display: block !important;
+            }
+            
+            .desktop-only {
+                display: none !important;
+            }
+            
+            .mobile-only {
+                display: inline !important;
             }
 
             .commands-grid {
@@ -1020,10 +1047,38 @@
                         <div style="font-size: 1.5rem; margin: 1rem 0;">
                             <span id="discord-members">Yükleniyor...</span> Üye Online
                         </div>
-                        <div style="margin: 1rem 0;">
-                            <iframe src="https://discord.com/widget?id=1385317817888411729&theme=dark" width="100%" height="300" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts" style="border-radius: 10px; max-width: 100%;"></iframe>
+                        
+                        <!-- Mobil için alternatif Discord bilgisi -->
+                        <div class="discord-mobile-info">
+                            <div style="margin: 1rem 0; padding: 1rem; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                                <p style="margin: 0.5rem 0;"><strong>🎮 Sunucu Adı:</strong> BenYaso Community</p>
+                                <p style="margin: 0.5rem 0;"><strong>🎯 Kategori:</strong> Minecraft & Gaming</p>
+                                <p style="margin: 0.5rem 0;"><strong>🤖 Özel Bot:</strong> BenYasoBOT</p>
+                                <p style="margin: 0.5rem 0;"><strong>🎪 Aktiviteler:</strong> Chat, Oyun, Etkinlik</p>
+                            </div>
+                            <a href="https://discord.gg/84mz5XDgP3" 
+                               style="display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; background: #5865F2; color: white; text-decoration: none; border-radius: 8px; font-weight: bold;" 
+                               target="_blank">
+                                🚀 Katıl
+                            </a>
                         </div>
-                        <small style="color: rgba(255,255,255,0.6); display: block; margin-top: 0.5rem;">Gerçek zamanlı Discord widget</small>
+                        
+                        <!-- Desktop için iframe -->
+                        <div class="discord-iframe-container" style="margin: 1rem 0;">
+                            <iframe src="https://discord.com/widget?id=1385317817888411729&theme=dark" 
+                                    width="100%" 
+                                    height="300" 
+                                    allowtransparency="true" 
+                                    frameborder="0" 
+                                    sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts" 
+                                    style="border-radius: 10px; max-width: 100%;">
+                            </iframe>
+                        </div>
+                        
+                        <small style="color: rgba(255,255,255,0.6); display: block; margin-top: 0.5rem;">
+                            <span class="desktop-only">Gerçek zamanlı Discord widget</span>
+                            <span class="mobile-only">Mobilde widget desteklenmiyor</span>
+                        </small>
                     </div>
                 </div>
             </div>
@@ -1163,7 +1218,7 @@
                         <div class="stat-label">Aktif Komut</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number">500k</div>
+                        <div class="stat-number">500,000</div>
                         <div class="stat-label">Günlük Token</div>
                     </div>
                     <div class="stat-card">
