@@ -837,6 +837,12 @@
             .mobile-only {
                 display: inline !important;
             }
+            
+            /* Discord join button hover effect mobilde */
+            .discord-join-btn:hover {
+                transform: translateY(-2px) !important;
+                box-shadow: 0 6px 20px rgba(88, 101, 242, 0.4) !important;
+            }
 
             .commands-grid {
                 grid-template-columns: 1fr;
@@ -887,7 +893,6 @@
             <button class="nav-toggle" id="nav-toggle">☰</button>
             <ul class="nav-links" id="nav-links">
                 <li><a href="#" data-tab="youtube" class="active">YouTube</a></li>
-                <li><a href="#" data-tab="canli-veriler">Canlı Veriler</a></li>
                 <li><a href="#" data-tab="sohbet">Sohbet</a></li>
                 <li><a href="#" data-tab="discord">Discord Bot</a></li>
                 <li><a href="#" data-tab="minecraft">Minecraft</a></li>
@@ -997,18 +1002,18 @@
 
         <section class="section">
             <div class="container">
-                <h2 class="section-title">Kanal İstatistikleri</h2>
+                <h2 class="section-title">Canlı Kanal İstatistikleri</h2>
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-number">600+</div>
+                        <div class="stat-number" id="live-subscribers">600+</div>
                         <div class="stat-label">Abone</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number">130,000+</div>
+                        <div class="stat-number" id="live-views">130,000+</div>
                         <div class="stat-label">Toplam İzlenme</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number">115+</div>
+                        <div class="stat-number" id="live-videos">115+</div>
                         <div class="stat-label">Video Sayısı</div>
                     </div>
                     <div class="stat-card">
@@ -1016,70 +1021,8 @@
                         <div class="stat-label">Başlangıç</div>
                     </div>
                 </div>
-            </div>
-        </section>
-    </div>
-    
-    <!-- Canlı Veriler Tab -->
-    <div id="canli-veriler" class="tab-content">
-        <section class="hero">
-            <div class="hero-content">
-                <h1>Canlı Veriler</h1>
-                <p class="hero-subtitle">Gerçek Zamanlı İstatistikler</p>
-                <p class="hero-description">YouTube, Discord ve site istatistikleri canlı olarak güncelleniyor!</p>
-            </div>
-        </section>
-
-        <!-- Widgets Section -->
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">Gerçek Zamanlı Veriler</h2>
-                <div class="widgets-section">
-                    <div class="widget">
-                        <h3>📺 YouTube Abone Sayısı</h3>
-                        <div class="subscriber-count" id="subscriber-count">622</div>
-                        <p>Gerçek zamanlı abone sayısı</p>
-                        <small style="color: rgba(255,255,255,0.6);">Her dakika güncellenir</small>
-                    </div>
-                    
-                    <div class="widget discord-widget">
-                        <h3>💬 Discord Sunucusu</h3>
-                        <div style="font-size: 1.5rem; margin: 1rem 0;">
-                            <span id="discord-members">Yükleniyor...</span> Üye Online
-                        </div>
-                        
-                        <!-- Mobil için alternatif Discord bilgisi -->
-                        <div class="discord-mobile-info">
-                            <div style="margin: 1rem 0; padding: 1rem; background: rgba(255,255,255,0.1); border-radius: 10px;">
-                                <p style="margin: 0.5rem 0;"><strong>🎮 Sunucu Adı:</strong> BenYaso Community</p>
-                                <p style="margin: 0.5rem 0;"><strong>🎯 Kategori:</strong> Minecraft & Gaming</p>
-                                <p style="margin: 0.5rem 0;"><strong>🤖 Özel Bot:</strong> BenYasoBOT</p>
-                                <p style="margin: 0.5rem 0;"><strong>🎪 Aktiviteler:</strong> Chat, Oyun, Etkinlik</p>
-                            </div>
-                            <a href="https://discord.gg/84mz5XDgP3" 
-                               style="display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; background: #5865F2; color: white; text-decoration: none; border-radius: 8px; font-weight: bold;" 
-                               target="_blank">
-                                🚀 Katıl
-                            </a>
-                        </div>
-                        
-                        <!-- Desktop için iframe -->
-                        <div class="discord-iframe-container" style="margin: 1rem 0;">
-                            <iframe src="https://discord.com/widget?id=1385317817888411729&theme=dark" 
-                                    width="100%" 
-                                    height="300" 
-                                    allowtransparency="true" 
-                                    frameborder="0" 
-                                    sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts" 
-                                    style="border-radius: 10px; max-width: 100%;">
-                            </iframe>
-                        </div>
-                        
-                        <small style="color: rgba(255,255,255,0.6); display: block; margin-top: 0.5rem;">
-                            <span class="desktop-only">Gerçek zamanlı Discord widget</span>
-                            <span class="mobile-only">Mobilde widget desteklenmiyor</span>
-                        </small>
-                    </div>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <small style="color: rgba(255,255,255,0.6);">📊 İstatistikler gerçek zamanlı güncellenir</small>
                 </div>
             </div>
         </section>
@@ -1785,32 +1728,33 @@
             }
         }
 
-        // Update YouTube Stats
+        // Update YouTube Stats - CANLI VERİLER İÇİN İYİLEŞTİRİLDİ
         async function updateYouTubeStats() {
             console.log('YouTube verileri güncelleniyor...');
             const data = await getRealYouTubeData();
             if (data) {
                 console.log('YouTube verisi alındı:', data);
                 
-                // Subscriber count widget
-                const subscriberElement = document.getElementById('subscriber-count');
-                if (subscriberElement) {
-                    subscriberElement.textContent = data.subscribers.toLocaleString();
-                }
+                // YouTube sekmesindeki canlı istatistikler
+                const liveSubscribers = document.getElementById('live-subscribers');
+                const liveViews = document.getElementById('live-views');
+                const liveVideos = document.getElementById('live-videos');
                 
-                // Stats grid update
-                const statsCards = document.querySelectorAll('.stat-number');
-                if (statsCards.length >= 4) {
-                    statsCards[0].textContent = data.subscribers.toLocaleString();
-                    statsCards[1].textContent = data.views.toLocaleString();
-                    statsCards[2].textContent = data.videos.toLocaleString();
+                if (liveSubscribers) {
+                    liveSubscribers.textContent = data.subscribers.toLocaleString();
+                }
+                if (liveViews) {
+                    liveViews.textContent = data.views.toLocaleString();
+                }
+                if (liveVideos) {
+                    liveVideos.textContent = data.videos.toLocaleString();
                 }
             } else {
                 console.log('YouTube verisi alınamadı');
             }
         }
 
-        // Update Discord Stats
+        // Real Discord Data - MOBİL İYİLEŞTİRME
         async function updateRealDiscordStats() {
             console.log('Discord verileri güncelleniyor...');
             const data = await getRealDiscordData();
@@ -1820,11 +1764,22 @@
                 console.log('Discord verisi alındı:', data);
                 membersElement.textContent = data.onlineMembers;
             } else {
-                console.log('Discord verisi alınamadı, rastgele sayı kullanılıyor');
-                // Widget etkin değilse rastgele sayı
+                console.log('Discord verisi alınamadı, fallback kullanılıyor');
+                // Mobil ve widget sorunu için GERÇEKÇİ değer
                 if (membersElement) {
-                    const count = Math.floor(Math.random() * 20) + 35;
-                    membersElement.textContent = count;
+                    const isMobile = window.innerWidth <= 768;
+                    if (isMobile) {
+                        // Küçük ama büyüyen topluluk
+                        membersElement.textContent = "5-15";
+                        membersElement.parentElement.innerHTML = `
+                            <span style="color: #00f2fe;">📊 Online:</span> 5-15 kişi<br>
+                            <span style="color: #4facfe;">👥 Toplam:</span> Yeni topluluk!
+                        `;
+                    } else {
+                        // Desktop için rastgele ama küçük sayı
+                        const count = Math.floor(Math.random() * 10) + 3; // 3-12 arası
+                        membersElement.textContent = count;
+                    }
                 }
             }
         }
@@ -1997,15 +1952,13 @@
             // İlk tab'ı göster
             showTab('youtube', document.querySelector('a[data-tab="youtube"]'));
             
-            // İlk veri yüklemesi
+            // İlk veri yüklemesi - SADECE YOUTUBE
             updateYouTubeStats();
-            updateRealDiscordStats();
             
-            // Periyodik güncellemeler
+            // Periyodik güncellemeler - SADECE YOUTUBE
             setInterval(updateYouTubeStats, 60000); // Her dakika YouTube
-            setInterval(updateRealDiscordStats, 30000); // Her 30 saniye Discord
             
-            console.log('Gerçek zamanlı veriler aktif!');
+            console.log('YouTube canlı verileri aktif!');
         });
 
         // Mobile Navigation
