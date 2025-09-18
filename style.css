@@ -926,57 +926,6 @@ footer {
     color: var(--primary-color);
 }
 
-/* GÖREV 1.3: Ekipmanlar Sayfası Stilleri */
-.equipment-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 3rem;
-}
-
-#ekipmanlar h3 {
-    font-size: 1.8rem;
-    margin-top: 3rem;
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--primary-color);
-    display: inline-block;
-}
-
-.equipment-card {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    padding: 1.5rem;
-    text-align: center;
-    transition: all 0.3s ease;
-}
-
-.equipment-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-}
-
-.equipment-card img {
-    width: 80px;
-    height: 80px;
-    object-fit: cover;
-    border-radius: 50%;
-    margin-bottom: 1rem;
-    background: rgba(255,255,255,0.1);
-}
-
-.equipment-card h4 {
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
-    color: white;
-}
-
-.equipment-card p {
-    color: var(--text-secondary);
-    font-size: 1rem;
-}
-
 /* GÖREV 2.1: Video Galerisi Stilleri */
 .video-gallery-grid {
     display: grid;
@@ -1335,4 +1284,77 @@ footer {
     .panel-content {
         opacity: 1; /* Mobilde yazılar hep görünür */
     }
+}
+/* Ekipmanlar Sayfası - Yeni İnteraktif Stil */
+#ekipmanlar h3 {
+    font-size: 1.8rem;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary-color);
+    display: inline-block;
+}
+
+.equipment-container {
+    display: flex;
+    width: 100%;
+    gap: 20px;
+    flex-wrap: wrap; /* Mobilde alt satıra geçmesi için */
+}
+
+.equipment-panel {
+    background-size: contain; /* Resmi tam sığdır */
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 300px; /* Sabit yükseklik */
+    border-radius: 20px;
+    color: #fff;
+    cursor: pointer;
+    flex: 1; /* Eşit genişlikte başla */
+    min-width: 250px; /* Minimum genişlik */
+    position: relative;
+    transition: all 0.5s ease-in-out;
+    border: 2px solid var(--glass-border);
+    overflow: hidden;
+    background-color: rgba(0,0,0,0.2); /* Resim yüklenmezse diye */
+}
+
+.equipment-panel.active {
+    flex-grow: 10; /* Aktif olunca büyü */
+}
+
+.equipment-panel .panel-info, .equipment-panel .panel-button {
+    position: absolute;
+    left: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in 0.2s;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 0.75rem;
+    border-radius: 12px;
+    backdrop-filter: blur(5px);
+}
+
+.equipment-panel .panel-info {
+    bottom: 60px; /* Butonun üstünde */
+}
+
+.equipment-panel .panel-button {
+    bottom: 15px;
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    border: 1px solid var(--glass-border);
+}
+
+.equipment-panel.active .panel-info,
+.equipment-panel.active .panel-button {
+    opacity: 1;
+}
+
+.equipment-panel h4 {
+    margin: 0 0 5px 0;
+}
+.equipment-panel p {
+    margin: 0;
+    font-size: 0.9rem;
 }
