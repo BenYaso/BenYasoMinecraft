@@ -347,7 +347,7 @@ console.log(`👤 Kullanıcı adınız: ${currentUser}`);
 // YouTube API Configuration
 const YOUTUBE_API_KEY = 'AIzaSyAwC6sByfoq9n4G72tfFtwf2XETXaSdg04';
 const CHANNEL_ID = 'UCTYeNjk3VZnXNfcC8ssvevQ';
-const DISCORD_GUILD_ID = '1385317817888411729';
+const DISCORD_GUILD_ID = '1185317817888411729'; // Düzeltilmiş ID
 
 // Real YouTube Data
 async function getRealYouTubeData() {
@@ -421,33 +421,50 @@ async function updateYouTubeStats() {
     }
 }
 
-// Real Discord Data - MOBİL İYİLEŞTİRME
-async function updateRealDiscordStats() {
-    console.log('Discord verileri güncelleniyor...');
-    const data = await getRealDiscordData();
-    const membersElement = document.getElementById('discord-members');
-    
-    if (data && membersElement) {
-        console.log('Discord verisi alındı:', data);
-        membersElement.textContent = data.onlineMembers;
-    } else {
-        console.log('Discord verisi alınamadı, fallback kullanılıyor');
-        // Mobil ve widget sorunu için GERÇEKÇİ değer
-        if (membersElement) {
-            const isMobile = window.innerWidth <= 768;
-            if (isMobile) {
-                // Küçük ama büyüyen topluluk
-                membersElement.textContent = "5-15";
-                membersElement.parentElement.innerHTML = `
-                    <span style="color: #00f2fe;">📊 Online:</span> 5-15 kişi<br>
-                    <span style="color: #4facfe;">👥 Toplam:</span> Yeni topluluk!
-                `;
-            } else {
-                // Desktop için rastgele ama küçük sayı
-                const count = Math.floor(Math.random() * 10) + 3; // 3-12 arası
-                membersElement.textContent = count;
-            }
-        }
+// YENİ EKLENDİ: Görev 2.1 - Son Videoları Çeken Fonksiyon
+async function fetchLatestYouTubeVideos() {
+    const videoContainer = document.getElementById('video-gallery-container');
+    if (!videoContainer) return;
+
+    try {
+        // 1. Kanal bilgisinden "uploads" playlist ID'sini al
+        const channelResponse = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${CHANNEL_ID}&key=${YOUTUBE_API_KEY}`);
+        const channelData = await channelResponse.json();
+        const uploadsPlaylistId = channelData.items[0].contentDetails.relatedPlaylists.uploads;
+
+        // 2. "uploads" playlist'inden son 9 videoyu çek
+        const videoResponse = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=9&key=${YOUTUBE_API_KEY}`);
+        const videoData = await videoResponse.json();
+
+        // 3. Videoları HTML'e işle ve galeriyi temizle
+        videoContainer.innerHTML = ''; 
+
+        videoData.items.forEach(item => {
+            const snippet = item.snippet;
+            const videoId = snippet.resourceId.videoId;
+            const title = snippet.title;
+            const thumbnailUrl = snippet.thumbnails.high.url;
+
+            const videoLink = document.createElement('a');
+            videoLink.href = `https://www.youtube.com/watch?v=${videoId}`;
+            videoLink.target = '_blank';
+            videoLink.className = 'video-gallery-card';
+
+            videoLink.innerHTML = `
+                <div class="video-thumbnail-container">
+                    <img src="${thumbnailUrl}" alt="${title}">
+                    <div class="video-play-button">▶</div>
+                </div>
+                <div class="video-info">
+                    <h3>${title}</h3>
+                </div>
+            `;
+            videoContainer.appendChild(videoLink);
+        });
+
+    } catch (error) {
+        console.error('YouTube videoları çekilirken hata oluştu:', error);
+        videoContainer.innerHTML = '<div class="card" style="text-align:center;">Videolar yüklenemedi. Lütfen daha sonra tekrar deneyin.</div>';
     }
 }
 
@@ -455,6 +472,7 @@ async function updateRealDiscordStats() {
 class ParticleSystem {
     constructor() {
         this.canvas = document.getElementById('particles-canvas');
+        if (!this.canvas) return; // Canvas yoksa devam etme
         this.ctx = this.canvas.getContext('2d');
         this.particles = [];
         this.resize();
@@ -502,11 +520,8 @@ class ParticleSystem {
     }
 }
 
-// Initialize particles
-new ParticleSystem();
-
 // Theme Toggle
-function toggleTheme() {
+window.toggleTheme = function() {
     const body = document.body;
     const themeToggle = document.querySelector('.theme-toggle');
     
@@ -525,8 +540,8 @@ window.addEventListener('scroll', () => {
     const docHeight = document.documentElement.scrollHeight;
     const scrollTop = window.pageYOffset;
     const progress = (scrollTop / (docHeight - winHeight)) * 100;
-    
-    document.querySelector('.scroll-progress').style.width = progress + '%';
+    const progressBar = document.querySelector('.scroll-progress');
+    if(progressBar) progressBar.style.width = progress + '%';
 });
 
 // Easter Egg
@@ -593,8 +608,23 @@ function showTab(tabName, clickedElement) {
     }
 }
 
+// Scroll to section function
+window.scrollToSection = function(sectionId) {
+    const element = document.getElementById(sectionId);
+    if (element) {
+        const headerHeight = 80;
+        const targetPosition = element.offsetTop - headerHeight;
+        window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+        });
+    }
+}
+
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
+    new ParticleSystem(); // Particle'ları her zaman başlat
+
     // Tab event listeners
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.addEventListener('click', function(e) {
@@ -607,40 +637,35 @@ document.addEventListener('DOMContentLoaded', function() {
     // İlk tab'ı göster
     showTab('youtube', document.querySelector('a[data-tab="youtube"]'));
     
-    // İlk veri yüklemesi - SADECE YOUTUBE
+    // İlk veri yüklemesi
     updateYouTubeStats();
     
-    // Periyodik güncellemeler - SADECE YOUTUBE
-    setInterval(updateYouTubeStats, 60000); // Her dakika YouTube
+    // YENİ EKLENDİ: Sayfa yüklendiğinde videoları çek
+    fetchLatestYouTubeVideos();
+    
+    // Periyodik güncellemeler
+    setInterval(updateYouTubeStats, 60000); 
     
     console.log('YouTube canlı verileri aktif!');
-});
 
-// Mobile Navigation
-document.getElementById('nav-toggle').addEventListener('click', function() {
-    const navLinks = document.getElementById('nav-links');
-    navLinks.classList.toggle('active');
-});
-
-// Scroll to section function
-function scrollToSection(sectionId) {
-    const element = document.getElementById(sectionId);
-    if (element) {
-        const headerHeight = 80;
-        const targetPosition = element.offsetTop - headerHeight;
-        window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
+    // Mobile Navigation
+    const navToggle = document.getElementById('nav-toggle');
+    if(navToggle){
+        navToggle.addEventListener('click', function() {
+            const navLinks = document.getElementById('nav-links');
+            if(navLinks) navLinks.classList.toggle('active');
         });
     }
-}
 
-// Header scroll effect
-window.addEventListener('scroll', () => {
-    const header = document.querySelector('header');
-    if (window.scrollY > 50) {
-        header.style.background = 'rgba(0, 0, 0, 0.4)';
-    } else {
-        header.style.background = 'rgba(0, 0, 0, 0.2)';
-    }
+    // Header scroll effect
+    window.addEventListener('scroll', () => {
+        const header = document.querySelector('header');
+        if(header) {
+            if (window.scrollY > 50) {
+                header.style.background = 'rgba(0, 0, 0, 0.4)';
+            } else {
+                header.style.background = 'rgba(0, 0, 0, 0.2)';
+            }
+        }
+    });
 });
