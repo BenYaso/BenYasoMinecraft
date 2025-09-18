@@ -34,15 +34,15 @@ if (!currentUser) {
 }
 console.log(`👤 Kullanıcı adınız: ${currentUser}`);
 
-// === GLOBALLY ACCESSIBLE FUNCTIONS (CALLED FROM HTML) ===
+// === HTML'den Çağrılan GLOBAL FONKSİYONLAR ===
 
 window.sendMessage = (() => {
     let isMessageSending = false;
     let lastMessageTime = 0;
     return function() {
         const now = Date.now();
-        if (now - lastMessageTime < 500) { console.log("🛡️ Çok hızlı mesaj gönderimi!"); return; }
-        if (isMessageSending) { console.log("🛡️ Mesaj zaten gönderiliyor..."); return; }
+        if (now - lastMessageTime < 500) { return; }
+        if (isMessageSending) { return; }
         const input = document.getElementById('chat-input-main');
         if (!input) return;
         const text = input.value.trim();
@@ -58,15 +58,9 @@ window.sendMessage = (() => {
             text: originalText,
             user: currentUser,
             timestamp: serverTimestamp(),
-            color: `hsl(${Math.floor(Math.random() * 360)}, 70%, 60%)`,
-            id: Date.now() + '-' + Math.random().toString(36).substr(2, 9)
+            color: `hsl(${Math.floor(Math.random() * 360)}, 70%, 60%)`
         };
         push(ref(db, 'chatMessages'), message)
-            .then(() => { console.log("✅ Mesaj gönderildi!"); })
-            .catch((error) => {
-                console.error("❌ Hata:", error);
-                if (input.value === '') { input.value = originalText; }
-            })
             .finally(() => { setTimeout(() => { isMessageSending = false; }, 1000); });
     };
 })();
@@ -80,7 +74,7 @@ window.scrollToSection = function(sectionId) {
     }
 };
 
-// === HELPER FUNCTIONS & CLASSES ===
+// === YARDIMCI FONKSİYONLAR VE SINIFLAR ===
 
 function startRealTimeChat() {
     const messagesContainer = document.getElementById('chat-messages-main');
@@ -91,20 +85,16 @@ function startRealTimeChat() {
     const messagesQuery = query(messagesRef, orderByChild('timestamp'), limitToLast(100));
     
     onValue(messagesQuery, (snapshot) => {
-        if (!snapshot.exists()) {
-             // Handle initial welcome messages if needed
-            return;
-        }
+        if (!snapshot.exists()) return;
         const messages = [];
         snapshot.forEach(child => {
             messages.push({ id: child.key, ...child.val() });
         });
         
-        messagesContainer.innerHTML = ''; // Clear and redraw for simplicity and to avoid duplicates
+        messagesContainer.innerHTML = '';
         messages.forEach(msg => {
             const div = document.createElement('div');
             div.className = 'chat-message';
-            div.setAttribute('data-message-id', msg.id);
             const userColor = msg.color || '#a5b4fc';
             const timeStr = new Date(msg.timestamp).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
             div.innerHTML = `<strong style="color: ${userColor};">${msg.user}:</strong> ${msg.text}<small style="float: right; color: rgba(255,255,255,0.5);">${timeStr}</small>`;
@@ -119,30 +109,19 @@ function initializeChat() {
     startRealTimeChat();
 }
 
-async function getRealYouTubeData() {
+async function updateYouTubeStats() {
     try {
         const response = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${CHANNEL_ID}&key=${YOUTUBE_API_KEY}`);
         const data = await response.json();
-        if (data.items && data.items.length > 0) {
-            return data.items[0].statistics;
-        }
-        return null;
-    } catch (error) {
-        console.log('YouTube API hatası:', error);
-        return null;
-    }
-}
-
-async function updateYouTubeStats() {
-    const stats = await getRealYouTubeData();
-    if (stats) {
+        const stats = data.items[0].statistics;
         document.getElementById('live-subscribers').textContent = parseInt(stats.subscriberCount).toLocaleString('tr-TR');
         document.getElementById('live-views').textContent = parseInt(stats.viewCount).toLocaleString('tr-TR');
         document.getElementById('live-videos').textContent = parseInt(stats.videoCount).toLocaleString('tr-TR');
+    } catch (error) {
+        console.error('YouTube API hatası:', error);
     }
 }
 
-// YENİ EKLENDİ: Otomatik Video Galerisi Fonksiyonu
 async function fetchLatestYouTubeVideos() {
     const videoContainer = document.getElementById('video-gallery-container');
     if (!videoContainer) return;
@@ -219,74 +198,30 @@ class ParticleSystem {
     }
 }
 
-// GÜNCELLENDİ: showTab fonksiyonuna hafızaya kaydetme eklendi
 function showTab(tabName, clickedElement) {
     document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
     document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
-    
     const targetTab = document.getElementById(tabName);
-    if (targetTab) {
-        targetTab.classList.add('active');
-    }
-    
-    if (clickedElement) {
-        clickedElement.classList.add('active');
-    }
-    
-    const navLinks = document.getElementById('nav-links');
-    if (navLinks) {
-        navLinks.classList.remove('active');
-    }
-
-    // YENİ: Tıklanan sekmeyi tarayıcının hafızasına kaydet
+    if (targetTab) targetTab.classList.add('active');
+    if (clickedElement) clickedElement.classList.add('active');
+    document.getElementById('nav-links')?.classList.remove('active');
     localStorage.setItem('lastActiveTab', tabName);
-
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 
-// === SAYFA YÜKLENDİĞİNDE ÇALIŞACAK ANA KOD (DOMContentLoaded) ===
+// === SAYFA YÜKLENDİĞİNDE ÇALIŞACAK ANA KOD ===
 document.addEventListener('DOMContentLoaded', function() {
     
-    // Elementleri seç
-    const themeToggleButton = document.getElementById('theme-toggle-button');
     const navToggle = document.getElementById('nav-toggle');
-    // ... diğer elementler ...
-    
-    // Başlangıç Fonksiyonları
-    new ParticleSystem();
-    startRealTimeChat();
-    updateYouTubeStats();
-    fetchLatestYouTubeVideos();
-    setInterval(updateYouTubeStats, 60000);
-
-    // Event Listeners
-    if (themeToggleButton) {
-        // ... themeToggleButton listener'ı aynı ...
-    }
-
-    if (navToggle) {
-        // ... navToggle listener'ı aynı ...
-    }
-
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            showTab(link.dataset.tab, link);
-        });
-    });
-    
-    // ... diğer listener'lar aynı ...
-
-    // YENİ: Sayfa yüklendiğinde son aktif sekmeyi hatırla
-    const lastTab = localStorage.getItem('lastActiveTab');
-    if (lastTab) {
-        // Hafızada bir sekme varsa onu göster
-        showTab(lastTab, document.querySelector(`a[data-tab="${lastTab}"]`));
-    } else {
-        // Eğer kayıtlı sekme yoksa (ilk ziyaret), ana sayfayı göster
-        showTab('youtube', document.querySelector('a[data-tab="youtube"]'));
-    }
+    const chatSendButton = document.getElementById('chat-send-button');
+    const chatInput = document.getElementById('chat-input-main');
+    const cookieBanner = document.getElementById('cookie-consent-banner');
+    const acceptBtn = document.getElementById('cookie-accept-btn');
+    const declineBtn = document.getElementById('cookie-decline-btn');
+    const colorPickerToggle = document.getElementById('color-picker-toggle');
+    const colorPickerMenu = document.getElementById('color-picker-menu');
+    const randomVideoButton = document.getElementById('random-video-button');
 
     // Başlangıç Fonksiyonları
     new ParticleSystem();
@@ -323,13 +258,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
-    // Mobile Navigation
+    
+    // Mobil Navigasyon
     if (navToggle) {
         navToggle.addEventListener('click', () => document.getElementById('nav-links').classList.toggle('active'));
     }
 
-    // Tab Link Listeners
+    // Sekme Linkleri ve Sekme Hafızası
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -337,7 +272,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Chat Listeners
+    const lastTab = localStorage.getItem('lastActiveTab');
+    if (lastTab && document.querySelector(`a[data-tab="${lastTab}"]`)) {
+        showTab(lastTab, document.querySelector(`a[data-tab="${lastTab}"]`));
+    } else {
+        showTab('youtube', document.querySelector('a[data-tab="youtube"]'));
+    }
+    
+    // Sohbet Butonları
     if (chatSendButton) chatSendButton.addEventListener('click', window.sendMessage);
     if (chatInput) {
         chatInput.addEventListener('keydown', (e) => {
@@ -345,7 +287,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // YENİ: Cookie Consent Logic
+    // Çerez Onay Mantığı
     if (cookieBanner && acceptBtn && declineBtn) {
         if (!localStorage.getItem('cookieConsent')) {
             setTimeout(() => { cookieBanner.classList.add('show'); }, 1500);
@@ -370,7 +312,23 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Scroll-based Listeners
+    // Rastgele Video Butonu
+    if (randomVideoButton) {
+        randomVideoButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            fetchLatestYouTubeVideos(); // Videoların güncel olduğundan emin ol
+            const videoLinks = document.querySelectorAll('#video-gallery-container .video-gallery-card');
+            if (videoLinks.length > 0) {
+                const randomIndex = Math.floor(Math.random() * videoLinks.length);
+                const randomVideoUrl = videoLinks[randomIndex].href;
+                window.open(randomVideoUrl, '_blank');
+            } else {
+                alert("Videolar henüz yüklenmedi, lütfen bir saniye sonra tekrar deneyin.");
+            }
+        });
+    }
+
+    // Scroll Olayları
     window.addEventListener('scroll', () => {
         const header = document.querySelector('header');
         if (header) {
@@ -384,39 +342,3 @@ document.addEventListener('DOMContentLoaded', function() {
         if (progressBar) progressBar.style.width = progress + '%';
     });
 });
-// Rastgele Video Önerici
-const randomVideoButton = document.getElementById('random-video-button');
-if (randomVideoButton) {
-    randomVideoButton.addEventListener('click', async (e) => {
-        e.preventDefault();
-        try {
-            const YOUTUBE_API_KEY = 'AIzaSyAwC6sByfoq9n4G72tfFtwf2XETXaSdg04';
-            const CHANNEL_ID = 'UCTYeNjk3VZnXNfcC8ssvevQ';
-
-            // 1. Kanalın yüklemeler listesini al
-            const channelResponse = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${CHANNEL_ID}&key=${YOUTUBE_API_KEY}`);
-            const channelData = await channelResponse.json();
-            const uploadsPlaylistId = channelData.items[0].contentDetails.relatedPlaylists.uploads;
-
-            // 2. Playlist'teki tüm videoları çekmek için (API 50'lik sayfalar halinde verir, şimdilik ilk 50 yeterli)
-            const videoResponse = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=50&key=${YOUTUBE_API_KEY}`);
-            const videoData = await videoResponse.json();
-            const videos = videoData.items;
-
-            // 3. Rastgele bir video seç
-            if (videos.length > 0) {
-                const randomIndex = Math.floor(Math.random() * videos.length);
-                const randomVideo = videos[randomIndex];
-                const videoId = randomVideo.snippet.resourceId.videoId;
-                
-                // 4. Yeni sekmede videoyu aç
-                window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank');
-            } else {
-                alert("Hiç video bulunamadı!");
-            }
-        } catch (error) {
-            console.error("Rastgele video getirilirken hata oluştu:", error);
-            alert("Videolar getirilirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
-        }
-    });
-}
