@@ -1215,3 +1215,39 @@ footer {
 .color-swatch:hover {
     transform: scale(1.1);
 }
+
+/* Destek Ol Sekmesi Stilleri */
+.support-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.support-grid .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.support-grid .card-icon {
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.support-grid .cta-button {
+    margin-top: auto; /* Butonu kartın en altına sabitler */
+    width: 80%;
+}
+
+.support-info {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    margin-top: 1rem;
+    user-select: all; /* Numarayı kolayca kopyalanabilir yapar */
+}
