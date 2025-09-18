@@ -1146,3 +1146,22 @@ footer {
         gap: 1rem;
     }
 }
+/* Hakkımda bölümündeki 3'lü kartları ortalamak için özel kural */
+.grid-centered {
+    /* 3 eleman olduğunda 3 sütun oluştur */
+    grid-template-columns: repeat(3, 1fr);
+}
+
+/* Tablet boyutunda 3 kart yan yana sığmayabilir, 2'ye düşürelim */
+@media (max-width: 1024px) {
+    .grid-centered {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobilde zaten tek sütuna düşüyor, ama garantileyelim */
+@media (max-width: 768px) {
+    .grid-centered {
+        grid-template-columns: 1fr;
+    }
+}
