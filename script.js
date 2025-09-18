@@ -355,3 +355,20 @@ panels.forEach(panel => {
         panel.classList.add('active');
     });
 });
+// İnteraktif Ekipman Panelleri
+const equipmentPanels = document.querySelectorAll('.equipment-panel');
+
+equipmentPanels.forEach(panel => {
+    panel.addEventListener('click', () => {
+        // Eğer zaten aktifse, küçült
+        if (panel.classList.contains('active')) {
+            panel.classList.remove('active');
+        } else {
+            // Değilse, diğerlerini küçült ve bunu büyüt
+            equipmentPanels.forEach(p => {
+                p.classList.remove('active');
+            });
+            panel.classList.add('active');
+        }
+    });
+});
