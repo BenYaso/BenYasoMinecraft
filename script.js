@@ -288,26 +288,30 @@ document.addEventListener('DOMContentLoaded', function() {
         showTab('youtube', document.querySelector('a[data-tab="youtube"]'));
     }
 
-    // DÜZELTME & YENİ: Theme and Color Picker Logic
+    // Başlangıç Fonksiyonları
+    new ParticleSystem();
+    initializeChat();
+    updateYouTubeStats();
+    fetchLatestYouTubeVideos();
+    setInterval(updateYouTubeStats, 60000);
+
+    // DÜZELTME: Renk Seçici Mantığı
     if (colorPickerToggle && colorPickerMenu) {
         colorPickerToggle.addEventListener('click', (e) => {
             e.stopPropagation();
             colorPickerMenu.classList.toggle('hidden');
         });
-
         document.body.addEventListener('click', () => {
             if (!colorPickerMenu.classList.contains('hidden')) {
                 colorPickerMenu.classList.add('hidden');
             }
         });
-
         colorPickerMenu.addEventListener('click', (e) => {
             e.stopPropagation();
             const target = e.target;
             if (target.classList.contains('color-swatch')) {
                 const themeData = JSON.parse(target.dataset.theme);
                 const root = document.documentElement;
-
                 root.style.setProperty('--primary-color', themeData.primary);
                 root.style.setProperty('--secondary-color', themeData.secondary);
                 root.style.setProperty('--bg-primary', themeData.bg);
@@ -315,7 +319,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (localStorage.getItem('cookieConsent') === 'true') {
                     localStorage.setItem('savedColorTheme', JSON.stringify(themeData));
                 }
-                
                 colorPickerMenu.classList.add('hidden');
             }
         });
