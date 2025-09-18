@@ -220,38 +220,74 @@ class ParticleSystem {
     }
 }
 
+// GÜNCELLENDİ: showTab fonksiyonuna hafızaya kaydetme eklendi
 function showTab(tabName, clickedElement) {
     document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
     document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
+    
     const targetTab = document.getElementById(tabName);
-    if (targetTab) targetTab.classList.add('active');
-    if (clickedElement) clickedElement.classList.add('active');
+    if (targetTab) {
+        targetTab.classList.add('active');
+    }
+    
+    if (clickedElement) {
+        clickedElement.classList.add('active');
+    }
+    
     const navLinks = document.getElementById('nav-links');
-    if (navLinks) navLinks.classList.remove('active');
+    if (navLinks) {
+        navLinks.classList.remove('active');
+    }
+
+    // YENİ: Tıklanan sekmeyi tarayıcının hafızasına kaydet
+    localStorage.setItem('lastActiveTab', tabName);
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 
-// === PAGE LOAD AND EVENT LISTENERS ===
+// === SAYFA YÜKLENDİĞİNDE ÇALIŞACAK ANA KOD (DOMContentLoaded) ===
 document.addEventListener('DOMContentLoaded', function() {
     
-    // Select all necessary elements
+    // Elementleri seç
     const themeToggleButton = document.getElementById('theme-toggle-button');
     const navToggle = document.getElementById('nav-toggle');
-    const chatSendButton = document.getElementById('chat-send-button');
-    const chatInput = document.getElementById('chat-input-main');
-    const cookieBanner = document.getElementById('cookie-consent-banner');
-    const acceptBtn = document.getElementById('cookie-accept-btn');
-    const declineBtn = document.getElementById('cookie-decline-btn');
-    const colorPickerToggle = document.getElementById('color-picker-toggle');
-    const colorPickerMenu = document.getElementById('color-picker-menu');
-
-    // Initial function calls
+    // ... diğer elementler ...
+    
+    // Başlangıç Fonksiyonları
     new ParticleSystem();
-    initializeChat();
+    startRealTimeChat();
     updateYouTubeStats();
     fetchLatestYouTubeVideos();
     setInterval(updateYouTubeStats, 60000);
+
+    // Event Listeners
+    if (themeToggleButton) {
+        // ... themeToggleButton listener'ı aynı ...
+    }
+
+    if (navToggle) {
+        // ... navToggle listener'ı aynı ...
+    }
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            showTab(link.dataset.tab, link);
+        });
+    });
+    
+    // ... diğer listener'lar aynı ...
+
+    // YENİ: Sayfa yüklendiğinde son aktif sekmeyi hatırla
+    const lastTab = localStorage.getItem('lastActiveTab');
+    if (lastTab) {
+        // Hafızada bir sekme varsa onu göster
+        showTab(lastTab, document.querySelector(`a[data-tab="${lastTab}"]`));
+    } else {
+        // Eğer kayıtlı sekme yoksa (ilk ziyaret), ana sayfayı göster
+        showTab('youtube', document.querySelector('a[data-tab="youtube"]'));
+    }
 
     // DÜZELTME & YENİ: Theme and Color Picker Logic
     if (colorPickerToggle && colorPickerMenu) {
