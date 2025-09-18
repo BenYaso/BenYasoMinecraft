@@ -2,7 +2,7 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
 import { getDatabase, ref, push, onValue, query, orderByChild, limitToLast, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
-// === CONFIGURATION AND VARIABLES ===
+// === DEĞİŞKENLER VE YAPILANDIRMA ===
 
 const firebaseConfig = {
     apiKey: "AIzaSyC_IgO_xCzkeNGkaoCh59vdIWBQgu51Fmk",
@@ -17,7 +17,6 @@ const firebaseConfig = {
 
 const YOUTUBE_API_KEY = 'AIzaSyAwC6sByfoq9n4G72tfFtwf2XETXaSdg04';
 const CHANNEL_ID = 'UCTYeNjk3VZnXNfcC8ssvevQ';
-const DISCORD_GUILD_ID = '1185317817888411729';
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
