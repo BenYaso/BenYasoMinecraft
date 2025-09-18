@@ -45,7 +45,7 @@
                 <li><a href="#" data-tab="ekipmanlar">Ekipmanlarım</a></li>
                 <li><a href="#" data-tab="duyurular">Duyurular</a></li>
                 <li><a href="#" data-tab="discord">Discord</a></li>
-                <li><a href="#" data-tab="sohbet">Sohbet</a></li>
+                <li><a href="#" data-tab="sohbet">Soru-Cevap</a></li>
             </ul>
             <div class="color-picker-container">
                     <button class="theme-toggle" id="color-picker-toggle">🎨</button>
@@ -311,11 +311,15 @@
     </section>
 </div>
 
-        <div id="sohbet" class="tab-content">
+    <div id="sohbet" class="tab-content">
+        <section class="hero hero-small">
+            <div class="hero-content">
+                <h1>Soru-Cevap</h1>
+            </div>
+        </section>
+
         <section class="section">
             <div class="container">
-                <h2 class="section-title">Soru-Cevap</h2>
-
                 <script src="https://giscus.app/client.js"
                         data-repo="BenYaso/BenYasoMinecraft"
                         data-repo-id="R_kgDOPPWmDg"
@@ -325,13 +329,12 @@
                         data-strict="0"
                         data-reactions-enabled="1"
                         data-emit-metadata="0"
-                        data-input-position="bottom"
-                        data-theme="preferred_color_scheme"
+                        data-input-position="top"
+                        data-theme="transparent_dark"
                         data-lang="tr"
                         crossorigin="anonymous"
                         async>
                 </script>
-                
             </div>
         </section>
     </div>
