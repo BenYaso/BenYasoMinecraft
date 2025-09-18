@@ -433,11 +433,29 @@ nav {
 }
 
 /* Grid */
+/* Yukardakini silip bunu yapıştır: */
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    /* Masaüstünde 4'lü sıralama */
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem; /* Kartlar arası boşluğu biraz azalttım */
     margin-top: 3rem;
+}
+
+/* Tablet boyutu için (1024px ve altı) */
+@media (max-width: 1024px) {
+    .grid {
+        /* Tablette 2'li sıralama */
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobil boyutu için (768px ve altı) */
+@media (max-width: 768px) {
+    .grid {
+        /* Mobilde tekli sıralama */
+        grid-template-columns: 1fr;
+    }
 }
 
 .card {
