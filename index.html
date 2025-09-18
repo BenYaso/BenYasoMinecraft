@@ -14,10 +14,16 @@
     <link rel="stylesheet" href="style.css">
 
     <script>
-        const savedTheme = localStorage.getItem('siteTheme');
         const hasConsented = localStorage.getItem('cookieConsent') === 'true';
-        if (hasConsented && savedTheme) {
-            document.documentElement.setAttribute('data-theme', savedTheme);
+        if (hasConsented) {
+            const savedTheme = localStorage.getItem('savedColorTheme');
+            if (savedTheme) {
+                const theme = JSON.parse(savedTheme);
+                const root = document.documentElement;
+                root.style.setProperty('--primary-color', theme.primary);
+                root.style.setProperty('--secondary-color', theme.secondary);
+                root.style.setProperty('--bg-primary', theme.bg);
+            }
         }
     </script>
 </head>
@@ -41,7 +47,16 @@
                 <li><a href="#" data-tab="discord">Discord</a></li>
                 <li><a href="#" data-tab="sohbet">Sohbet</a></li>
             </ul>
-            <button class="theme-toggle" id="theme-toggle-button">🌙</button>
+            <div class="color-picker-container">
+                    <button class="theme-toggle" id="color-picker-toggle">🎨</button>
+                    <div id="color-picker-menu" class="hidden">
+                        <button class="color-swatch" data-theme='{"primary": "#4facfe", "secondary": "#00f2fe", "bg": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"}' style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></button>
+                        <button class="color-swatch" data-theme='{"primary": "#ff8c00", "secondary": "#ff4500", "bg": "linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%)"}' style="background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);"></button>
+                        <button class="color-swatch" data-theme='{"primary": "#20bf55", "secondary": "#01baef", "bg": "linear-gradient(135deg, #00b09b 0%, #96c93d 100%)"}' style="background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);"></button>
+                        <button class="color-swatch" data-theme='{"primary": "#f72585", "secondary": "#7209b7", "bg": "linear-gradient(135deg, #b5179e 0%, #4361ee 100%)"}' style="background: linear-gradient(135deg, #b5179e 0%, #4361ee 100%);"></button>
+                        <button class="color-swatch" data-theme='{"primary": "#ffffff", "secondary": "#aaaaaa", "bg": "linear-gradient(135deg, #232526 0%, #414345 100%)"}' style="background: linear-gradient(135deg, #232526 0%, #414345 100%);"></button>
+                    </div>
+                </div>
         </nav>
     </header>
 
