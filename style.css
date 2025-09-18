@@ -1252,3 +1252,87 @@ footer {
     margin-top: 1rem;
     user-select: all; /* Numarayı kolayca kopyalanabilir yapar */
 }
+/* İnteraktif Hakkımda Bölümü Stilleri */
+#interactive-about .container {
+    max-width: 900px;
+}
+
+.interactive-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.panel-container {
+    display: flex;
+    width: 100%;
+    gap: 20px;
+}
+
+.panel {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 60vh;
+    border-radius: 25px;
+    color: #fff;
+    cursor: pointer;
+    flex: 0.5;
+    position: relative;
+    transition: flex 0.7s ease-in-out, box-shadow 0.3s ease;
+    border: 2px solid var(--glass-border);
+    overflow: hidden;
+}
+
+.panel:hover {
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.panel.active {
+    flex: 5;
+}
+
+.panel-content {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    margin: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease-in 0.4s;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 1rem;
+    border-radius: 15px;
+    backdrop-filter: blur(5px);
+}
+
+.panel.active .panel-content {
+    opacity: 1;
+}
+
+.panel-content h3 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.panel-content p {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .panel-container {
+        flex-direction: column;
+        height: 80vh;
+        gap: 10px;
+    }
+    .panel {
+        height: 100%;
+        flex: 1; /* Mobilde eşit yükseklik */
+    }
+    .panel.active {
+        flex: 4; /* Aktif olan daha büyük */
+    }
+    .panel-content {
+        opacity: 1; /* Mobilde yazılar hep görünür */
+    }
+}
