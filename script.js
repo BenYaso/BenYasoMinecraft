@@ -2,7 +2,7 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
 import { getDatabase, ref, push, onValue, query, orderByChild, limitToLast, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
-// === DEĞİŞKENLER VE YAPILANDIRMA ===
+// === CONFIGURATION AND VARIABLES ===
 
 const firebaseConfig = {
     apiKey: "AIzaSyC_IgO_xCzkeNGkaoCh59vdIWBQgu51Fmk",
@@ -35,40 +35,42 @@ if (!currentUser) {
 }
 console.log(`👤 Kullanıcı adınız: ${currentUser}`);
 
-// === HTML'den Çağrılan GLOBAL FONKSİYONLAR ===
+// === GLOBALLY ACCESSIBLE FUNCTIONS (CALLED FROM HTML) ===
 
-let isMessageSending = false;
-let lastMessageTime = 0;
-window.sendMessage = function() {
-    const now = Date.now();
-    if (now - lastMessageTime < 500) { console.log("🛡️ Çok hızlı mesaj gönderimi!"); return; }
-    if (isMessageSending) { console.log("🛡️ Mesaj zaten gönderiliyor..."); return; }
-    const input = document.getElementById('chat-input-main');
-    if (!input) return;
-    const text = input.value.trim();
-    if (!text || text.length > 200) {
-        if (text.length > 200) alert('Mesaj çok uzun! Maksimum 200 karakter.');
-        return;
-    }
-    isMessageSending = true;
-    lastMessageTime = now;
-    const originalText = text;
-    input.value = '';
-    const message = {
-        text: originalText,
-        user: currentUser,
-        timestamp: serverTimestamp(),
-        color: `hsl(${Math.floor(Math.random() * 360)}, 70%, 60%)`,
-        id: Date.now() + '-' + Math.random().toString(36).substr(2, 9)
+window.sendMessage = (() => {
+    let isMessageSending = false;
+    let lastMessageTime = 0;
+    return function() {
+        const now = Date.now();
+        if (now - lastMessageTime < 500) { console.log("🛡️ Çok hızlı mesaj gönderimi!"); return; }
+        if (isMessageSending) { console.log("🛡️ Mesaj zaten gönderiliyor..."); return; }
+        const input = document.getElementById('chat-input-main');
+        if (!input) return;
+        const text = input.value.trim();
+        if (!text || text.length > 200) {
+            if (text.length > 200) alert('Mesaj çok uzun! Maksimum 200 karakter.');
+            return;
+        }
+        isMessageSending = true;
+        lastMessageTime = now;
+        const originalText = text;
+        input.value = '';
+        const message = {
+            text: originalText,
+            user: currentUser,
+            timestamp: serverTimestamp(),
+            color: `hsl(${Math.floor(Math.random() * 360)}, 70%, 60%)`,
+            id: Date.now() + '-' + Math.random().toString(36).substr(2, 9)
+        };
+        push(ref(db, 'chatMessages'), message)
+            .then(() => { console.log("✅ Mesaj gönderildi!"); })
+            .catch((error) => {
+                console.error("❌ Hata:", error);
+                if (input.value === '') { input.value = originalText; }
+            })
+            .finally(() => { setTimeout(() => { isMessageSending = false; }, 1000); });
     };
-    push(ref(db, 'chatMessages'), message)
-        .then(() => { console.log("✅ Mesaj gönderildi!"); })
-        .catch((error) => {
-            console.error("❌ Hata:", error);
-            if (input.value === '') { input.value = originalText; }
-        })
-        .finally(() => { setTimeout(() => { isMessageSending = false; }, 1000); });
-};
+})();
 
 window.scrollToSection = function(sectionId) {
     const element = document.getElementById(sectionId);
@@ -79,113 +81,43 @@ window.scrollToSection = function(sectionId) {
     }
 };
 
-// DÜZELTME: Tema Değiştirme ve Kaydetme Fonksiyonu
-window.toggleTheme = function() {
-    const doc = document.documentElement;
-    const currentTheme = doc.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    doc.setAttribute('data-theme', newTheme);
-    document.getElementById('theme-toggle-button').textContent = newTheme === 'dark' ? '☀️' : '🌙';
-    if (localStorage.getItem('cookieConsent') === 'true') {
-        localStorage.setItem('siteTheme', newTheme);
-        console.log(`Tema tercihi kaydedildi: ${newTheme}`);
-    }
-};
+// === HELPER FUNCTIONS & CLASSES ===
 
-// === YARDIMCI FONKSİYONLAR VE SINIFLAR ===
-
-let messageListener = null;
-let lastMessageIds = new Set();
-let isUpdatingMessages = false;
 function startRealTimeChat() {
     const messagesContainer = document.getElementById('chat-messages-main');
     if (!messagesContainer) { setTimeout(startRealTimeChat, 1000); return; }
-    if (messageListener) { messageListener(); }
+    
     console.log("🎯 Gerçek zamanlı chat başlatılıyor...");
     const messagesRef = ref(db, 'chatMessages');
     const messagesQuery = query(messagesRef, orderByChild('timestamp'), limitToLast(100));
-    messageListener = onValue(messagesQuery, (snapshot) => {
-        if (isUpdatingMessages) return;
-        const currentMessages = [];
-        const newMessageIds = new Set();
-        if (snapshot.exists()) {
-            snapshot.forEach((child) => {
-                const msg = child.val();
-                const msgId = child.key;
-                if (msg.text && msg.user) {
-                    const messageTime = msg.timestamp || 0;
-                    const twoHoursAgo = Date.now() - (2 * 60 * 60 * 1000);
-                    if (messageTime > twoHoursAgo) {
-                        msg.firebaseId = msgId;
-                        currentMessages.push(msg);
-                        newMessageIds.add(msgId);
-                    }
-                }
-            });
-            const hasNewMessages = currentMessages.some(msg => !lastMessageIds.has(msg.firebaseId));
-            if (hasNewMessages || lastMessageIds.size === 0) {
-                currentMessages.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
-                updateMessagesIncrementally(messagesContainer, currentMessages);
-                lastMessageIds = newMessageIds;
-            }
+    
+    onValue(messagesQuery, (snapshot) => {
+        if (!snapshot.exists()) {
+             // Handle initial welcome messages if needed
+            return;
         }
-    });
-}
-
-function updateMessagesIncrementally(container, newMessages) {
-    isUpdatingMessages = true;
-    const existingMessages = container.querySelectorAll('.chat-message');
-    const existingIds = new Set();
-    existingMessages.forEach(msg => {
-        const id = msg.getAttribute('data-message-id');
-        if (id) existingIds.add(id);
-    });
-    newMessages.forEach(msg => {
-        if (!existingIds.has(msg.firebaseId)) {
+        const messages = [];
+        snapshot.forEach(child => {
+            messages.push({ id: child.key, ...child.val() });
+        });
+        
+        messagesContainer.innerHTML = ''; // Clear and redraw for simplicity and to avoid duplicates
+        messages.forEach(msg => {
             const div = document.createElement('div');
             div.className = 'chat-message';
-            div.setAttribute('data-message-id', msg.firebaseId);
+            div.setAttribute('data-message-id', msg.id);
             const userColor = msg.color || '#a5b4fc';
             const timeStr = new Date(msg.timestamp).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
             div.innerHTML = `<strong style="color: ${userColor};">${msg.user}:</strong> ${msg.text}<small style="float: right; color: rgba(255,255,255,0.5);">${timeStr}</small>`;
-            div.style.opacity = '0';
-            div.style.transform = 'translateY(10px)';
-            container.appendChild(div);
-            requestAnimationFrame(() => {
-                div.style.transition = 'all 0.3s ease';
-                div.style.opacity = '1';
-                div.style.transform = 'translateY(0)';
-            });
-        }
+            messagesContainer.appendChild(div);
+        });
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
     });
-    while (container.children.length > 100) {
-        container.removeChild(container.firstChild);
-    }
-    container.scrollTop = container.scrollHeight;
-    setTimeout(() => { isUpdatingMessages = false; }, 100);
-}
-
-function cleanOldMessages() {
-    const messagesRef = ref(db, 'chatMessages');
-    const twoHoursAgo = Date.now() - (2 * 60 * 60 * 1000);
-    onValue(messagesRef, (snapshot) => {
-        if (snapshot.exists()) {
-            snapshot.forEach((child) => {
-                const msg = child.val();
-                if (msg.timestamp && msg.timestamp < twoHoursAgo) {
-                    const msgRef = ref(db, `chatMessages/${child.key}`);
-                    remove(msgRef).catch(err => console.log("Silme hatası:", err));
-                }
-            });
-        }
-    }, { onlyOnce: true });
 }
 
 function initializeChat() {
     console.log("🚀 Chat sistemi başlatılıyor...");
     startRealTimeChat();
-    setInterval(cleanOldMessages, 30 * 60 * 1000);
-    console.log("🧹 Otomatik temizlik sistemi aktif - 2 saatte bir mesajlar silinecek");
 }
 
 async function getRealYouTubeData() {
@@ -211,7 +143,7 @@ async function updateYouTubeStats() {
     }
 }
 
-// DÜZELTME & YENİ: Otomatik Video Galerisi Fonksiyonu
+// YENİ EKLENDİ: Otomatik Video Galerisi Fonksiyonu
 async function fetchLatestYouTubeVideos() {
     const videoContainer = document.getElementById('video-gallery-container');
     if (!videoContainer) return;
@@ -300,10 +232,10 @@ function showTab(tabName, clickedElement) {
 }
 
 
-// === SAYFA YÜKLENDİĞİNDE ÇALIŞACAK ANA KOD (DOMContentLoaded) ===
+// === PAGE LOAD AND EVENT LISTENERS ===
 document.addEventListener('DOMContentLoaded', function() {
     
-    // Elementleri seç
+    // Select all necessary elements
     const themeToggleButton = document.getElementById('theme-toggle-button');
     const navToggle = document.getElementById('nav-toggle');
     const chatSendButton = document.getElementById('chat-send-button');
@@ -311,25 +243,55 @@ document.addEventListener('DOMContentLoaded', function() {
     const cookieBanner = document.getElementById('cookie-consent-banner');
     const acceptBtn = document.getElementById('cookie-accept-btn');
     const declineBtn = document.getElementById('cookie-decline-btn');
+    const colorPickerToggle = document.getElementById('color-picker-toggle');
+    const colorPickerMenu = document.getElementById('color-picker-menu');
 
-    // Başlangıç Fonksiyonları
+    // Initial function calls
     new ParticleSystem();
     initializeChat();
     updateYouTubeStats();
     fetchLatestYouTubeVideos();
     setInterval(updateYouTubeStats, 60000);
 
-    // Event Listeners
-    if (themeToggleButton) {
-        themeToggleButton.addEventListener('click', window.toggleTheme);
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        themeToggleButton.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+    // DÜZELTME & YENİ: Theme and Color Picker Logic
+    if (colorPickerToggle && colorPickerMenu) {
+        colorPickerToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            colorPickerMenu.classList.toggle('hidden');
+        });
+
+        document.body.addEventListener('click', () => {
+            if (!colorPickerMenu.classList.contains('hidden')) {
+                colorPickerMenu.classList.add('hidden');
+            }
+        });
+
+        colorPickerMenu.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const target = e.target;
+            if (target.classList.contains('color-swatch')) {
+                const themeData = JSON.parse(target.dataset.theme);
+                const root = document.documentElement;
+
+                root.style.setProperty('--primary-color', themeData.primary);
+                root.style.setProperty('--secondary-color', themeData.secondary);
+                root.style.setProperty('--bg-primary', themeData.bg);
+                
+                if (localStorage.getItem('cookieConsent') === 'true') {
+                    localStorage.setItem('savedColorTheme', JSON.stringify(themeData));
+                }
+                
+                colorPickerMenu.classList.add('hidden');
+            }
+        });
     }
 
+    // Mobile Navigation
     if (navToggle) {
         navToggle.addEventListener('click', () => document.getElementById('nav-links').classList.toggle('active'));
     }
 
+    // Tab Link Listeners
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -337,6 +299,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // Chat Listeners
     if (chatSendButton) chatSendButton.addEventListener('click', window.sendMessage);
     if (chatInput) {
         chatInput.addEventListener('keydown', (e) => {
@@ -344,7 +307,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // YENİ: Çerez Yönetimi Mantığı
+    // YENİ: Cookie Consent Logic
     if (cookieBanner && acceptBtn && declineBtn) {
         if (!localStorage.getItem('cookieConsent')) {
             setTimeout(() => { cookieBanner.classList.add('show'); }, 1500);
@@ -353,18 +316,23 @@ document.addEventListener('DOMContentLoaded', function() {
         acceptBtn.addEventListener('click', () => {
             localStorage.setItem('cookieConsent', 'true');
             cookieBanner.classList.remove('show');
-            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-            localStorage.setItem('siteTheme', currentTheme);
+            const rootStyles = getComputedStyle(document.documentElement);
+            const currentTheme = {
+                primary: rootStyles.getPropertyValue('--primary-color').trim(),
+                secondary: rootStyles.getPropertyValue('--secondary-color').trim(),
+                bg: rootStyles.getPropertyValue('--bg-primary').trim()
+            };
+            localStorage.setItem('savedColorTheme', JSON.stringify(currentTheme));
         });
 
         declineBtn.addEventListener('click', () => {
             localStorage.setItem('cookieConsent', 'false');
             cookieBanner.classList.remove('show');
-            localStorage.removeItem('siteTheme');
+            localStorage.removeItem('savedColorTheme');
         });
     }
 
-    // Scroll Listeners
+    // Scroll-based Listeners
     window.addEventListener('scroll', () => {
         const header = document.querySelector('header');
         if (header) {
@@ -375,6 +343,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const progress = (scrollTop / (docHeight - winHeight)) * 100;
         const progressBar = document.querySelector('.scroll-progress');
-        if(progressBar) progressBar.style.width = progress + '%';
+        if (progressBar) progressBar.style.width = progress + '%';
     });
 });
