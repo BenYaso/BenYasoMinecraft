@@ -996,33 +996,6 @@ footer {
     min-height: 50px; /* Başlıkların aynı hizada durması için */
 }
 
-/* GÖREV 2.2: Duyurular Bölümü Stilleri */
-.announcement-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.announcement-card {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-left: 5px solid var(--secondary-color);
-    border-radius: 10px;
-    padding: 1.5rem;
-}
-
-.announcement-date {
-    font-weight: 600;
-    color: var(--primary-color);
-    margin-bottom: 0.5rem;
-}
-
-.announcement-text {
-    line-height: 1.6;
-    color: var(--text-secondary);
-}
 /* YENİ: Çerez Onay Bandı Stilleri */
 #cookie-consent-banner {
     position: fixed;
@@ -1357,4 +1330,105 @@ footer {
 .equipment-panel p {
     margin: 0;
     font-size: 0.9rem;
+}
+/* Zaman Tüneli (Timeline) Stilleri */
+.timeline-container {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Zaman tünelinin ortasındaki dikey çizgi */
+.timeline-container::after {
+    content: '';
+    position: absolute;
+    width: 3px;
+    background-color: var(--glass-border);
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -1.5px;
+    border-radius: 3px;
+}
+
+.timeline-item {
+    padding: 10px 40px;
+    position: relative;
+    width: 50%;
+}
+
+/* Çizginin üzerindeki ikonlar */
+.timeline-icon {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    right: -20px;
+    background-color: var(--primary-color);
+    top: 25px;
+    border-radius: 50%;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    border: 3px solid var(--glass-border);
+}
+
+/* Kutucukları sağa ve sola yaslama */
+.timeline-item:nth-child(odd) {
+    left: 0;
+    text-align: right;
+}
+
+.timeline-item:nth-child(even) {
+    left: 50%;
+    text-align: left;
+}
+
+/* İkonların pozisyonunu sağa ve sola göre ayarlama */
+.timeline-item:nth-child(even) .timeline-icon {
+    left: -20px;
+}
+
+/* Duyuru kartlarının yeni stili */
+.announcement-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    padding: 1.5rem;
+    border-radius: 15px;
+    position: relative;
+}
+
+.announcement-date {
+    font-weight: 600;
+    color: var(--secondary-color);
+    margin-bottom: 0.5rem;
+}
+
+.announcement-text {
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+/* Mobil Cihazlar İçin Zaman Tüneli */
+@media screen and (max-width: 768px) {
+    .timeline-container::after {
+        left: 20px; /* Çizgiyi sola al */
+    }
+
+    .timeline-item {
+        width: 100%;
+        padding-left: 60px; /* İçeriği sağa ittir */
+        padding-right: 15px;
+        text-align: left;
+    }
+    
+    .timeline-item:nth-child(odd),
+    .timeline-item:nth-child(even) {
+        left: 0;
+    }
+
+    .timeline-icon {
+        left: 0; /* İkonu çizginin üzerine getir */
+    }
 }
