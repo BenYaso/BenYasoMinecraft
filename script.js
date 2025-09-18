@@ -381,3 +381,39 @@ document.addEventListener('DOMContentLoaded', function() {
         if (progressBar) progressBar.style.width = progress + '%';
     });
 });
+// Rastgele Video Önerici
+const randomVideoButton = document.getElementById('random-video-button');
+if (randomVideoButton) {
+    randomVideoButton.addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+            const YOUTUBE_API_KEY = 'AIzaSyAwC6sByfoq9n4G72tfFtwf2XETXaSdg04';
+            const CHANNEL_ID = 'UCTYeNjk3VZnXNfcC8ssvevQ';
+
+            // 1. Kanalın yüklemeler listesini al
+            const channelResponse = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${CHANNEL_ID}&key=${YOUTUBE_API_KEY}`);
+            const channelData = await channelResponse.json();
+            const uploadsPlaylistId = channelData.items[0].contentDetails.relatedPlaylists.uploads;
+
+            // 2. Playlist'teki tüm videoları çekmek için (API 50'lik sayfalar halinde verir, şimdilik ilk 50 yeterli)
+            const videoResponse = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=50&key=${YOUTUBE_API_KEY}`);
+            const videoData = await videoResponse.json();
+            const videos = videoData.items;
+
+            // 3. Rastgele bir video seç
+            if (videos.length > 0) {
+                const randomIndex = Math.floor(Math.random() * videos.length);
+                const randomVideo = videos[randomIndex];
+                const videoId = randomVideo.snippet.resourceId.videoId;
+                
+                // 4. Yeni sekmede videoyu aç
+                window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank');
+            } else {
+                alert("Hiç video bulunamadı!");
+            }
+        } catch (error) {
+            console.error("Rastgele video getirilirken hata oluştu:", error);
+            alert("Videolar getirilirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.");
+        }
+    });
+}
