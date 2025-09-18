@@ -342,3 +342,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (progressBar) progressBar.style.width = progress + '%';
     });
 });
+// İnteraktif Hakkımda Panelleri
+const panels = document.querySelectorAll('.panel');
+
+panels.forEach(panel => {
+    panel.addEventListener('click', () => {
+        // Önce hepsinden 'active' sınıfını kaldır
+        panels.forEach(p => {
+            p.classList.remove('active');
+        });
+        // Sadece tıklanana 'active' sınıfını ekle
+        panel.classList.add('active');
+    });
+});
