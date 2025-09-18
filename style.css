@@ -86,7 +86,7 @@ nav {
 .nav-links {
     display: flex;
     list-style: none;
-    gap: 2rem;
+    gap: 1rem; /* Boşluğu azalttık */
 }
 
 .nav-links a {
