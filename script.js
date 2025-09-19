@@ -34,7 +34,8 @@ if (!currentUser) {
 }
 console.log(`👤 Kullanıcı adınız: ${currentUser}`);
 
-// === HTML'den Çağrılan GLOBAL FONKSİYONLAR ===
+
+// === GLOBAL FONKSİYONLAR ===
 
 window.sendMessage = (() => {
     let isMessageSending = false;
@@ -73,6 +74,7 @@ window.scrollToSection = function(sectionId) {
         window.scrollTo({ top: targetPosition, behavior: 'smooth' });
     }
 };
+
 
 // === YARDIMCI FONKSİYONLAR VE SINIFLAR ===
 
@@ -230,7 +232,7 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchLatestYouTubeVideos();
     setInterval(updateYouTubeStats, 60000);
 
-    // DÜZELTME: Renk Seçici Mantığı
+    // Renk Seçici Mantığı
     if (colorPickerToggle && colorPickerMenu) {
         colorPickerToggle.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -255,21 +257,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     localStorage.setItem('savedColorTheme', JSON.stringify(themeData));
                 }
                 colorPickerMenu.classList.add('hidden');
-        // YENİ: Müzik Çalar Listener'ları
-    if (musicToggleButton && musicPlayerContainer && closeMusicPlayerButton) {
-        musicToggleButton.addEventListener('click', () => {
-            if (youtubeApiReady) {
-                initializePlayer();
-                musicPlayerContainer.classList.toggle('hidden');
-            } else {
-                alert("Müzik çalar henüz hazır değil, lütfen birkaç saniye sonra tekrar deneyin.");
-            }
-        });
-
-        closeMusicPlayerButton.addEventListener('click', () => {
-            musicPlayerContainer.classList.add('hidden');
-            if(player && typeof player.stopVideo === 'function') {
-                player.stopVideo();
             }
         });
     }
@@ -331,7 +318,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (randomVideoButton) {
         randomVideoButton.addEventListener('click', (e) => {
             e.preventDefault();
-            fetchLatestYouTubeVideos(); // Videoların güncel olduğundan emin ol
+            // API'yi tekrar çağırmak yerine mevcut galeriden seçelim, daha hızlı.
             const videoLinks = document.querySelectorAll('#video-gallery-container .video-gallery-card');
             if (videoLinks.length > 0) {
                 const randomIndex = Math.floor(Math.random() * videoLinks.length);
@@ -355,35 +342,5 @@ document.addEventListener('DOMContentLoaded', function() {
         const progress = (scrollTop / (docHeight - winHeight)) * 100;
         const progressBar = document.querySelector('.scroll-progress');
         if (progressBar) progressBar.style.width = progress + '%';
-    });
-});
-// İnteraktif Hakkımda Panelleri
-const panels = document.querySelectorAll('.panel');
-
-panels.forEach(panel => {
-    panel.addEventListener('click', () => {
-        // Önce hepsinden 'active' sınıfını kaldır
-        panels.forEach(p => {
-            p.classList.remove('active');
-        });
-        // Sadece tıklanana 'active' sınıfını ekle
-        panel.classList.add('active');
-    });
-});
-// İnteraktif Ekipman Panelleri
-const equipmentPanels = document.querySelectorAll('.equipment-panel');
-
-equipmentPanels.forEach(panel => {
-    panel.addEventListener('click', () => {
-        // Eğer zaten aktifse, küçült
-        if (panel.classList.contains('active')) {
-            panel.classList.remove('active');
-        } else {
-            // Değilse, diğerlerini küçült ve bunu büyüt
-            equipmentPanels.forEach(p => {
-                p.classList.remove('active');
-            });
-            panel.classList.add('active');
-        }
     });
 });
