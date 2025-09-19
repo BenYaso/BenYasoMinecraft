@@ -1480,3 +1480,8 @@ footer {
     width: 100%;
     height: 180px; /* 320px genişlik için 16:9 oran */
 }
+.header-buttons-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
