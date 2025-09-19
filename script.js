@@ -34,6 +34,29 @@ if (!currentUser) {
 }
 console.log(`👤 Kullanıcı adınız: ${currentUser}`);
 
+// === MÜZİK ÇALAR İÇİN YOUTUBE API HAZIRLIĞI ===
+let player;
+let youtubeApiReady = false;
+const tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+const firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+window.onYouTubeIframeAPIReady = function() {
+    youtubeApiReady = true;
+    console.log("YouTube Müzik API'si hazır.");
+}
+
+function initializePlayer() {
+    if (player) return;
+    player = new YT.Player('youtube-player', {
+        height: '180',
+        width: '320',
+        videoId: 'jfKfPfyJRdk', // Lofi Girl video ID'si
+        playerVars: { 'playsinline': 1, 'autoplay': 1, 'controls': 1 }
+    });
+}
+
 
 // === GLOBAL FONKSİYONLAR ===
 
