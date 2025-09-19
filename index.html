@@ -50,6 +50,7 @@
             <div class="color-picker-container">
                 <button class="theme-toggle" id="color-picker-toggle">🎨</button>
                 <div id="color-picker-menu" class="hidden">
+                <button class="theme-toggle" id="music-toggle-button">🎵</button>
                     <button class="color-swatch" data-theme='{"primary": "#4facfe", "secondary": "#00f2fe", "bg": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"}' style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></button>
                     <button class="color-swatch" data-theme='{"primary": "#ff8c00", "secondary": "#ff4500", "bg": "linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%)"}' style="background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);"></button>
                     <button class="color-swatch" data-theme='{"primary": "#20bf55", "secondary": "#01baef", "bg": "linear-gradient(135deg, #00b09b 0%, #96c93d 100%)"}' style="background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%);"></button>
@@ -404,6 +405,13 @@
             <a href="cerez-politikasi.html" target="_blank">Çerez Politikası</a>
         </div>
         <p style="margin-top: 1rem; color: var(--text-secondary);">&copy; 2025 BenYaso. Tüm hakları saklıdır.</p>
+        <div id="music-player-container" class="hidden">
+        <div class="player-header">
+            <span>Lofi Radio</span>
+            <button id="close-music-player">&times;</button>
+        </div>
+        <div id="youtube-player"></div>
+    </div>
     </footer>
 
     <!-- Çerez Onay Bandı -->
