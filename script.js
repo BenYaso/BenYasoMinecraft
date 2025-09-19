@@ -34,28 +34,6 @@ if (!currentUser) {
 }
 console.log(`👤 Kullanıcı adınız: ${currentUser}`);
 
-// === YENİ: YOUTUBE MÜZİK ÇALAR KODU ===
-let player;
-let youtubeApiReady = false;
-// YouTube IFrame API'sini yükleyen script'i sayfaya ekle
-const tag = document.createElement('script');
-tag.src = "https://www.youtube.com/iframe_api";
-const firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-// API yüklendiğinde bu fonksiyon otomatik olarak çalışır
-window.onYouTubeIframeAPIReady = function() {
-    youtubeApiReady = true;
-    console.log("YouTube Müzik API'si hazır.");
-}
-function initializePlayer() {
-    if (player) return; // Eğer oynatıcı zaten varsa tekrar oluşturma
-    player = new YT.Player('youtube-player', {
-        height: '180',
-        width: '320',
-        videoId: 'jfKfPfyJRdk', // Lofi Girl video ID'si
-        playerVars: { 'playsinline': 1, 'autoplay': 1, 'controls': 1 }
-    });
-}
 
 // === GLOBAL FONKSİYONLAR ===
 
@@ -96,6 +74,7 @@ window.scrollToSection = function(sectionId) {
         window.scrollTo({ top: targetPosition, behavior: 'smooth' });
     }
 };
+
 
 // === YARDIMCI FONKSİYONLAR VE SINIFLAR ===
 
@@ -338,7 +317,7 @@ document.addEventListener('DOMContentLoaded', function() {
         randomVideoButton.addEventListener('click', (e) => {
             e.preventDefault();
             const videoLinks = document.querySelectorAll('#video-gallery-container .video-gallery-card');
-            if (videoLinks.length > 0 && videoLinks[0].href) { // İlk videonun yüklenip yüklenmediğini kontrol et
+            if (videoLinks.length > 0 && videoLinks[0].href) {
                 const randomIndex = Math.floor(Math.random() * videoLinks.length);
                 const randomVideoUrl = videoLinks[randomIndex].href;
                 window.open(randomVideoUrl, '_blank');
@@ -362,12 +341,16 @@ document.addEventListener('DOMContentLoaded', function() {
         if (progressBar) progressBar.style.width = progress + '%';
     });
 
-    // YENİ EKLENEN ANİMASYON KODLARI
+    // --- YENİ EKLENEN ANİMASYON KODLARI ---
+    
     // İnteraktif "Benim Dünyam" Panelleri
     const panels = document.querySelectorAll('.panel');
     if (panels.length > 0) {
         panels.forEach(panel => {
             panel.addEventListener('click', () => {
+                // Eğer tıklanan panel zaten aktifse, hiçbir şey yapma (kapatma)
+                if (panel.classList.contains('active')) return;
+                
                 panels.forEach(p => p.classList.remove('active'));
                 panel.classList.add('active');
             });
@@ -375,50 +358,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // İnteraktif Ekipman Panelleri
-    const equipmentPanels = document.querySelectorAll('.equipment-panel');
-    if (equipmentPanels.length > 0) {
-        equipmentPanels.forEach(panel => {
-            panel.addEventListener('click', () => {
-                if (panel.classList.contains('active')) {
-                    panel.classList.remove('active');
-                } else {
-                    equipmentPanels.forEach(p => p.classList.remove('active'));
-                    panel.classList.add('active');
-                }
-                
-    // YENİ: Müzik Çalar Listener'ları
-    if (musicToggleButton && musicPlayerContainer && closeMusicPlayerButton) {
-        musicToggleButton.addEventListener('click', () => {
-            if (youtubeApiReady) {
-                initializePlayer();
-                musicPlayerContainer.classList.toggle('hidden');
-                // Eğer oynatıcı görünür hale geldiyse ve duruyorsa, başlat
-                if (!musicPlayerContainer.classList.contains('hidden') && player && typeof player.playVideo === 'function') {
-                    player.playVideo();
-                }
-            } else {
-                alert("Müzik çalar henüz hazır değil, lütfen birkaç saniye sonra tekrar deneyin.");
-            }
-        });
-
-        closeMusicPlayerButton.addEventListener('click', () => {
-            musicPlayerContainer.classList.add('hidden');
-            if(player && typeof player.stopVideo === 'function') {
-                player.stopVideo(); // Videoyu tamamen durdurur ve başa sarar
-            }
-        });
-    }
-
-    // ... (Diğer tüm listener'lar ve animasyon kodları aynı) ...
-    const panels = document.querySelectorAll('.panel');
-    if (panels.length > 0) {
-        panels.forEach(panel => {
-            panel.addEventListener('click', () => {
-                panels.forEach(p => p.classList.remove('active'));
-                panel.classList.add('active');
-            });
-        });
-    }
     const equipmentPanels = document.querySelectorAll('.equipment-panel');
     if (equipmentPanels.length > 0) {
         equipmentPanels.forEach(panel => {
