@@ -255,6 +255,21 @@ document.addEventListener('DOMContentLoaded', function() {
                     localStorage.setItem('savedColorTheme', JSON.stringify(themeData));
                 }
                 colorPickerMenu.classList.add('hidden');
+        // YENİ: Müzik Çalar Listener'ları
+    if (musicToggleButton && musicPlayerContainer && closeMusicPlayerButton) {
+        musicToggleButton.addEventListener('click', () => {
+            if (youtubeApiReady) {
+                initializePlayer();
+                musicPlayerContainer.classList.toggle('hidden');
+            } else {
+                alert("Müzik çalar henüz hazır değil, lütfen birkaç saniye sonra tekrar deneyin.");
+            }
+        });
+
+        closeMusicPlayerButton.addEventListener('click', () => {
+            musicPlayerContainer.classList.add('hidden');
+            if(player && typeof player.stopVideo === 'function') {
+                player.stopVideo();
             }
         });
     }
