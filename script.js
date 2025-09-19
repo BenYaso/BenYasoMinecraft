@@ -260,6 +260,27 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+        // Müzik Çalar Listener'ları
+    if (musicToggleButton && musicPlayerContainer && closeMusicPlayerButton) {
+        musicToggleButton.addEventListener('click', () => {
+            if (youtubeApiReady) {
+                initializePlayer();
+                musicPlayerContainer.classList.toggle('hidden');
+                if (!musicPlayerContainer.classList.contains('hidden') && player && typeof player.playVideo === 'function') {
+                    player.playVideo();
+                }
+            } else {
+                alert("Müzik çalar henüz hazır değil, lütfen birkaç saniye sonra tekrar deneyin.");
+            }
+        });
+        closeMusicPlayerButton.addEventListener('click', () => {
+            musicPlayerContainer.classList.add('hidden');
+            if (player && typeof player.stopVideo === 'function') {
+                player.stopVideo();
+            }
+        });
+    }
     
     // Mobil Navigasyon
     if (navToggle) {
