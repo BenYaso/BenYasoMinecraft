@@ -224,6 +224,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const colorPickerToggle = document.getElementById('color-picker-toggle');
     const colorPickerMenu = document.getElementById('color-picker-menu');
     const randomVideoButton = document.getElementById('random-video-button');
+    const musicToggleButton = document.getElementById('music-toggle-button');
+    const musicPlayerContainer = document.getElementById('music-player-container');
+    const closeMusicPlayerButton = document.getElementById('close-music-player');
 
     // Başlangıç Fonksiyonları
     new ParticleSystem();
