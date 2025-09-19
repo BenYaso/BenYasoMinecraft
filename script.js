@@ -34,7 +34,6 @@ if (!currentUser) {
 }
 console.log(`👤 Kullanıcı adınız: ${currentUser}`);
 
-
 // === GLOBAL FONKSİYONLAR ===
 
 window.sendMessage = (() => {
@@ -74,7 +73,6 @@ window.scrollToSection = function(sectionId) {
         window.scrollTo({ top: targetPosition, behavior: 'smooth' });
     }
 };
-
 
 // === YARDIMCI FONKSİYONLAR VE SINIFLAR ===
 
@@ -294,7 +292,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!localStorage.getItem('cookieConsent')) {
             setTimeout(() => { cookieBanner.classList.add('show'); }, 1500);
         }
-
         acceptBtn.addEventListener('click', () => {
             localStorage.setItem('cookieConsent', 'true');
             cookieBanner.classList.remove('show');
@@ -306,7 +303,6 @@ document.addEventListener('DOMContentLoaded', function() {
             };
             localStorage.setItem('savedColorTheme', JSON.stringify(currentTheme));
         });
-
         declineBtn.addEventListener('click', () => {
             localStorage.setItem('cookieConsent', 'false');
             cookieBanner.classList.remove('show');
@@ -318,9 +314,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (randomVideoButton) {
         randomVideoButton.addEventListener('click', (e) => {
             e.preventDefault();
-            // API'yi tekrar çağırmak yerine mevcut galeriden seçelim, daha hızlı.
             const videoLinks = document.querySelectorAll('#video-gallery-container .video-gallery-card');
-            if (videoLinks.length > 0) {
+            if (videoLinks.length > 0 && videoLinks[0].href) { // İlk videonun yüklenip yüklenmediğini kontrol et
                 const randomIndex = Math.floor(Math.random() * videoLinks.length);
                 const randomVideoUrl = videoLinks[randomIndex].href;
                 window.open(randomVideoUrl, '_blank');
@@ -343,4 +338,31 @@ document.addEventListener('DOMContentLoaded', function() {
         const progressBar = document.querySelector('.scroll-progress');
         if (progressBar) progressBar.style.width = progress + '%';
     });
+
+    // YENİ EKLENEN ANİMASYON KODLARI
+    // İnteraktif "Benim Dünyam" Panelleri
+    const panels = document.querySelectorAll('.panel');
+    if (panels.length > 0) {
+        panels.forEach(panel => {
+            panel.addEventListener('click', () => {
+                panels.forEach(p => p.classList.remove('active'));
+                panel.classList.add('active');
+            });
+        });
+    }
+
+    // İnteraktif Ekipman Panelleri
+    const equipmentPanels = document.querySelectorAll('.equipment-panel');
+    if (equipmentPanels.length > 0) {
+        equipmentPanels.forEach(panel => {
+            panel.addEventListener('click', () => {
+                if (panel.classList.contains('active')) {
+                    panel.classList.remove('active');
+                } else {
+                    equipmentPanels.forEach(p => p.classList.remove('active'));
+                    panel.classList.add('active');
+                }
+            });
+        });
+    }
 });
