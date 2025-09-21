@@ -247,6 +247,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const musicToggleButton = document.getElementById('music-toggle-button');
     const musicPlayerContainer = document.getElementById('music-player-container');
     const closeMusicPlayerButton = document.getElementById('close-music-player');
+    const langToggle = document.getElementById('language-selector-toggle');
+    const langMenu = document.getElementById('language-selector-menu');
     const randomVideoButton = document.getElementById('random-video-button');
     const panels = document.querySelectorAll('.panel');
     const equipmentPanels = document.querySelectorAll('.equipment-panel');
