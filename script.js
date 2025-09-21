@@ -306,6 +306,26 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+        // Dil Seçici Mantığı
+    if (langToggle && langMenu) {
+        langToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            langMenu.classList.toggle('hidden');
+        });
+        document.body.addEventListener('click', () => {
+            if (!langMenu.classList.contains('hidden')) {
+                langMenu.classList.add('hidden');
+            }
+        });
+        langMenu.addEventListener('click', (e) => {
+            const target = e.target.closest('.language-option');
+            if (target) {
+                setLanguage(target.dataset.lang);
+                langMenu.classList.add('hidden');
+            }
+        });
+    }
     
     // Mobil Navigasyon
     if (navToggle) {
