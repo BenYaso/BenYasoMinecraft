@@ -34,6 +34,7 @@ if (!currentUser) {
 }
 console.log(`👤 Kullanıcı adınız: ${currentUser}`);
 
+
 // === MÜZİK ÇALAR İÇİN YOUTUBE API HAZIRLIĞI ===
 let player;
 let youtubeApiReady = false;
@@ -104,18 +105,15 @@ window.scrollToSection = function(sectionId) {
 function startRealTimeChat() {
     const messagesContainer = document.getElementById('chat-messages-main');
     if (!messagesContainer) { setTimeout(startRealTimeChat, 1000); return; }
-    
     console.log("🎯 Gerçek zamanlı chat başlatılıyor...");
     const messagesRef = ref(db, 'chatMessages');
     const messagesQuery = query(messagesRef, orderByChild('timestamp'), limitToLast(100));
-    
     onValue(messagesQuery, (snapshot) => {
         if (!snapshot.exists()) return;
         const messages = [];
         snapshot.forEach(child => {
             messages.push({ id: child.key, ...child.val() });
         });
-        
         messagesContainer.innerHTML = '';
         messages.forEach(msg => {
             const div = document.createElement('div');
@@ -161,7 +159,6 @@ async function fetchLatestYouTubeVideos() {
         if (!videoData.items) throw new Error("Videolar çekilemedi.");
         
         videoContainer.innerHTML = '';
-
         videoData.items.forEach(item => {
             const { title, resourceId, thumbnails } = item.snippet;
             const videoLink = document.createElement('a');
@@ -234,81 +231,8 @@ function showTab(tabName, clickedElement) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// === YENİ: DİL VE ÇEVİRİ BÖLÜMÜ ===
 
-const translations = {
-    // İngilizce Çeviriler
-    'en': {
-        'navHome': 'Home',
-        'navVideos': 'Videos',
-        'navEquipment': 'My Gear',
-        'navAnnouncements': 'Announcements',
-        'navSupport': 'Support Me',
-        'navDiscord': 'Discord',
-        'navQA': 'Q&A',
-        'heroTitle': 'BenYasoMinecraft',
-        'heroSubtitle': 'My YouTube Channel and Community Hub',
-        'heroDescription': 'Follow my Minecraft adventures, chat with the community, and discover more!',
-        'buttonChannel': 'Go to Channel',
-        'buttonAbout': 'About Me',
-        'buttonRandom': 'Random Video',
-        // ... Diğer tüm metinlerin İngilizce çevirileri buraya gelecek
-    },
-    // Azerbaycanca Çeviriler
-    'az': {
-        'navHome': 'Ana Səhifə',
-        'navVideos': 'Videolar',
-        'navEquipment': 'Avadanlığım',
-        'navAnnouncements': 'Elanlar',
-        'navSupport': 'Dəstək Ol',
-        'navDiscord': 'Discord',
-        'navQA': 'Sual-Cavab',
-        'heroTitle': 'BenYasoMinecraft',
-        'heroSubtitle': 'YouTube Kanalım və İcma Mərkəzi',
-        'heroDescription': 'Minecraft macəralarımı izlə, icma ilə söhbət et və daha çoxunu kəşf et!',
-        'buttonChannel': 'Kanala Keç',
-        'buttonAbout': 'Haqqımda',
-        'buttonRandom': 'Təsadüfi Video',
-        // ... Diğer tüm metinlerin Azerbaycanca çevirileri buraya gelecek
-    }
-};
-
-const defaultLang = 'tr';
-let currentLang = defaultLang;
-
-function setLanguage(lang) {
-    if (lang !== 'tr' && !translations[lang]) {
-        console.error(`'${lang}' dili üçün tərcümə tapılmadı.`);
-        return;
-    }
-
-    currentLang = lang;
-    document.documentElement.lang = lang; // Sayfanın ana dilini değiştir
-    
-    const flagImg = document.getElementById('current-lang-flag');
-    if (lang === 'en') flagImg.src = 'https://flagsapi.com/GB/shiny/24.png';
-    else if (lang === 'az') flagImg.src = 'https://flagsapi.com/AZ/shiny/24.png';
-    else flagImg.src = 'https://flagsapi.com/TR/shiny/24.png';
-
-    // Tüm etiketli elementleri bul ve çevir
-    document.querySelectorAll('[data-key]').forEach(elem => {
-        const key = elem.dataset.key;
-        if (lang === 'tr') {
-            // Türkçe için orijinal metni geri yükle
-            elem.textContent = elem.dataset.originalText || elem.textContent;
-        } else if (translations[lang][key]) {
-            // Diğer diller için çeviriyi bas
-            if (!elem.dataset.originalText) {
-                elem.dataset.originalText = elem.textContent;
-            }
-            elem.textContent = translations[lang][key];
-        }
-    });
-
-    localStorage.setItem('savedLanguage', lang);
-}
-
-// === SAYFA YÜKLENDİĞİNDE ÇALIŞACAK TEK VE DOĞRU ANA KOD ===
+// === SAYFA YÜKLENDİĞİNDE ÇALIŞACAK ANA KOD ===
 document.addEventListener('DOMContentLoaded', function() {
     
     // Tüm elementleri seç
@@ -323,8 +247,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const musicToggleButton = document.getElementById('music-toggle-button');
     const musicPlayerContainer = document.getElementById('music-player-container');
     const closeMusicPlayerButton = document.getElementById('close-music-player');
-    const langToggle = document.getElementById('language-selector-toggle');
-    const langMenu = document.getElementById('language-selector-menu');
     const randomVideoButton = document.getElementById('random-video-button');
     const panels = document.querySelectorAll('.panel');
     const equipmentPanels = document.querySelectorAll('.equipment-panel');
@@ -335,8 +257,6 @@ document.addEventListener('DOMContentLoaded', function() {
     updateYouTubeStats();
     fetchLatestYouTubeVideos();
     setInterval(updateYouTubeStats, 60000);
-    const savedLang = localStorage.getItem('savedLanguage');
-    if (savedLang) { setLanguage(savedLang); }
 
     // Renk Seçici Mantığı
     if (colorPickerToggle && colorPickerMenu) {
@@ -365,8 +285,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
-        // Müzik Çalar Listener'ları
+    
+    // Müzik Çalar Listener'ları
     if (musicToggleButton && musicPlayerContainer && closeMusicPlayerButton) {
         musicToggleButton.addEventListener('click', () => {
             if (youtubeApiReady) {
@@ -383,26 +303,6 @@ document.addEventListener('DOMContentLoaded', function() {
             musicPlayerContainer.classList.add('hidden');
             if (player && typeof player.stopVideo === 'function') {
                 player.stopVideo();
-            }
-        });
-    }
-
-    // Dil Seçici Mantığı
-    if (langToggle && langMenu) {
-        langToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            langMenu.classList.toggle('hidden');
-        });
-        document.body.addEventListener('click', () => {
-            if (!langMenu.classList.contains('hidden')) {
-                langMenu.classList.add('hidden');
-            }
-        });
-        langMenu.addEventListener('click', (e) => {
-            const target = e.target.closest('.language-option');
-            if (target) {
-                setLanguage(target.dataset.lang);
-                langMenu.classList.add('hidden');
             }
         });
     }
@@ -473,6 +373,31 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // İnteraktif "Benim Dünyam" Panelleri
+    if (panels.length > 0) {
+        panels.forEach(panel => {
+            panel.addEventListener('click', () => {
+                if (panel.classList.contains('active')) return;
+                panels.forEach(p => p.classList.remove('active'));
+                panel.classList.add('active');
+            });
+        });
+    }
+
+    // İnteraktif Ekipman Panelleri
+    if (equipmentPanels.length > 0) {
+        equipmentPanels.forEach(panel => {
+            panel.addEventListener('click', () => {
+                if (panel.classList.contains('active')) {
+                    panel.classList.remove('active');
+                } else {
+                    equipmentPanels.forEach(p => p.classList.remove('active'));
+                    panel.classList.add('active');
+                }
+            });
+        });
+    }
+
     // Scroll Olayları
     window.addEventListener('scroll', () => {
         const header = document.querySelector('header');
@@ -486,35 +411,4 @@ document.addEventListener('DOMContentLoaded', function() {
         const progressBar = document.querySelector('.scroll-progress');
         if (progressBar) progressBar.style.width = progress + '%';
     });
-
-    // --- YENİ EKLENEN ANİMASYON KODLARI ---
-    
-    // İnteraktif "Benim Dünyam" Panelleri
-    const panels = document.querySelectorAll('.panel');
-    if (panels.length > 0) {
-        panels.forEach(panel => {
-            panel.addEventListener('click', () => {
-                // Eğer tıklanan panel zaten aktifse, hiçbir şey yapma (kapatma)
-                if (panel.classList.contains('active')) return;
-                
-                panels.forEach(p => p.classList.remove('active'));
-                panel.classList.add('active');
-            });
-        });
-    }
-
-    // İnteraktif Ekipman Panelleri
-    const equipmentPanels = document.querySelectorAll('.equipment-panel');
-    if (equipmentPanels.length > 0) {
-        equipmentPanels.forEach(panel => {
-            panel.addEventListener('click', () => {
-                if (panel.classList.contains('active')) {
-                    panel.classList.remove('active');
-                } else {
-                    equipmentPanels.forEach(p => p.classList.remove('active'));
-                    panel.classList.add('active');
-                }
-            });
-        });
-    }
 });
