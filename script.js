@@ -359,6 +359,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const randomVideoButton = document.getElementById('random-video-button');
     const musicToggleButton = document.getElementById('music-toggle-button');
     const musicPlayerContainer = document.getElementById('music-player-container');
+    const langToggle = document.getElementById('language-selector-toggle');
+    const langMenu = document.getElementById('language-selector-menu');
     const closeMusicPlayerButton = document.getElementById('close-music-player');
 
     // Başlangıç Fonksiyonları
