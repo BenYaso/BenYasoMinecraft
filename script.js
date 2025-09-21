@@ -308,46 +308,10 @@ function setLanguage(lang) {
     localStorage.setItem('savedLanguage', lang);
 }
 
-
-// === SAYFA YÜKLENDİĞİNDE ÇALIŞACAK ANA KOD ===
+// === SAYFA YÜKLENDİĞİNDE ÇALIŞACAK TEK VE DOĞRU ANA KOD ===
 document.addEventListener('DOMContentLoaded', function() {
     
-    // ... (Diğer tüm element seçimleri aynı)
-    const langToggle = document.getElementById('language-selector-toggle');
-    const langMenu = document.getElementById('language-selector-menu');
-
-    // ... (Diğer tüm başlangıç fonksiyonları aynı)
-
-    // Dil Seçici Mantığı
-    if(langToggle && langMenu) {
-        langToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            langMenu.classList.toggle('hidden');
-        });
-        document.body.addEventListener('click', () => {
-            if (!langMenu.classList.contains('hidden')) {
-                langMenu.classList.add('hidden');
-            }
-        });
-        langMenu.addEventListener('click', (e) => {
-            const target = e.target.closest('.language-option');
-            if(target) {
-                setLanguage(target.dataset.lang);
-                langMenu.classList.add('hidden');
-            }
-        });
-    }
-    
-    // Sayfa Yüklenince Kayıtlı Dili Uygula
-    const savedLang = localStorage.getItem('savedLanguage');
-    if (savedLang) {
-        setLanguage(savedLang);
-    }
-
-
-// === SAYFA YÜKLENDİĞİNDE ÇALIŞACAK ANA KOD ===
-document.addEventListener('DOMContentLoaded', function() {
-    
+    // Tüm elementleri seç
     const navToggle = document.getElementById('nav-toggle');
     const chatSendButton = document.getElementById('chat-send-button');
     const chatInput = document.getElementById('chat-input-main');
@@ -356,12 +320,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const declineBtn = document.getElementById('cookie-decline-btn');
     const colorPickerToggle = document.getElementById('color-picker-toggle');
     const colorPickerMenu = document.getElementById('color-picker-menu');
-    const randomVideoButton = document.getElementById('random-video-button');
     const musicToggleButton = document.getElementById('music-toggle-button');
     const musicPlayerContainer = document.getElementById('music-player-container');
+    const closeMusicPlayerButton = document.getElementById('close-music-player');
     const langToggle = document.getElementById('language-selector-toggle');
     const langMenu = document.getElementById('language-selector-menu');
-    const closeMusicPlayerButton = document.getElementById('close-music-player');
+    const randomVideoButton = document.getElementById('random-video-button');
+    const panels = document.querySelectorAll('.panel');
+    const equipmentPanels = document.querySelectorAll('.equipment-panel');
 
     // Başlangıç Fonksiyonları
     new ParticleSystem();
@@ -369,6 +335,8 @@ document.addEventListener('DOMContentLoaded', function() {
     updateYouTubeStats();
     fetchLatestYouTubeVideos();
     setInterval(updateYouTubeStats, 60000);
+    const savedLang = localStorage.getItem('savedLanguage');
+    if (savedLang) { setLanguage(savedLang); }
 
     // Renk Seçici Mantığı
     if (colorPickerToggle && colorPickerMenu) {
@@ -383,14 +351,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         colorPickerMenu.addEventListener('click', (e) => {
             e.stopPropagation();
-            const target = e.target;
-            if (target.classList.contains('color-swatch')) {
+            const target = e.target.closest('.color-swatch');
+            if (target) {
                 const themeData = JSON.parse(target.dataset.theme);
                 const root = document.documentElement;
                 root.style.setProperty('--primary-color', themeData.primary);
                 root.style.setProperty('--secondary-color', themeData.secondary);
                 root.style.setProperty('--bg-primary', themeData.bg);
-                
                 if (localStorage.getItem('cookieConsent') === 'true') {
                     localStorage.setItem('savedColorTheme', JSON.stringify(themeData));
                 }
@@ -416,6 +383,26 @@ document.addEventListener('DOMContentLoaded', function() {
             musicPlayerContainer.classList.add('hidden');
             if (player && typeof player.stopVideo === 'function') {
                 player.stopVideo();
+            }
+        });
+    }
+
+    // Dil Seçici Mantığı
+    if (langToggle && langMenu) {
+        langToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            langMenu.classList.toggle('hidden');
+        });
+        document.body.addEventListener('click', () => {
+            if (!langMenu.classList.contains('hidden')) {
+                langMenu.classList.add('hidden');
+            }
+        });
+        langMenu.addEventListener('click', (e) => {
+            const target = e.target.closest('.language-option');
+            if (target) {
+                setLanguage(target.dataset.lang);
+                langMenu.classList.add('hidden');
             }
         });
     }
