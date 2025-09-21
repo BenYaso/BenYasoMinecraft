@@ -127,6 +127,55 @@ function startRealTimeChat() {
     });
 }
 
+// YENİ: Dil ve Çeviri Fonksiyonları
+const translations = {
+    'en': {
+        'navHome': 'Home', 'navVideos': 'Videos', 'navEquipment': 'My Gear', 'navAnnouncements': 'Announcements',
+        'navSupport': 'Support Me', 'navDiscord': 'Discord', 'navQA': 'Q&A', 'heroTitle': 'BenYasoMinecraft',
+        'heroSubtitle': 'My YouTube Channel and Community Hub',
+        'heroDescription': 'Follow my Minecraft adventures, chat with the community, and discover more!',
+        'buttonChannel': 'Go to Channel', 'buttonAbout': 'About Me', 'buttonRandom': 'Random Video',
+        'aboutTitle': 'About Me', 'aboutCard1Title': 'Who Am I?', 'aboutCard1Text': 'I am 15 years old, I spend my free time playing Minecraft, shooting videos and editing them in my own style. I try a new idea in every video, trying to improve myself more with each one I make.',
+        'aboutCard2Title': 'Curious About Tech', 'aboutCard2Text': 'I am developing my own Discord bot. My bot has both fun commands and useful systems for the server. I am also thinking about working on a Minecraft server in the future.',
+        'aboutCard3Title': 'Devoted to YouTube', 'aboutCard3Text': 'I enjoy showing people what I experience. The structures I build, the events I go through, the scenes I script... Every video is different, every moment is fun. My goal is not to be ordinary, but to make a difference.',
+        'statsTitle': 'Live Channel Stats', 'statsSubscribers': 'Subscribers', 'statsViews': 'Total Views', 'statsVideos': 'Video Count',
+        'videosTitle': 'My Latest Videos', 'equipmentTitle': 'My Equipment', 'announcementsTitle': 'Announcements', 'supportTitle': 'Support Me',
+        'discordTitle': 'Join the Community!', 'qaTitle': 'Q&A'
+    },
+    'az': {
+        'navHome': 'Ana Səhifə', 'navVideos': 'Videolar', 'navEquipment': 'Avadanlığım', 'navAnnouncements': 'Elanlar',
+        'navSupport': 'Dəstək Ol', 'navDiscord': 'Discord', 'navQA': 'Sual-Cavab', 'heroTitle': 'BenYasoMinecraft',
+        'heroSubtitle': 'YouTube Kanalım və İcma Mərkəzi', 'heroDescription': 'Minecraft macəralarımı izlə, icma ilə söhbət et və daha çoxunu kəşf et!',
+        'buttonChannel': 'Kanala Keç', 'buttonAbout': 'Haqqımda', 'buttonRandom': 'Təsadüfi Video',
+        'aboutTitle': 'Haqqımda', 'aboutCard1Title': 'Mən Kiməm?', 'aboutCard1Text': '15 yaşım var, boş vaxtlarımda Minecraft oynayıram, videolar çəkib öz tərzimdə montaj edirəm. Hər videoda yeni bir fikir sınayıram, hər çəkdiyim videoda özümü daha da inkişaf etdirməyə çalışıram.',
+        'aboutCard2Title': 'Texnologiyaya Maraqlıyam', 'aboutCard2Text': 'Öz Discord botumu hazırlayıram. Botumda həm əyləncəli əmrlər, həm də server üçün faydalı sistemlər var. Gələcəkdə bir Minecraft serveri ilə də məşğul olmağı düşünürəm.',
+        'aboutCard3Title': 'YouTube-a Könül Verdik', 'aboutCard3Text': 'Yaşadıqlarımı insanlara göstərmək xoşuma gəlir. Tikdiyim binalar, yaşadığım hadisələr, qurduğum səhnələr... Hər video fərqlidir, hər an əyləncəlidir. Məqsədim adi olmaq deyil, fərq yaratmaqdır.',
+        'statsTitle': 'Canlı Kanal Statistikası', 'statsSubscribers': 'Abunəçilər', 'statsViews': 'Ümumi Baxış', 'statsVideos': 'Video Sayı',
+        'videosTitle': 'Ən Son Videolarım', 'equipmentTitle': 'Avadanlığım', 'announcementsTitle': 'Elanlar', 'supportTitle': 'Dəstək Ol',
+        'discordTitle': 'İcmaya Qoşul!', 'qaTitle': 'Sual-Cavab'
+    }
+};
+
+function setLanguage(lang) {
+    document.documentElement.lang = lang;
+    const flagImg = document.getElementById('current-lang-flag');
+    if (lang === 'en') flagImg.src = 'https://flagsapi.com/GB/shiny/24.png';
+    else if (lang === 'az') flagImg.src = 'https://flagsapi.com/AZ/shiny/24.png';
+    else flagImg.src = 'https://flagsapi.com/TR/shiny/24.png';
+
+    document.querySelectorAll('[data-key]').forEach(elem => {
+        const key = elem.dataset.key;
+        const translation = lang === 'tr' ? elem.dataset.originalText : translations[lang]?.[key];
+        if (translation) {
+            if (lang !== 'tr' && !elem.dataset.originalText) {
+                elem.dataset.originalText = elem.textContent;
+            }
+            elem.textContent = translation;
+        }
+    });
+    localStorage.setItem('savedLanguage', lang);
+}
+
 function initializeChat() {
     console.log("🚀 Chat sistemi başlatılıyor...");
     startRealTimeChat();
