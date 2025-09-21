@@ -234,6 +234,116 @@ function showTab(tabName, clickedElement) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+// === YENİ: DİL VE ÇEVİRİ BÖLÜMÜ ===
+
+const translations = {
+    // İngilizce Çeviriler
+    'en': {
+        'navHome': 'Home',
+        'navVideos': 'Videos',
+        'navEquipment': 'My Gear',
+        'navAnnouncements': 'Announcements',
+        'navSupport': 'Support Me',
+        'navDiscord': 'Discord',
+        'navQA': 'Q&A',
+        'heroTitle': 'BenYasoMinecraft',
+        'heroSubtitle': 'My YouTube Channel and Community Hub',
+        'heroDescription': 'Follow my Minecraft adventures, chat with the community, and discover more!',
+        'buttonChannel': 'Go to Channel',
+        'buttonAbout': 'About Me',
+        'buttonRandom': 'Random Video',
+        // ... Diğer tüm metinlerin İngilizce çevirileri buraya gelecek
+    },
+    // Azerbaycanca Çeviriler
+    'az': {
+        'navHome': 'Ana Səhifə',
+        'navVideos': 'Videolar',
+        'navEquipment': 'Avadanlığım',
+        'navAnnouncements': 'Elanlar',
+        'navSupport': 'Dəstək Ol',
+        'navDiscord': 'Discord',
+        'navQA': 'Sual-Cavab',
+        'heroTitle': 'BenYasoMinecraft',
+        'heroSubtitle': 'YouTube Kanalım və İcma Mərkəzi',
+        'heroDescription': 'Minecraft macəralarımı izlə, icma ilə söhbət et və daha çoxunu kəşf et!',
+        'buttonChannel': 'Kanala Keç',
+        'buttonAbout': 'Haqqımda',
+        'buttonRandom': 'Təsadüfi Video',
+        // ... Diğer tüm metinlerin Azerbaycanca çevirileri buraya gelecek
+    }
+};
+
+const defaultLang = 'tr';
+let currentLang = defaultLang;
+
+function setLanguage(lang) {
+    if (lang !== 'tr' && !translations[lang]) {
+        console.error(`'${lang}' dili üçün tərcümə tapılmadı.`);
+        return;
+    }
+
+    currentLang = lang;
+    document.documentElement.lang = lang; // Sayfanın ana dilini değiştir
+    
+    const flagImg = document.getElementById('current-lang-flag');
+    if (lang === 'en') flagImg.src = 'https://flagsapi.com/GB/shiny/24.png';
+    else if (lang === 'az') flagImg.src = 'https://flagsapi.com/AZ/shiny/24.png';
+    else flagImg.src = 'https://flagsapi.com/TR/shiny/24.png';
+
+    // Tüm etiketli elementleri bul ve çevir
+    document.querySelectorAll('[data-key]').forEach(elem => {
+        const key = elem.dataset.key;
+        if (lang === 'tr') {
+            // Türkçe için orijinal metni geri yükle
+            elem.textContent = elem.dataset.originalText || elem.textContent;
+        } else if (translations[lang][key]) {
+            // Diğer diller için çeviriyi bas
+            if (!elem.dataset.originalText) {
+                elem.dataset.originalText = elem.textContent;
+            }
+            elem.textContent = translations[lang][key];
+        }
+    });
+
+    localStorage.setItem('savedLanguage', lang);
+}
+
+
+// === SAYFA YÜKLENDİĞİNDE ÇALIŞACAK ANA KOD ===
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // ... (Diğer tüm element seçimleri aynı)
+    const langToggle = document.getElementById('language-selector-toggle');
+    const langMenu = document.getElementById('language-selector-menu');
+
+    // ... (Diğer tüm başlangıç fonksiyonları aynı)
+
+    // Dil Seçici Mantığı
+    if(langToggle && langMenu) {
+        langToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            langMenu.classList.toggle('hidden');
+        });
+        document.body.addEventListener('click', () => {
+            if (!langMenu.classList.contains('hidden')) {
+                langMenu.classList.add('hidden');
+            }
+        });
+        langMenu.addEventListener('click', (e) => {
+            const target = e.target.closest('.language-option');
+            if(target) {
+                setLanguage(target.dataset.lang);
+                langMenu.classList.add('hidden');
+            }
+        });
+    }
+    
+    // Sayfa Yüklenince Kayıtlı Dili Uygula
+    const savedLang = localStorage.getItem('savedLanguage');
+    if (savedLang) {
+        setLanguage(savedLang);
+    }
+
 
 // === SAYFA YÜKLENDİĞİNDE ÇALIŞACAK ANA KOD ===
 document.addEventListener('DOMContentLoaded', function() {
