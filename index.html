@@ -39,16 +39,16 @@
             </a>
             <button class="nav-toggle" id="nav-toggle">☰</button>
             <ul class="nav-links" id="nav-links">
-                <li><a href="#" data-tab="youtube" class="active">Ana Sayfa</a></li>
-                <li><a href="#" data-tab="videolar">Videolar</a></li>
-                <li><a href="#" data-tab="ekipmanlar">Ekipmanlarım</a></li>
-                <li><a href="#" data-tab="duyurular">Duyurular</a></li>
-                <li><a href="#" data-tab="destek">Destek Ol</a></li>
-                <li><a href="#" data-tab="discord">Discord</a></li>
-                <li><a href="#" data-tab="sohbet">Soru-Cevap</a></li>
+                <li><a href="#" data-tab="youtube" data-key="navHome">Ana Sayfa</a></li>
+                <li><a href="#" data-tab="videos" data-key="navVideos">Videolar</a></li>
+                <li><a href="#" data-tab="equipment" data-key="navEquipment">Ekipmanlarım</a></li>
+                <li><a href="#" data-tab="announcements" data-key="navAnnouncements">Duyurular</a></li>
+                <li><a href="#" data-tab="support" data-key="navSupport">Destek Ol</a></li>
+                <li><a href="#" data-tab="discord" data-key="navDiscord">Discord</a></li>
+                <li><a href="#" data-tab="qa" data-key="navQA">Soru & Cevap</a></li>
             </ul>
 
-                <div class="header-buttons-wrapper">
+            <div class="header-buttons-wrapper">
                 <div class="color-picker-container">
                     <button class="theme-toggle" id="color-picker-toggle">🎨</button>
                     <div id="color-picker-menu" class="hidden">
@@ -76,6 +76,7 @@
                     </div>
                 </div>
             </div>
+        </nav>
     </header>
 
     <!-- ANA İÇERİK ALANI -->
@@ -84,18 +85,18 @@
     <div id="youtube" class="tab-content active">
         <section class="hero">
             <div class="hero-content">
-                <h1>BenYasoMinecraft</h1>
-                <p class="hero-subtitle">YouTube Kanalım ve Topluluk Merkezi</p>
-                <p class="hero-description">Minecraft maceralarımı takip et, toplulukla sohbet et ve daha fazlasını keşfet!</p>
+                <h1 data-key="heroTitle">BenYasoMinecraft</h1>
+                <p class="hero-subtitle" data-key="heroSubtitle">YouTube Kanalım ve Topluluk Merkezi</p>
+                <p class="hero-description" data-key="heroDescription">Minecraft maceralarımı takip et, toplulukla sohbet et ve daha fazlasını keşfet!</p>
                 <div class="hero-buttons">
                     <a href="https://www.youtube.com/@BenYasoMinecraft" class="cta-button" target="_blank">
-                        <span>🎥</span> Kanala Git
+                        <span>🎥</span> <span data-key="buttonChannel">Kanala Git</span>
                     </a>
                     <a href="#" class="cta-button secondary" onclick="scrollToSection('about')">
-                        <span>👤</span> Hakkımda
+                        <span>👤</span> <span data-key="buttonAbout">Hakkımda</span>
                     </a>
                     <a href="#" id="random-video-button" class="cta-button secondary">
-                        <span>🎲</span> Rastgele Video
+                        <span>🎲</span> <span data-key="buttonRandom">Rastgele Video</span>
                     </a>
                 </div>
             </div>
@@ -103,25 +104,25 @@
 
         <section class="section" id="interactive-about">
             <div class="container">
-                <h2 class="section-title">Benim Dünyam</h2>
+                <h2 class="section-title" data-key="aboutTitle">Benim Dünyam</h2>
                 <div class="interactive-container">
                     <div class="panel-container">
                         <div class="panel active" style="background-image: url('https://media.forgecdn.net/attachments/1322/486/2025-09-03_21.png');">
                             <div class="panel-content">
-                                <h3>OYUNCU</h3>
-                                <p>Minecraft'ta saatlerimi harcamayı seviyorum. Bazen devasa yapılarla uğraşıp kafa dağıtıyorum, bazen de en tekinsiz korku modlarına girip şöyle güzelce bir geriliyorum. Benim için her ikisi de harika birer hikaye</p>
+                                <h3 data-key="aboutCard1Title">OYUNCU</h3>
+                                <p data-key="aboutCard1Text">Minecraft'ta saatlerimi harcamayı seviyorum. Bazen devasa yapılarla uğraşıp kafa dağıtıyorum, bazen de en tekinsiz korku modlarına girip şöyle güzelce bir geriliyorum. Benim için her ikisi de harika birer hikaye</p>
                             </div>
                         </div>
                         <div class="panel" style="background-image: url('https://i.postimg.cc/QCxrs8kT/2025-09-18-23-11-30.png');">
                             <div class="panel-content">
-                                <h3>İÇERİK ÜRETİCİSİ</h3>
-                                <p>Oyunda yaşadığım o anları başkalarıyla paylaşmak hoşuma gidiyor. Basit bir kaydı alıp, üzerine biraz kafa yorarak o anki heyecanı veya gerilimi yansıtan bir videoya dönüştürmeye çalışıyorum. Bu süreç benim için en az oynamak kadar eğlenceli.</p>
+                                <h3 data-key="aboutCard2Title">İÇERİK ÜRETİCİSİ</h3>
+                                <p data-key="aboutCard2Text">Oyunda yaşadığım o anları başkalarıyla paylaşmak hoşuma gidiyor. Basit bir kaydı alıp, üzerine biraz kafa yorarak o anki heyecanı veya gerilimi yansıtan bir videoya dönüştürmeye çalışıyorum. Bu süreç benim için en az oynamak kadar eğlenceli.</p>
                             </div>
                         </div>
                         <div class="panel" style="background-image: url('https://i.postimg.cc/4xhS0cb7/image-20.png');">
                             <div class="panel-content">
-                                <h3>GELİŞTİRİCİ</h3>
-                                <p>Boş zamanlarımda kodlarla uğraşmayı da seviyorum. Topluluğumuz için hayatı kolaylaştıran, eğlenceli Discord botları yazıyorum. Bu, benim için hem yeni şeyler öğrendiğim hem de hepimiz için daha keyifli bir ortam yarattığım bir hobi.</p>
+                                <h3 data-key="aboutCard3Title">GELİŞTİRİCİ</h3>
+                                <p data-key="aboutCard3Text">Boş zamanlarımda kodlarla uğraşmayı da seviyorum. Topluluğumuz için hayatı kolaylaştıran, eğlenceli Discord botları yazıyorum. Bu, benim için hem yeni şeyler öğrendiğim hem de hepimiz için daha keyifli bir ortam yarattığım bir hobi.</p>
                             </div>
                         </div>
                     </div>
@@ -131,19 +132,19 @@
         
         <section class="section">
             <div class="container">
-                <h2 class="section-title">Canlı Kanal İstatistikleri</h2>
+                <h2 class="section-title" data-key="statsTitle">Canlı Kanal İstatistikleri</h2>
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-number" id="live-subscribers">Yükleniyor..</div>
-                        <div class="stat-label">Abone</div>
+                        <div class="stat-label" data-key="statsSubscribers">Abone</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-number" id="live-views">Yükleniyor..</div>
-                        <div class="stat-label">Toplam İzlenme</div>
+                        <div class="stat-label" data-key="statsViews">Toplam İzlenme</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-number" id="live-videos">Yükleniyor..</div>
-                        <div class="stat-label">Video Sayısı</div>
+                        <div class="stat-label" data-key="statsVideos">Video Sayısı</div>
                     </div>
                 </div>
             </div>
@@ -154,7 +155,7 @@
     <div id="videolar" class="tab-content">
         <section class="hero hero-small">
             <div class="hero-content">
-                <h1>Son Videolarım</h1>
+                <h1 data-key="videosTitle">Son Videolarım</h1>
             </div>
         </section>
         <section class="section">
@@ -170,7 +171,7 @@
     <div id="ekipmanlar" class="tab-content">
         <section class="hero hero-small">
             <div class="hero-content">
-                <h1>Kullandığım Ekipmanlar</h1>
+                <h1 data-key="equipmentTitle">Kullandığım Ekipmanlar</h1>
             </div>
         </section>
         <section class="section">
@@ -232,7 +233,7 @@
     <div id="duyurular" class="tab-content">
         <section class="hero hero-small">
             <div class="hero-content">
-                <h1>Duyurular</h1>
+                <h1 data-key="announcementsTitle">Duyurular</h1>
             </div>
         </section>
         <section class="section">
@@ -262,7 +263,7 @@
 <div id="discord" class="tab-content">
     <section class="hero">
         <div class="hero-content">
-            <h1>Topluluğa Katıl!</h1>
+            <h1 data-key="discordTitle">Topluluğa Katıl!</h1>
             <p class="hero-subtitle">Discord Sunucumuz ve Özel Botumuz</p>
             <p class="hero-description">Topluluğa katıl, botun özelliklerini keşfet ve anlık sunucu durumunu gör!</p>
         </div>
@@ -358,7 +359,7 @@
     <div id="sohbet" class="tab-content">
         <section class="hero hero-small">
             <div class="hero-content">
-                <h1>Soru-Cevap</h1>
+                <h1 data-key="qaTitle">Soru-Cevap</h1>
             </div>
         </section>
         <section class="section">
@@ -386,19 +387,13 @@
     <div id="destek" class="tab-content">
         <section class="hero hero-small">
             <div class="hero-content">
-                <h1>Destek Ol</h1>
+                <h1 data-key="supportTitle">Destek Ol</h1>
                 <p class="hero-subtitle" style="margin-top:1rem;">Projelerimi ve kanalımı destekleyerek daha kaliteli içerikler üretmeme yardımcı ol!</p>
             </div>
         </section>
         <section class="section">
             <div class="container">
                 <div class="support-grid">
-                    <div class="card">
-                        <div class="card-icon" style="font-weight: 800; color: #FF424D;">Patreon</div>
-                        <h3>Aylık Destekçi Ol</h3>
-                        <p>Aylık düzenli destekte bulunarak özel Discord rollerine, erken erişimlere ve isminin videolarda görünmesi gibi birçok ayrıcalığa sahip olabilirsin.</p>
-                        <a href="https://www.patreon.com/cw/BenYasoMinecraft" target="_blank" class="cta-button">Patreon'da Katıl</a>
-                    </div>
                     <div class="card">
                         <div class="card-icon" style="font-weight: 800; color: #00C76E;">ByNoGame</div>
                         <h3>Tek Seferlik Bağış Yap</h3>
@@ -439,4 +434,10 @@
     <!-- JavaScript -->
     <script type="module" src="script.js" defer></script>
 </body>
-</html>
+</html>="font-weight: 800; color: #FF424D;">Patreon</div>
+                        <h3>Aylık Destekçi Ol</h3>
+                        <p>Aylık düzenli destekte bulunarak özel Discord rollerine, erken erişimlere ve isminin videolarda görünmesi gibi birçok ayrıcalığa sahip olabilirsin.</p>
+                        <a href="https://www.patreon.com/cw/BenYasoMinecraft" target="_blank" class="cta-button">Patreon'da Katıl</a>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon" style
