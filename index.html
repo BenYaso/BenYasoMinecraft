@@ -14,16 +14,20 @@
     <link rel="stylesheet" href="style.css">
 
     <script>
-        const hasConsented = localStorage.getItem('cookieConsent') === 'true';
-        if (hasConsented) {
-            const savedTheme = localStorage.getItem('savedColorTheme');
-            if (savedTheme) {
-                const theme = JSON.parse(savedTheme);
-                const root = document.documentElement;
-                root.style.setProperty('--primary-color', theme.primary);
-                root.style.setProperty('--secondary-color', theme.secondary);
-                root.style.setProperty('--bg-primary', theme.bg);
+        try {
+            const hasConsented = localStorage.getItem('cookieConsent') === 'true';
+            if (hasConsented) {
+                const savedTheme = localStorage.getItem('savedColorTheme');
+                if (savedTheme) {
+                    const theme = JSON.parse(savedTheme);
+                    const root = document.documentElement;
+                    root.style.setProperty('--primary-color', theme.primary);
+                    root.style.setProperty('--secondary-color', theme.secondary);
+                    root.style.setProperty('--bg-primary', theme.bg);
+                }
             }
+        } catch(e) {
+            console.warn('localStorage erişim hatası:', e);
         }
     </script>
 </head>
@@ -259,131 +263,130 @@
         </section>
     </div>
 
-<!-- Destek Ol Tab -->
-<div id="destek" class="tab-content">
-    <section class="hero hero-small">
-        <div class="hero-content">
-            <h1 data-key="supportTitle">Destek Ol</h1>
-            <p class="hero-subtitle" style="margin-top:1rem;">Projelerimi ve kanalımı destekleyerek daha kaliteli içerikler üretmeme yardımcı ol!</p>
-        </div>
-    </section>
-    <section class="section">
-        <div class="container">
-            <div class="support-grid">
-                <div class="card">
-                    <div class="card-icon" style="font-weight: 800; color: #00C76E;">ByNoGame</div>
-                    <h3>Tek Seferlik Bağış Yap</h3>
-                    <p>Oyun içi eşyalar veya doğrudan bağış göndererek tek seferlik destekte bulunabilirsin. Profilime giderek kolayca bağış yapabilirsin.</p>
-                    <a href="https://donate.bynogame.com/benyasominecraft" target="_blank" class="cta-button">ByNoGame ile Destekle</a>
-                </div>
-                
-                <!-- ✅ PATREON BUTONU BURAYA EKLENDİ -->
-                <div class="card">
-                    <div class="card-icon" style="font-weight: 800; color: #FF424D;">Patreon</div>
-                    <h3>Aylık Destekçi Ol</h3>
-                    <p>Aylık düzenli destekte bulunarak özel Discord rollerine, erken erişimlere ve isminin videolarda görünmesi gibi birçok ayrıcalığa sahip olabilirsin.</p>
-                    <a href="https://www.patreon.com/cw/BenYasoMinecraft" target="_blank" class="cta-button">Patreon'da Katıl</a>
+    <!-- Destek Ol Tab -->
+    <div id="destek" class="tab-content">
+        <section class="hero hero-small">
+            <div class="hero-content">
+                <h1 data-key="supportTitle">Destek Ol</h1>
+                <p class="hero-subtitle" style="margin-top:1rem;">Projelerimi ve kanalımı destekleyerek daha kaliteli içerikler üretmeme yardımcı ol!</p>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                <div class="support-grid">
+                    <div class="card">
+                        <div class="card-icon" style="font-weight: 800; color: #00C76E;">ByNoGame</div>
+                        <h3>Tek Seferlik Bağış Yap</h3>
+                        <p>Oyun içi eşyalar veya doğrudan bağış göndererek tek seferlik destekte bulunabilirsin. Profilime giderek kolayca bağış yapabilirsin.</p>
+                        <a href="https://donate.bynogame.com/benyasominecraft" target="_blank" class="cta-button">ByNoGame ile Destekle</a>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-icon" style="font-weight: 800; color: #FF424D;">Patreon</div>
+                        <h3>Aylık Destekçi Ol</h3>
+                        <p>Aylık düzenli destekte bulunarak özel Discord rollerine, erken erişimlere ve isminin videolarda görünmesi gibi birçok ayrıcalığa sahip olabilirsin.</p>
+                        <a href="https://www.patreon.com/cw/BenYasoMinecraft" target="_blank" class="cta-button">Patreon'da Katıl</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-</div>
+        </section>
+    </div>
 
-<!-- Discord Tab -->
-<div id="discord" class="tab-content">
-    <section class="hero">
-        <div class="hero-content">
-            <h1 data-key="discordTitle">Topluluğa Katıl!</h1>
-            <p class="hero-subtitle">Discord Sunucumuz ve Özel Botumuz</p>
-            <p class="hero-description">Topluluğa katıl, botun özelliklerini keşfet ve anlık sunucu durumunu gör!</p>
-        </div>
-    </section>
-    
-    <section class="section" id="features">
-        <div class="container">
-            <h2 class="section-title">Bot Özellikleri</h2>
-            <div class="grid">
-                <div class="card">
-                    <div class="card-icon">🤖</div>
-                    <h3>Yapay Zeka Asistanı</h3>
-                    <p>Groq API ile çalışan Llama 3.1 70B modeli. Günde 6000 mesaj limiti ile ultra hızlı ve akıllı yanıtlar.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🌐</div>
-                    <h3>Çok Dilli Çevirmen</h3>
-                    <p>Sınırları kaldırın! 8 farklı dilde anlık ve akıcı çeviri gücü ile dünyayla konuşun.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🎭</div>
-                    <h3>Dinamik Kişilikler</h3>
-                    <p>Sohbetinize renk katın! 8 farklı kişilik modundan birini seçerek yapay zeka ile bambaşka tarzlarda konuşun.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🧠</div>
-                    <h3>Akıllı Profil Sistemi</h3>
-                    <p>Sizi tanıyan bir dost. Ruh halinizi, favori konularınızı ve aktif saatlerinizi öğrenir, size özel bir sohbet deneyimi sunar.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">💾</div>
-                    <h3>Gelişmiş Hafıza</h3>
-                    <p>Hiçbir anı kaybolmaz. Tüm sohbet geçmişiniz, tercihleriniz ve verileriniz güvenle saklanır ve istediğiniz an silinebilir.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🎙️</div>
-                    <h3>Sesli Zeka</h3>
-                    <p>Yazmakla uğraşmayın, konuşun! Sesli mesajlarınızı dinler, anlar ve size sesli veya yazılı olarak cevap verir.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🎨</div>
-                    <h3>AI Görsel Stüdyosu</h3>
-                    <p>Hayal gücünüzü serbest bırakın! Pollinations Flux entegrasyonu ile saniyeler içinde, 6 farklı stilde sanat eserleri yaratın.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">💰</div>
-                    <h3>Ekonomi & Ticaret Merkezi</h3>
-                    <p>Sunucunun kralı olun! YASO Coin kazanın, zombi avlayın, ticaret yapın ve bankada faizle servetinizi katlayın.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🎲</div>
-                    <h3>Oyun ve Eğlence Dünyası</h3>
-                    <p>Asla sıkılmayın! 5 farklı bahis oyunu, akıllı oyun önerileri ve eğlenceli sosyal komutlarla her anınız keyif dolu geçsin.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🏆</div>
-                    <h3>Seviye Atlama Sistemi</h3>
-                    <p>Topluluğun efsanesi olun! Mesaj atarak XP kazanın, seviye atlayın ve özel rollere sahip olarak statünüzü gösterin.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🎶</div>
-                    <h3>Kesintisiz Müzik Keyfi</h3>
-                    <p>Ritmi yakalayın! YouTube entegrasyonu ile en sevdiğiniz şarkıları çalın, kuyruk oluşturun ve müziğin kontrolü sizde olsun.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🛡️</div>
-                    <h3>Akıllı Moderasyon</h3>
-                    <p>Güvenli ve huzurlu bir ortam. Gelişmiş küfür ve spam filtreleri ile sunucumuz 7/24 korunur.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🛠️</div>
-                    <h3>Kullanışlı Araçlar</h3>
-                    <p>Hayatı kolaylaştırın! Hava durumu, ezan saatleri, film bilgileri ve güncel haberler gibi birçok araca tek komutla ulaşın.</p>
-                </div>
-                <div class="card">
-                    <div class="card-icon">🚪</div>
-                    <h3>Otomatik Oda Sistemi</h3>
-                    <p>Kendi alanınızı yaratın! Tek tıkla kişisel veya grup sesli odaları oluşturun ve arkadaşlarınızla özgürce takılın.</p>
+    <!-- Discord Tab -->
+    <div id="discord" class="tab-content">
+        <section class="hero">
+            <div class="hero-content">
+                <h1 data-key="discordTitle">Topluluğa Katıl!</h1>
+                <p class="hero-subtitle">Discord Sunucumuz ve Özel Botumuz</p>
+                <p class="hero-description">Topluluğa katıl, botun özelliklerini keşfet ve anlık sunucu durumunu gör!</p>
+            </div>
+        </section>
+        
+        <section class="section" id="features">
+            <div class="container">
+                <h2 class="section-title">Bot Özellikleri</h2>
+                <div class="grid">
+                    <div class="card">
+                        <div class="card-icon">🤖</div>
+                        <h3>Yapay Zeka Asistanı</h3>
+                        <p>Groq API ile çalışan Llama 3.1 70B modeli. Günde 6000 mesaj limiti ile ultra hızlı ve akıllı yanıtlar.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🌐</div>
+                        <h3>Çok Dilli Çevirmen</h3>
+                        <p>Sınırları kaldırın! 8 farklı dilde anlık ve akıcı çeviri gücü ile dünyayla konuşun.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🎭</div>
+                        <h3>Dinamik Kişilikler</h3>
+                        <p>Sohbetinize renk katın! 8 farklı kişilik modundan birini seçerek yapay zeka ile bambaşka tarzlarda konuşun.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🧠</div>
+                        <h3>Akıllı Profil Sistemi</h3>
+                        <p>Sizi tanıyan bir dost. Ruh halinizi, favori konularınızı ve aktif saatlerinizi öğrenir, size özel bir sohbet deneyimi sunar.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">💾</div>
+                        <h3>Gelişmiş Hafıza</h3>
+                        <p>Hiçbir anı kaybolmaz. Tüm sohbet geçmişiniz, tercihleriniz ve verileriniz güvenle saklanır ve istediğiniz an silinebilir.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🎙️</div>
+                        <h3>Sesli Zeka</h3>
+                        <p>Yazmakla uğraşmayın, konuşun! Sesli mesajlarınızı dinler, anlar ve size sesli veya yazılı olarak cevap verir.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🎨</div>
+                        <h3>AI Görsel Stüdyosu</h3>
+                        <p>Hayal gücünüzü serbest bırakın! Pollinations Flux entegrasyonu ile saniyeler içinde, 6 farklı stilde sanat eserleri yaratın.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">💰</div>
+                        <h3>Ekonomi & Ticaret Merkezi</h3>
+                        <p>Sunucunun kralı olun! YASO Coin kazanın, zombi avlayın, ticaret yapın ve bankada faizle servetinizi katlayın.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🎲</div>
+                        <h3>Oyun ve Eğlence Dünyası</h3>
+                        <p>Asla sıkılmayın! 5 farklı bahis oyunu, akıllı oyun önerileri ve eğlenceli sosyal komutlarla her anınız keyif dolu geçsin.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🏆</div>
+                        <h3>Seviye Atlama Sistemi</h3>
+                        <p>Topluluğun efsanesi olun! Mesaj atarak XP kazanın, seviye atlayın ve özel rollere sahip olarak statünüzü gösterin.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🎶</div>
+                        <h3>Kesintisiz Müzik Keyfi</h3>
+                        <p>Ritmi yakalayın! YouTube entegrasyonu ile en sevdiğiniz şarkıları çalın, kuyruk oluşturun ve müziğin kontrolü sizde olsun.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🛡️</div>
+                        <h3>Akıllı Moderasyon</h3>
+                        <p>Güvenli ve huzurlu bir ortam. Gelişmiş küfür ve spam filtreleri ile sunucumuz 7/24 korunur.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🛠️</div>
+                        <h3>Kullanışlı Araçlar</h3>
+                        <p>Hayatı kolaylaştırın! Hava durumu, ezan saatleri, film bilgileri ve güncel haberler gibi birçok araca tek komutla ulaşın.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🚪</div>
+                        <h3>Otomatik Oda Sistemi</h3>
+                        <p>Kendi alanınızı yaratın! Tek tıkla kişisel veya grup sesli odaları oluşturun ve arkadaşlarınızla özgürce takılın.</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-    
-    <section class="section">
-        <div class="container discord-widget-container">
-            <h2 class="section-title">Canlı Sunucu Durumu</h2>
-            <iframe src="https://discord.com/widget?id=1385317817888411729&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
-        </div>
-    </section>
-</div>
+        </section>
+        
+        <section class="section">
+            <div class="container discord-widget-container">
+                <h2 class="section-title">Canlı Sunucu Durumu</h2>
+                <iframe src="https://discord.com/widget?id=1385317817888411729&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+            </div>
+        </section>
+    </div>
 
     <!-- Soru-Cevap Tab -->
     <div id="sohbet" class="tab-content">
