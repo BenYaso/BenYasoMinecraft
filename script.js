@@ -2,6 +2,53 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
 import { getDatabase, ref, push, onValue, query, orderByChild, limitToLast, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
+// === GÜVENLI LOCALSTORAGE KONTROLÜ ===
+function safeLocalStorage() {
+    try {
+        const test = '__storage_test__';
+        localStorage.setItem(test, test);
+        localStorage.removeItem(test);
+        return true;
+    } catch(e) {
+        console.warn('localStorage kullanılamıyor:', e);
+        return false;
+    }
+}
+
+const canUseStorage = safeLocalStorage();
+
+function getStorage(key) {
+    if (!canUseStorage) return null;
+    try {
+        return localStorage.getItem(key);
+    } catch(e) {
+        console.warn('localStorage okuma hatası:', e);
+        return null;
+    }
+}
+
+function setStorage(key, value) {
+    if (!canUseStorage) return false;
+    try {
+        localStorage.setItem(key, value);
+        return true;
+    } catch(e) {
+        console.warn('localStorage yazma hatası:', e);
+        return false;
+    }
+}
+
+function removeStorage(key) {
+    if (!canUseStorage) return false;
+    try {
+        localStorage.removeItem(key);
+        return true;
+    } catch(e) {
+        console.warn('localStorage silme hatası:', e);
+        return false;
+    }
+}
+
 // === DEĞİŞKENLER VE YAPILANDIRMA ===
 
 const firebaseConfig = {
@@ -104,7 +151,11 @@ window.scrollToSection = function(sectionId) {
 
 function startRealTimeChat() {
     const messagesContainer = document.getElementById('chat-messages-main');
-    if (!messagesContainer) { setTimeout(startRealTimeChat, 1000); return; }
+    if (!messagesContainer) { 
+        console.log("Chat container bulunamadı, tekrar denenecek...");
+        setTimeout(startRealTimeChat, 1000); 
+        return; 
+    }
     console.log("🎯 Gerçek zamanlı chat başlatılıyor...");
     const messagesRef = ref(db, 'chatMessages');
     const messagesQuery = query(messagesRef, orderByChild('timestamp'), limitToLast(100));
@@ -127,7 +178,7 @@ function startRealTimeChat() {
     });
 }
 
-// Dil çevirileri - Eksik çeviriler eklendi
+// Dil çevirileri - Tam liste
 const translations = {
     'en': {
         'navHome': 'Home', 
@@ -143,19 +194,19 @@ const translations = {
         'buttonChannel': 'Go to Channel', 
         'buttonAbout': 'About Me', 
         'buttonRandom': 'Random Video',
-        'aboutTitle': 'About Me', 
-        'aboutCard1Title': 'Who Am I?', 
-        'aboutCard1Text': 'I am 15 years old, I spend my free time playing Minecraft, shooting videos and editing them in my own style.',
-        'aboutCard2Title': 'Curious About Tech', 
-        'aboutCard2Text': 'I am developing my own Discord bot with fun and useful features.',
-        'aboutCard3Title': 'Devoted to YouTube', 
-        'aboutCard3Text': 'I enjoy showing people what I experience. Every video is different, every moment is fun.',
+        'aboutTitle': 'My World',
+        'aboutCard1Title': 'PLAYER', 
+        'aboutCard1Text': 'I love spending my hours in Minecraft. Sometimes I mess around with massive structures and relax, sometimes I dive into the creepiest horror mods and have a good scare. For me, both are great stories.',
+        'aboutCard2Title': 'CONTENT CREATOR', 
+        'aboutCard2Text': 'I enjoy sharing those moments I experience in the game with others. I try to take a simple recording and turn it into a video that reflects the excitement or tension of that moment by thinking it through. This process is as much fun for me as playing.',
+        'aboutCard3Title': 'DEVELOPER', 
+        'aboutCard3Text': 'In my spare time, I also like to mess around with code. I write fun Discord bots that make life easier for our community. This is a hobby where I both learn new things and create a more enjoyable environment for all of us.',
         'statsTitle': 'Live Channel Stats', 
         'statsSubscribers': 'Subscribers', 
         'statsViews': 'Total Views', 
         'statsVideos': 'Video Count',
         'videosTitle': 'My Latest Videos', 
-        'equipmentTitle': 'My Equipment', 
+        'equipmentTitle': 'Equipment I Use', 
         'announcementsTitle': 'Announcements', 
         'supportTitle': 'Support Me',
         'discordTitle': 'Join the Community!', 
@@ -178,19 +229,19 @@ const translations = {
         'buttonChannel': 'Kanala Keç', 
         'buttonAbout': 'Haqqımda', 
         'buttonRandom': 'Təsadüfi Video',
-        'aboutTitle': 'Haqqımda', 
-        'aboutCard1Title': 'Mən Kiməm?', 
-        'aboutCard1Text': '15 yaşım var, boş vaxtlarımda Minecraft oynayıram, videolar çəkib öz tərzimdə montaj edirəm.',
-        'aboutCard2Title': 'Texnologiyaya Maraqlıyam', 
-        'aboutCard2Text': 'Öz Discord botumu hazırlayıram, həm əyləncəli həm də faydalı funksiyaları var.',
-        'aboutCard3Title': 'YouTube-a Könül Verdik', 
-        'aboutCard3Text': 'Yaşadıqlarımı insanlara göstərmək xoşuma gəlir. Hər video fərqlidir, hər an əyləncəlidir.',
+        'aboutTitle': 'Mənim Dünyam',
+        'aboutCard1Title': 'OYUNÇU', 
+        'aboutCard1Text': 'Minecraft-də saatlarımı keçirməyi sevirəm. Bəzən nəhəng tikililərlə məşğul olub dincəlirəm, bəzən də ən qorxunc qorxu modlarına girib yaxşıca gərginləşirəm. Mənim üçün hər ikisi də əla hekayələrdir.',
+        'aboutCard2Title': 'MƏZMUN YARAdıCıSı', 
+        'aboutCard2Text': 'Oyunda yaşadığım o anları başqaları ilə paylaşmaq xoşuma gəlir. Sadə bir qeydi götürüb, üzərinə bir az düşünərək o andakı həyəcanı və ya gərginliyi əks etdirən videoya çevirməyə çalışıram. Bu proses mənim üçün ən az oynamaq qədər əyləncəlidir.',
+        'aboutCard3Title': 'TƏRTİBATÇı', 
+        'aboutCard3Text': 'Boş vaxtlarımda kodlarla məşğul olmağı da sevirəm. İcmamız üçün həyatı asanlaşdıran, əyləncəli Discord botları yazıram. Bu, mənim üçün həm yeni şeylər öyrəndiyim, həm də hamımız üçün daha xoşagələn mühit yaratdığım bir hobbidir.',
         'statsTitle': 'Canlı Kanal Statistikası', 
         'statsSubscribers': 'Abunəçilər', 
         'statsViews': 'Ümumi Baxış', 
         'statsVideos': 'Video Sayı',
         'videosTitle': 'Ən Son Videolarım', 
-        'equipmentTitle': 'Avadanlığım', 
+        'equipmentTitle': 'İstifadə Etdiyim Avadanlıq', 
         'announcementsTitle': 'Elanlar', 
         'supportTitle': 'Dəstək Ol',
         'discordTitle': 'İcmaya Qoşul!', 
@@ -201,7 +252,7 @@ const translations = {
     }
 };
 
-// Türkçe için orijinal metinler (data-original-text olarak HTML'de saklanacak)
+// Türkçe için orijinal metinler
 const originalTurkishTexts = {
     'navHome': 'Ana Sayfa',
     'navVideos': 'Videolar',
@@ -216,19 +267,19 @@ const originalTurkishTexts = {
     'buttonChannel': 'Kanala Git',
     'buttonAbout': 'Hakkımda',
     'buttonRandom': 'Rastgele Video',
-    'aboutTitle': 'Hakkımda',
-    'aboutCard1Title': 'Ben Kimim?',
-    'aboutCard1Text': '15 yaşındayım, boş zamanlarımda Minecraft oynayıp video çekiyor ve kendi tarzımda montajlıyorum.',
-    'aboutCard2Title': 'Teknolojiye Meraklıyım',
-    'aboutCard2Text': 'Kendi Discord botumu geliştiriyorum, hem eğlenceli hem de yararlı özellikleri var.',
-    'aboutCard3Title': 'YouTube\'a Gönül Verdik',
-    'aboutCard3Text': 'Yaşadıklarımı insanlara göstermekten hoşlanırım. Her video farklı, her an eğlenceli.',
+    'aboutTitle': 'Benim Dünyam',
+    'aboutCard1Title': 'OYUNCU',
+    'aboutCard1Text': 'Minecraft\'ta saatlerimi harcamayı seviyorum. Bazen devasa yapılarla uğraşıp kafa dağıtıyorum, bazen de en tekinsiz korku modlarına girip şöyle güzelce bir geriliyorum. Benim için her ikisi de harika birer hikaye',
+    'aboutCard2Title': 'İÇERİK ÜRETİCİSİ',
+    'aboutCard2Text': 'Oyunda yaşadığım o anları başkalarıyla paylaşmak hoşuma gidiyor. Basit bir kaydı alıp, üzerine biraz kafa yorarak o anki heyecanı veya gerilimi yansıtan bir videoya dönüştürmeye çalışıyorum. Bu süreç benim için en az oynamak kadar eğlenceli.',
+    'aboutCard3Title': 'GELİŞTİRİCİ',
+    'aboutCard3Text': 'Boş zamanlarımda kodlarla uğraşmayı da seviyorum. Topluluğumuz için hayatı kolaylaştıran, eğlenceli Discord botları yazıyorum. Bu, benim için hem yeni şeyler öğrendiğim hem de hepimiz için daha keyifli bir ortam yarattığım bir hobi.',
     'statsTitle': 'Canlı Kanal İstatistikleri',
     'statsSubscribers': 'Abone',
     'statsViews': 'Toplam İzlenme',
     'statsVideos': 'Video Sayısı',
-    'videosTitle': 'En Son Videolarım',
-    'equipmentTitle': 'Ekipmanlarım',
+    'videosTitle': 'Son Videolarım',
+    'equipmentTitle': 'Kullandığım Ekipmanlar',
     'announcementsTitle': 'Duyurular',
     'supportTitle': 'Destek Ol',
     'discordTitle': 'Topluluğa Katıl!',
@@ -282,8 +333,8 @@ function setLanguage(lang) {
     });
     
     // Dil ayarını kaydet (çerez onayı verilmişse)
-    if (localStorage.getItem('cookieConsent') === 'true') {
-        localStorage.setItem('savedLanguage', lang);
+    if (getStorage('cookieConsent') === 'true') {
+        setStorage('savedLanguage', lang);
     }
     
     console.log(`✅ Dil başarıyla ${lang} olarak değiştirildi`);
@@ -291,7 +342,7 @@ function setLanguage(lang) {
 
 // Sayfa yüklenirken kaydedilmiş dili yükle
 function loadSavedLanguage() {
-    const savedLang = localStorage.getItem('savedLanguage');
+    const savedLang = getStorage('savedLanguage');
     if (savedLang && (savedLang === 'en' || savedLang === 'az' || savedLang === 'tr')) {
         console.log(`💾 Kaydedilmiş dil yükleniyor: ${savedLang}`);
         setLanguage(savedLang);
@@ -310,27 +361,57 @@ async function updateYouTubeStats() {
     try {
         const response = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${CHANNEL_ID}&key=${YOUTUBE_API_KEY}`);
         const data = await response.json();
+        
+        if (!data.items || data.items.length === 0) {
+            console.error('YouTube API: Kanal bulunamadı');
+            return;
+        }
+        
         const stats = data.items[0].statistics;
-        document.getElementById('live-subscribers').textContent = parseInt(stats.subscriberCount).toLocaleString('tr-TR');
-        document.getElementById('live-views').textContent = parseInt(stats.viewCount).toLocaleString('tr-TR');
-        document.getElementById('live-videos').textContent = parseInt(stats.videoCount).toLocaleString('tr-TR');
+        const subsElement = document.getElementById('live-subscribers');
+        const viewsElement = document.getElementById('live-views');
+        const videosElement = document.getElementById('live-videos');
+        
+        if (subsElement) subsElement.textContent = parseInt(stats.subscriberCount).toLocaleString('tr-TR');
+        if (viewsElement) viewsElement.textContent = parseInt(stats.viewCount).toLocaleString('tr-TR');
+        if (videosElement) videosElement.textContent = parseInt(stats.videoCount).toLocaleString('tr-TR');
+        
+        console.log('✅ YouTube istatistikleri güncellendi');
     } catch (error) {
-        console.error('YouTube API hatası:', error);
+        console.error('❌ YouTube API hatası:', error);
+        const subsElement = document.getElementById('live-subscribers');
+        const viewsElement = document.getElementById('live-views');
+        const videosElement = document.getElementById('live-videos');
+        
+        if (subsElement) subsElement.textContent = 'Yüklenemedi';
+        if (viewsElement) viewsElement.textContent = 'Yüklenemedi';
+        if (videosElement) videosElement.textContent = 'Yüklenemedi';
     }
 }
 
 async function fetchLatestYouTubeVideos() {
     const videoContainer = document.getElementById('video-gallery-container');
-    if (!videoContainer) return;
+    if (!videoContainer) {
+        console.warn('Video container bulunamadı');
+        return;
+    }
+    
     try {
         const channelResponse = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${CHANNEL_ID}&key=${YOUTUBE_API_KEY}`);
         const channelData = await channelResponse.json();
-        if (!channelData.items || channelData.items.length === 0) throw new Error("Kanal bulunamadı veya API anahtarı hatalı.");
+        
+        if (!channelData.items || channelData.items.length === 0) {
+            throw new Error("Kanal bulunamadı veya API anahtarı hatalı.");
+        }
+        
         const uploadsPlaylistId = channelData.items[0].contentDetails.relatedPlaylists.uploads;
         
         const videoResponse = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsPlaylistId}&maxResults=9&key=${YOUTUBE_API_KEY}`);
         const videoData = await videoResponse.json();
-        if (!videoData.items) throw new Error("Videolar çekilemedi.");
+        
+        if (!videoData.items) {
+            throw new Error("Videolar çekilemedi.");
+        }
         
         videoContainer.innerHTML = '';
         videoData.items.forEach(item => {
@@ -350,32 +431,45 @@ async function fetchLatestYouTubeVideos() {
             `;
             videoContainer.appendChild(videoLink);
         });
+        
+        console.log('✅ YouTube videoları yüklendi');
     } catch (error) {
-        console.error('YouTube videoları çekilirken hata oluştu:', error);
-        videoContainer.innerHTML = `<div class="card" style="text-align:center;">Videolar yüklenemedi. API anahtarını veya kanal ID'sini kontrol edin.</div>`;
+        console.error('❌ YouTube videoları çekilirken hata oluştu:', error);
+        videoContainer.innerHTML = `<div class="card" style="text-align:center;">Videolar yüklenemedi. Lütfen daha sonra tekrar deneyin.</div>`;
     }
 }
 
 class ParticleSystem {
     constructor() {
         this.canvas = document.getElementById('particles-canvas');
-        if (!this.canvas) return;
+        if (!this.canvas) {
+            console.warn('Particle canvas bulunamadı');
+            return;
+        }
         this.ctx = this.canvas.getContext('2d');
         this.particles = [];
         window.addEventListener('resize', () => this.resize());
         this.resize();
         this.init();
         this.animate();
+        console.log('✨ Particle sistemi başlatıldı');
     }
-    resize() { this.canvas.width = window.innerWidth; this.canvas.height = window.innerHeight; this.init(); }
+    resize() { 
+        this.canvas.width = window.innerWidth; 
+        this.canvas.height = window.innerHeight; 
+        this.init(); 
+    }
     init() {
         this.particles = [];
         let numberOfParticles = Math.min(Math.floor((this.canvas.width * this.canvas.height) / 20000), 100);
         for (let i = 0; i < numberOfParticles; i++) {
             this.particles.push({
-                x: Math.random() * this.canvas.width, y: Math.random() * this.canvas.height,
-                vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5,
-                size: Math.random() * 2 + 1, opacity: Math.random() * 0.5 + 0.1
+                x: Math.random() * this.canvas.width, 
+                y: Math.random() * this.canvas.height,
+                vx: (Math.random() - 0.5) * 0.5, 
+                vy: (Math.random() - 0.5) * 0.5,
+                size: Math.random() * 2 + 1, 
+                opacity: Math.random() * 0.5 + 0.1
             });
         }
     }
@@ -383,7 +477,8 @@ class ParticleSystem {
         requestAnimationFrame(() => this.animate());
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.particles.forEach(p => {
-            p.x += p.vx; p.y += p.vy;
+            p.x += p.vx; 
+            p.y += p.vy;
             if (p.x < 0 || p.x > this.canvas.width) p.vx *= -1;
             if (p.y < 0 || p.y > this.canvas.height) p.vy *= -1;
             this.ctx.beginPath();
@@ -394,20 +489,66 @@ class ParticleSystem {
     }
 }
 
+// ✅ TAB ID EŞLEŞTİRME SİSTEMİ - HTML'deki Türkçe ID'lerle uyumlu
 function showTab(tabName, clickedElement) {
-    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-    document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
-    const targetTab = document.getElementById(tabName);
-    if (targetTab) targetTab.classList.add('active');
-    if (clickedElement) clickedElement.classList.add('active');
-    document.getElementById('nav-links')?.classList.remove('active');
-    localStorage.setItem('lastActiveTab', tabName);
+    console.log(`📑 Sekme değiştiriliyor: ${tabName}`);
+    
+    // data-tab değerlerini HTML'deki gerçek ID'lerle eşleştir
+    const tabMapping = {
+        'youtube': 'youtube',
+        'videos': 'videolar',
+        'equipment': 'ekipmanlar',
+        'announcements': 'duyurular',
+        'discord': 'discord',
+        'qa': 'sohbet',
+        'support': 'destek'
+    };
+    
+    const actualTabId = tabMapping[tabName] || tabName;
+    
+    // Tüm sekmeleri gizle
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    
+    // Tüm nav linklerinden active'i kaldır
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.classList.remove('active');
+    });
+    
+    // Hedef sekmeyi göster
+    const targetTab = document.getElementById(actualTabId);
+    if (targetTab) {
+        targetTab.classList.add('active');
+        console.log(`✅ Sekme gösterildi: ${actualTabId}`);
+    } else {
+        console.error(`❌ Sekme bulunamadı: ${actualTabId}`);
+    }
+    
+    // Tıklanan linke active ekle
+    if (clickedElement) {
+        clickedElement.classList.add('active');
+    }
+    
+    // Mobil menüyü kapat
+    const navLinks = document.getElementById('nav-links');
+    if (navLinks) {
+        navLinks.classList.remove('active');
+    }
+    
+    // Son aktif sekmeyi kaydet
+    setStorage('lastActiveTab', tabName);
+    
+    // Sayfayı yukarı kaydır
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 
 // === SAYFA YÜKLENDİĞİNDE ÇALIŞACAK ANA KOD ===
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Sayfa yükleniyor...');
+    
+    // Dil sistemini başlat
     loadSavedLanguage();
     
     // Tüm elementleri seç
@@ -440,12 +581,15 @@ document.addEventListener('DOMContentLoaded', function() {
         colorPickerToggle.addEventListener('click', (e) => {
             e.stopPropagation();
             colorPickerMenu.classList.toggle('hidden');
+            console.log('🎨 Renk seçici açıldı/kapandı');
         });
+        
         document.body.addEventListener('click', () => {
             if (!colorPickerMenu.classList.contains('hidden')) {
                 colorPickerMenu.classList.add('hidden');
             }
         });
+        
         colorPickerMenu.addEventListener('click', (e) => {
             e.stopPropagation();
             const target = e.target.closest('.color-swatch');
@@ -455,10 +599,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 root.style.setProperty('--primary-color', themeData.primary);
                 root.style.setProperty('--secondary-color', themeData.secondary);
                 root.style.setProperty('--bg-primary', themeData.bg);
-                if (localStorage.getItem('cookieConsent') === 'true') {
-                    localStorage.setItem('savedColorTheme', JSON.stringify(themeData));
+                
+                if (getStorage('cookieConsent') === 'true') {
+                    setStorage('savedColorTheme', JSON.stringify(themeData));
                 }
+                
                 colorPickerMenu.classList.add('hidden');
+                console.log('✅ Tema rengi değiştirildi');
             }
         });
     }
@@ -471,30 +618,37 @@ document.addEventListener('DOMContentLoaded', function() {
                 musicPlayerContainer.classList.toggle('hidden');
                 if (!musicPlayerContainer.classList.contains('hidden') && player && typeof player.playVideo === 'function') {
                     player.playVideo();
+                    console.log('🎵 Müzik çalar başlatıldı');
                 }
             } else {
                 alert("Müzik çalar henüz hazır değil, lütfen birkaç saniye sonra tekrar deneyin.");
+                console.warn('⚠️ YouTube API henüz hazır değil');
             }
         });
+        
         closeMusicPlayerButton.addEventListener('click', () => {
             musicPlayerContainer.classList.add('hidden');
             if (player && typeof player.stopVideo === 'function') {
                 player.stopVideo();
+                console.log('⏹️ Müzik çalar durduruldu');
             }
         });
     }
 
-        // Dil Seçici Mantığı
+    // Dil Seçici Mantığı
     if (langToggle && langMenu) {
         langToggle.addEventListener('click', (e) => {
             e.stopPropagation();
             langMenu.classList.toggle('hidden');
+            console.log('🌐 Dil menüsü açıldı/kapandı');
         });
+        
         document.body.addEventListener('click', () => {
             if (!langMenu.classList.contains('hidden')) {
                 langMenu.classList.add('hidden');
             }
         });
+        
         langMenu.addEventListener('click', (e) => {
             const target = e.target.closest('.language-option');
             if (target) {
@@ -506,52 +660,84 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Mobil Navigasyon
     if (navToggle) {
-        navToggle.addEventListener('click', () => document.getElementById('nav-links').classList.toggle('active'));
+        navToggle.addEventListener('click', () => {
+            const navLinks = document.getElementById('nav-links');
+            if (navLinks) {
+                navLinks.classList.toggle('active');
+                console.log('📱 Mobil menü açıldı/kapandı');
+            }
+        });
     }
 
     // Sekme Linkleri ve Sekme Hafızası
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
-            showTab(link.dataset.tab, link);
+            const tabName = link.dataset.tab;
+            if (tabName) {
+                showTab(tabName, link);
+            }
         });
     });
     
-    const lastTab = localStorage.getItem('lastActiveTab');
+    // Son aktif sekmeyi yükle
+    const lastTab = getStorage('lastActiveTab');
     if (lastTab && document.querySelector(`a[data-tab="${lastTab}"]`)) {
+        console.log(`💾 Son aktif sekme yükleniyor: ${lastTab}`);
         showTab(lastTab, document.querySelector(`a[data-tab="${lastTab}"]`));
     } else {
+        console.log('🏠 Varsayılan sekme (youtube) yükleniyor');
         showTab('youtube', document.querySelector('a[data-tab="youtube"]'));
     }
     
     // Sohbet Butonları
-    if (chatSendButton) chatSendButton.addEventListener('click', window.sendMessage);
+    if (chatSendButton) {
+        chatSendButton.addEventListener('click', window.sendMessage);
+        console.log('💬 Chat gönder butonu hazır');
+    }
+    
     if (chatInput) {
         chatInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); window.sendMessage(); }
+            if (e.key === 'Enter' && !e.shiftKey) { 
+                e.preventDefault(); 
+                window.sendMessage(); 
+            }
         });
+        console.log('💬 Chat input hazır');
     }
 
     // Çerez Onay Mantığı
     if (cookieBanner && acceptBtn && declineBtn) {
-        if (!localStorage.getItem('cookieConsent')) {
-            setTimeout(() => { cookieBanner.classList.add('show'); }, 1500);
+        const cookieConsent = getStorage('cookieConsent');
+        
+        if (!cookieConsent) {
+            setTimeout(() => { 
+                cookieBanner.classList.add('show'); 
+                console.log('🍪 Çerez onay bandı gösteriliyor');
+            }, 1500);
         }
+        
         acceptBtn.addEventListener('click', () => {
-            localStorage.setItem('cookieConsent', 'true');
+            setStorage('cookieConsent', 'true');
             cookieBanner.classList.remove('show');
+            
             const rootStyles = getComputedStyle(document.documentElement);
             const currentTheme = {
                 primary: rootStyles.getPropertyValue('--primary-color').trim(),
                 secondary: rootStyles.getPropertyValue('--secondary-color').trim(),
                 bg: rootStyles.getPropertyValue('--bg-primary').trim()
             };
-            localStorage.setItem('savedColorTheme', JSON.stringify(currentTheme));
+            setStorage('savedColorTheme', JSON.stringify(currentTheme));
+            console.log('✅ Çerezler kabul edildi');
         });
+        
         declineBtn.addEventListener('click', () => {
-            localStorage.setItem('cookieConsent', 'false');
+            setStorage('cookieConsent', 'false');
             cookieBanner.classList.remove('show');
-            localStorage.removeItem('savedColorTheme');
+            removeStorage('savedColorTheme');
+            removeStorage('savedLanguage');
+            removeStorage('lastActiveTab');
+            console.log('❌ Çerezler reddedildi');
         });
     }
 
@@ -560,12 +746,15 @@ document.addEventListener('DOMContentLoaded', function() {
         randomVideoButton.addEventListener('click', (e) => {
             e.preventDefault();
             const videoLinks = document.querySelectorAll('#video-gallery-container .video-gallery-card');
+            
             if (videoLinks.length > 0 && videoLinks[0].href) {
                 const randomIndex = Math.floor(Math.random() * videoLinks.length);
                 const randomVideoUrl = videoLinks[randomIndex].href;
                 window.open(randomVideoUrl, '_blank');
+                console.log('🎲 Rastgele video açıldı');
             } else {
                 alert("Videolar henüz yüklenmedi, lütfen bir saniye sonra tekrar deneyin.");
+                console.warn('⚠️ Videolar henüz yüklenmedi');
             }
         });
     }
@@ -577,8 +766,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (panel.classList.contains('active')) return;
                 panels.forEach(p => p.classList.remove('active'));
                 panel.classList.add('active');
+                console.log('🎨 Panel değiştirildi');
             });
         });
+        console.log('✅ İnteraktif paneller hazır');
     }
 
     // İnteraktif Ekipman Panelleri
@@ -591,8 +782,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     equipmentPanels.forEach(p => p.classList.remove('active'));
                     panel.classList.add('active');
                 }
+                console.log('⚙️ Ekipman paneli değiştirildi');
             });
         });
+        console.log('✅ Ekipman panelleri hazır');
     }
 
     // Scroll Olayları
@@ -601,11 +794,17 @@ document.addEventListener('DOMContentLoaded', function() {
         if (header) {
             header.style.background = (window.scrollY > 50) ? 'rgba(0, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.2)';
         }
+        
         const winHeight = window.innerHeight;
         const docHeight = document.documentElement.scrollHeight;
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
         const progress = (scrollTop / (docHeight - winHeight)) * 100;
         const progressBar = document.querySelector('.scroll-progress');
-        if (progressBar) progressBar.style.width = progress + '%';
+        if (progressBar) {
+            progressBar.style.width = progress + '%';
+        }
     });
+    
+    console.log('✅ Tüm event listener\'lar hazır');
+    console.log('🎉 Sayfa tamamen yüklendi ve hazır!');
 });
