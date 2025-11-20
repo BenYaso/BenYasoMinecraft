@@ -745,3 +745,91 @@ footer {
     /* Gridler */
     .grid-centered, .video-gallery-grid, .stats-grid { grid-template-columns: 1fr; }
 }
+
+
+// === 🕹️ GİZLİ MİNECRAFT OYUNU KODLARI (Dosyanın sonuna ekle) ===
+document.addEventListener('DOMContentLoaded', () => {
+    const gameModal = document.getElementById('secret-game-modal');
+    const closeGameBtn = document.getElementById('close-game');
+    const miningBlock = document.getElementById('mining-block');
+    const diamondCountSpan = document.getElementById('diamond-count');
+    // Footer'daki yasal metin alanı tetikleyici olacak
+    const footerTrigger = document.querySelector('.footer-legal'); 
+    
+    // LocalStorage'dan elmas sayısını çek, yoksa 0 yap
+    let diamonds = 0;
+    try {
+        diamonds = parseInt(localStorage.getItem('userDiamonds') || '0');
+    } catch(e) { console.log('Storage hatası'); }
+
+    let clicks = 0;
+    let triggerClicks = 0; // Oyunu açmak için sayaç
+    
+    if(diamondCountSpan) diamondCountSpan.textContent = diamonds;
+
+    // 1. Oyunu Açma (Footer'a 5 kere tıkla)
+    if(footerTrigger) {
+        footerTrigger.addEventListener('click', (e) => {
+            // Linklere tıklayınca sayma
+            if(e.target.tagName === 'A') return;
+            
+            triggerClicks++;
+            console.log(`Easter Egg: ${triggerClicks}/5`);
+            
+            if(triggerClicks >= 5) {
+                gameModal.classList.add('active');
+                triggerClicks = 0;
+                alert("⛏️ GİZLİ MADENİ BULDUN! Ekrana tıkla ve elmasları topla!");
+            }
+        });
+    }
+
+    // 2. Oyunu Kapatma
+    if(closeGameBtn) {
+        closeGameBtn.addEventListener('click', () => {
+            gameModal.classList.remove('active');
+        });
+    }
+
+    // 3. Maden Kazma Mantığı
+    if(miningBlock) {
+        miningBlock.addEventListener('click', (e) => {
+            clicks++;
+            
+            // Görsel Sallanma Efekti
+            miningBlock.classList.add('shake');
+            setTimeout(() => miningBlock.classList.remove('shake'), 200);
+
+            // +1 Yazı Efekti
+            const particle = document.createElement('div');
+            particle.className = 'click-particle';
+            particle.textContent = '+1';
+            const rect = miningBlock.getBoundingClientRect();
+            
+            // Tıklanan yere koy
+            const x = e.clientX ? e.clientX - rect.left : rect.width / 2;
+            const y = e.clientY ? e.clientY - rect.top : rect.height / 2;
+            
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            
+            // Efekti ekle
+            document.getElementById('click-effect-container').appendChild(particle);
+            setTimeout(() => particle.remove(), 800);
+
+            // Elmas Çıkma Şansı (%10 veya her 10 tıklamada bir)
+            if (clicks % 10 === 0 || Math.random() < 0.1) {
+                diamonds++;
+                if(diamondCountSpan) diamondCountSpan.textContent = diamonds;
+                
+                try {
+                    localStorage.setItem('userDiamonds', diamonds);
+                } catch(e) {}
+                
+                // Elmas Görünümü (Mavi Cevher)
+                miningBlock.classList.add('diamond-ore');
+                setTimeout(() => miningBlock.classList.remove('diamond-ore'), 300);
+            }
+        });
+    }
+});
