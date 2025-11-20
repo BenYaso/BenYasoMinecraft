@@ -482,6 +482,127 @@ document.addEventListener('DOMContentLoaded', () => {
                 miningBlock.classList.add('diamond-ore');
                 setTimeout(() => miningBlock.classList.remove('diamond-ore'), 300);
             }
+
+            /* =========================================
+   🎮 GİZLİ MİNECRAFT OYUNU STİLLERİ
+   (Bunu dosyanın en altına ekle)
+   ========================================= */
+#secret-game-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    z-index: 3000; /* Her şeyin üstünde */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+#secret-game-modal.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.game-content {
+    background: #2b2b2b;
+    border: 4px solid #7e7e7e; /* Minecraft taşı çerçevesi */
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    width: 320px;
+    image-rendering: pixelated;
+}
+
+#close-game {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    background: #ff5555;
+    color: white;
+    border: 2px solid white;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 2px 2px 0 #a00;
+    font-family: monospace;
+    font-size: 1.2rem;
+}
+
+.game-stats {
+    margin: 1rem 0;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #4facfe;
+    background: rgba(0,0,0,0.3);
+    padding: 0.5rem;
+    border-radius: 5px;
+}
+
+.mining-area {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    height: 150px; /* Alanı sabitle */
+    align-items: center;
+}
+
+.block {
+    width: 128px;
+    height: 128px;
+    background-color: #757575;
+    background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/c/c0/Stone.png');
+    background-size: cover;
+    cursor: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/2/2e/Iron_Pickaxe.png'), pointer; /* Kazma imleci */
+    image-rendering: pixelated;
+    transition: transform 0.05s;
+    box-shadow: 8px 8px 0 rgba(0,0,0,0.3);
+    position: relative;
+}
+
+.block:active {
+    transform: scale(0.95);
+}
+
+.block.diamond-ore {
+    background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/a/ab/Diamond_Ore.png');
+}
+
+/* Tıklama +1 Efekti */
+.click-particle {
+    position: absolute;
+    pointer-events: none;
+    color: white;
+    font-weight: bold;
+    font-size: 1.5rem;
+    animation: floatUp 0.8s ease-out forwards;
+    text-shadow: 2px 2px 0 #000;
+    z-index: 3001;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-60px) scale(1.2); opacity: 0; }
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px) rotate(-5deg); }
+    75% { transform: translateX(5px) rotate(5deg); }
+    100% { transform: translateX(0); }
+}
+
+.shake {
+    animation: shake 0.2s ease-in-out;
+}
         });
     }
 });
