@@ -18,19 +18,13 @@
     --z-dropdown: 1001;
     --z-player: 1999;
     --z-banner: 2000;
+    --z-modal: 3000; /* Oyun Modalı En Üstte */
 }
 
 /* Özel Scrollbar */
-::-webkit-scrollbar {
-    width: 10px;
-}
-::-webkit-scrollbar-track {
-    background: #1a1a2e;
-}
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(var(--primary-color), var(--secondary-color));
-    border-radius: 5px;
-}
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #1a1a2e; }
+::-webkit-scrollbar-thumb { background: linear-gradient(var(--primary-color), var(--secondary-color)); border-radius: 5px; }
 
 [data-theme="dark"] {
     --bg-primary: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
@@ -39,11 +33,7 @@
     --glass-border: rgba(255, 255, 255, 0.1);
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
     font-family: 'Inter', sans-serif;
@@ -55,781 +45,340 @@ body {
 }
 
 /* Arka Plan Efekti */
-#particles-canvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: var(--z-bg);
-}
+#particles-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: var(--z-bg); }
 
 /* Scroll İlerleme Çubuğu */
 .scroll-progress {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 0%;
-    height: 3px;
+    position: fixed; top: 0; left: 0; width: 0%; height: 3px;
     background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-    z-index: calc(var(--z-header) + 1);
-    transition: width 0.1s ease;
+    z-index: calc(var(--z-header) + 1); transition: width 0.1s ease;
 }
 
 /* =========================================
    2. HEADER VE NAVİGASYON
    ========================================= */
 header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(20px);
-    z-index: var(--z-header);
-    padding: 1rem 0;
-    transition: all 0.3s ease;
+    position: fixed; top: 0; width: 100%;
+    background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(20px);
+    z-index: var(--z-header); padding: 1rem 0; transition: all 0.3s ease;
 }
 
 nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 1200px; margin: 0 auto; padding: 0 2rem;
 }
 
 .logo {
-    font-size: 1.5rem;
-    font-weight: 900;
-    color: white;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
+    font-size: 1.5rem; font-weight: 900; color: white;
+    text-decoration: none; display: flex; align-items: center;
 }
 
-.nav-links {
-    display: flex;
-    list-style: none;
-    gap: 0.5rem;
-}
+.nav-links { display: flex; list-style: none; gap: 0.5rem; }
 
 .nav-links a {
-    color: rgba(255, 255, 255, 0.8);
-    text-decoration: none;
-    font-weight: 500;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    white-space: nowrap;
+    color: rgba(255, 255, 255, 0.8); text-decoration: none; font-weight: 500;
+    padding: 0.5rem 1rem; border-radius: 20px; transition: all 0.3s ease;
+    cursor: pointer; white-space: nowrap;
 }
 
-.nav-links a:hover,
-.nav-links a.active {
-    background: rgba(79, 172, 254, 0.3);
-    color: white;
+.nav-links a:hover, .nav-links a.active {
+    background: rgba(79, 172, 254, 0.3); color: white;
 }
 
-.nav-toggle {
-    display: none;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
+.nav-toggle { display: none; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
 
-.header-buttons-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
+.header-buttons-wrapper { display: flex; align-items: center; gap: 0.5rem; }
 
-/* Butonlar (Tema, Müzik, Dil) */
+/* Yuvarlak Butonlar */
 .theme-toggle {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    color: white;
-    border-radius: 50%; /* Kare değil yuvarlak olsun */
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
+    background: var(--glass-bg); border: 1px solid var(--glass-border); color: white;
+    border-radius: 50%; width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(10px);
 }
-
-.theme-toggle:hover {
-    background: rgba(79, 172, 254, 0.3);
-    transform: rotate(15deg);
-}
+.theme-toggle:hover { background: rgba(79, 172, 254, 0.3); transform: rotate(15deg); }
 
 /* =========================================
    3. HERO VE GENEL SAYFA YAPISI
    ========================================= */
-.tab-content {
-    display: none;
-    animation: fadeIn 0.5s ease;
-}
-
-.tab-content.active {
-    display: block;
-}
+.tab-content { display: none; animation: fadeIn 0.5s ease; }
+.tab-content.active { display: block; }
 
 .hero {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 8rem 2rem 4rem;
-    position: relative;
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    text-align: center; padding: 8rem 2rem 4rem; position: relative;
 }
+.hero.hero-small { min-height: 40vh; padding: 8rem 2rem 2rem; }
 
-.hero.hero-small {
-    min-height: 40vh;
-    padding: 8rem 2rem 2rem;
-}
-
-.hero-content {
-    max-width: 800px;
-    z-index: 2;
-}
+.hero-content { max-width: 800px; z-index: 2; }
 
 .hero h1 {
-    font-size: clamp(2.5rem, 6vw, 5rem);
-    font-weight: 900;
-    margin-bottom: 1rem;
+    font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 900; margin-bottom: 1rem;
     background: linear-gradient(135deg, #ffffff, #a5b4fc);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    line-height: 1.2;
-    animation: slideInUp 0.8s ease-out;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    line-height: 1.2; animation: slideInUp 0.8s ease-out;
 }
 
-.hero-subtitle {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-    color: rgba(255, 255, 255, 0.9);
-    animation: slideInUp 0.8s ease-out 0.2s both;
-}
+.hero-subtitle { font-size: 1.5rem; margin-bottom: 1rem; color: rgba(255, 255, 255, 0.9); animation: slideInUp 0.8s ease-out 0.2s both; }
+.hero-description { font-size: 1.1rem; margin-bottom: 2rem; color: rgba(255, 255, 255, 0.8); line-height: 1.6; animation: slideInUp 0.8s ease-out 0.4s both; }
 
-.hero-description {
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-    color: rgba(255, 255, 255, 0.8);
-    line-height: 1.6;
-    animation: slideInUp 0.8s ease-out 0.4s both;
-}
-
-.hero-buttons {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    animation: slideInUp 0.8s ease-out 0.6s both;
-}
+.hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; animation: slideInUp 0.8s ease-out 0.6s both; }
 
 .cta-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    background: linear-gradient(135deg, #4facfe, #00f2fe);
-    color: white;
-    padding: 1rem 2rem;
-    text-decoration: none;
-    border-radius: 30px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    background: linear-gradient(135deg, #4facfe, #00f2fe); color: white;
+    padding: 1rem 2rem; text-decoration: none; border-radius: 30px; font-weight: 600;
+    transition: all 0.3s ease; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
+.cta-button:hover { transform: translateY(-2px); box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4); }
+.cta-button.secondary { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); }
 
-.cta-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
-}
-
-.cta-button.secondary {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(20px);
-}
-
-.section {
-    padding: 4rem 2rem;
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    margin-bottom: 2rem;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.section-title {
-    text-align: center;
-    font-size: 2.5rem;
-    font-weight: 800;
-    margin-bottom: 3rem;
-    color: white;
-}
+.section { padding: 4rem 2rem; background: var(--glass-bg); backdrop-filter: blur(20px); margin-bottom: 2rem; }
+.container { max-width: 1200px; margin: 0 auto; }
+.section-title { text-align: center; font-size: 2.5rem; font-weight: 800; margin-bottom: 3rem; color: white; }
 
 /* =========================================
    4. KARTLAR VE GRİDLER
    ========================================= */
-/* Genel Kart Yapısı */
-.card, .stat-card, .video-gallery-card, .announcement-card, .video-card, .command-category, .widget {
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    padding: 2rem;
-    backdrop-filter: blur(20px);
-    transition: all 0.3s ease;
+.card, .stat-card, .video-gallery-card, .announcement-card, .video-card, .command-category, .widget, .equipment-panel {
+    background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px;
+    padding: 2rem; backdrop-filter: blur(20px); transition: all 0.3s ease;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
-
-.card:hover, .stat-card:hover, .video-gallery-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
-}
+.card:hover, .stat-card:hover, .video-gallery-card:hover { transform: translateY(-5px); box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2); }
 
 /* İstatistikler */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-}
-
-.stat-number {
-    font-size: 3rem;
-    font-weight: 900;
-    color: white;
-    margin-bottom: 0.5rem;
-}
-
-.stat-label {
-    font-size: 1.1rem;
-    color: var(--text-secondary);
-}
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+.stat-number { font-size: 3rem; font-weight: 900; color: white; margin-bottom: 0.5rem; }
+.stat-label { font-size: 1.1rem; color: var(--text-secondary); }
 
 /* Grid Genel */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-}
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+.card-icon { font-size: 3rem; margin-bottom: 1rem; }
 
-.card-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-}
+/* Destek Grid */
+.support-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem; }
+.support-grid .card { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.support-grid .cta-button { margin-top: auto; width: 80%; }
+
+/* Discord Widget Ortalama */
+.discord-widget-container { display: flex; flex-direction: column; align-items: center; }
 
 /* =========================================
    5. MODÜLLER VE BİLEŞENLER
    ========================================= */
 
 /* İnteraktif Hakkımda (My World) */
-.interactive-container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-}
-
-.panel-container {
-    display: flex;
-    width: 100%;
-    gap: 20px;
-    max-width: 1000px;
-}
+.interactive-container { display: flex; justify-content: center; width: 100%; }
+.panel-container { display: flex; width: 100%; gap: 20px; max-width: 1000px; }
 
 .panel {
-    background-size: cover;
-    background-position: center;
-    height: 60vh;
-    border-radius: 25px;
-    color: #fff;
-    cursor: pointer;
-    flex: 0.5;
-    position: relative;
-    transition: flex 0.7s ease-in-out;
-    border: 2px solid var(--glass-border);
+    background-size: cover; background-position: center; height: 60vh;
+    border-radius: 25px; color: #fff; cursor: pointer; flex: 0.5;
+    position: relative; transition: flex 0.7s ease-in-out; border: 2px solid var(--glass-border);
 }
-
-.panel.active {
-    flex: 5;
-}
+.panel.active { flex: 5; }
 
 .panel-content {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
-    opacity: 0;
-    transition: opacity 0.3s ease-in 0.4s;
-    background: rgba(0, 0, 0, 0.6);
-    padding: 1.5rem;
-    border-radius: 15px;
+    position: absolute; bottom: 20px; left: 20px; right: 20px; opacity: 0;
+    transition: opacity 0.3s ease-in 0.4s; background: rgba(0, 0, 0, 0.6);
+    padding: 1.5rem; border-radius: 15px;
 }
-
-.panel.active .panel-content {
-    opacity: 1;
-}
+.panel.active .panel-content { opacity: 1; }
 
 /* Ekipmanlar */
-.equipment-container {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 3rem;
-    flex-wrap: wrap;
-}
-
+.equipment-container { display: flex; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
 .equipment-panel {
-    flex: 1;
-    min-width: 250px;
-    height: 300px;
-    background-size: cover;
-    background-position: center;
-    border-radius: 20px;
-    border: 1px solid var(--glass-border);
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-    transition: all 0.4s ease;
+    flex: 1; min-width: 250px; height: 300px;
+    background-size: cover; background-position: center; position: relative;
+    overflow: hidden; cursor: pointer; transition: all 0.4s ease; padding: 0;
 }
-
-.equipment-panel:hover {
-    flex: 1.5;
-}
+.equipment-panel:hover, .equipment-panel.active { flex: 1.5; }
 
 .panel-info {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 1.5rem;
+    position: absolute; bottom: 0; left: 0; width: 100%; padding: 1.5rem;
     background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-    color: white;
-    transform: translateY(100px);
-    transition: transform 0.3s ease;
+    color: white; transform: translateY(100px); transition: transform 0.3s ease;
 }
-
-.equipment-panel:hover .panel-info {
-    transform: translateY(0);
-}
+.equipment-panel:hover .panel-info, .equipment-panel.active .panel-info { transform: translateY(0); }
 
 .panel-button {
-    display: inline-block;
-    margin-top: 0.5rem;
-    padding: 0.5rem 1rem;
-    background: var(--primary-color);
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 0.9rem;
+    display: inline-block; margin-top: 0.5rem; padding: 0.5rem 1rem;
+    background: var(--primary-color); color: white; text-decoration: none;
+    border-radius: 5px; font-size: 0.9rem;
 }
 
 /* Video Galeri */
-.video-gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-}
-
-.video-gallery-card {
-    display: block;
-    text-decoration: none;
-    padding: 0;
-    overflow: hidden;
-}
-
-.video-thumbnail-container {
-    position: relative;
-    padding-top: 56.25%; /* 16:9 */
-}
-
-.video-thumbnail-container img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
+.video-gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+.video-gallery-card { display: block; text-decoration: none; padding: 0; overflow: hidden; }
+.video-thumbnail-container { position: relative; padding-top: 56.25%; }
+.video-thumbnail-container img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
 .video-play-button {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 3rem;
-    color: rgba(255,255,255,0.8);
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-size: 3rem; color: rgba(255,255,255,0.8);
 }
-
-.video-info {
-    padding: 1rem;
-}
-
+.video-info { padding: 1rem; }
 .video-info h3 {
-    color: white;
-    font-size: 1rem;
-    line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    color: white; font-size: 1rem; line-height: 1.4;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
 
 /* Duyurular (Timeline) */
-.timeline-container {
-    position: relative;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
+.timeline-container { position: relative; max-width: 800px; margin: 0 auto; }
 .timeline-container::after {
-    content: '';
-    position: absolute;
-    width: 2px;
-    background: var(--glass-border);
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    content: ''; position: absolute; width: 2px; background: var(--glass-border);
+    top: 0; bottom: 0; left: 50%; transform: translateX(-50%);
 }
-
-.timeline-item {
-    padding: 10px 40px;
-    position: relative;
-    width: 50%;
-}
-
+.timeline-item { padding: 10px 40px; position: relative; width: 50%; }
 .timeline-item:nth-child(odd) { left: 0; text-align: right; }
 .timeline-item:nth-child(even) { left: 50%; text-align: left; }
-
 .timeline-icon {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    right: -20px;
-    top: 15px;
-    background: var(--primary-color);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2;
+    position: absolute; width: 40px; height: 40px; right: -20px; top: 15px;
+    background: var(--primary-color); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; z-index: 2;
 }
-
 .timeline-item:nth-child(even) .timeline-icon { left: -20px; }
 
-/* Popup Menüler (Renk ve Dil) */
-.color-picker-container, .language-selector-container {
-    position: relative;
-}
-
+/* Popup Menüler */
+.color-picker-container, .language-selector-container { position: relative; }
 #color-picker-menu, #language-selector-menu {
-    position: absolute;
-    top: 120%;
-    right: 0;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    backdrop-filter: blur(15px);
-    padding: 1rem;
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    z-index: var(--z-dropdown);
-    min-width: 160px;
-    transition: all 0.3s ease;
-    opacity: 1;
-    transform: translateY(0);
+    position: absolute; top: 120%; right: 0; background: var(--glass-bg);
+    border: 1px solid var(--glass-border); backdrop-filter: blur(15px);
+    padding: 1rem; border-radius: 15px; display: flex; flex-direction: column;
+    gap: 0.5rem; z-index: var(--z-dropdown); min-width: 160px;
+    transition: all 0.3s ease; opacity: 1; transform: translateY(0);
 }
-
-#color-picker-menu.hidden, #language-selector-menu.hidden {
-    opacity: 0;
-    transform: translateY(-10px);
-    pointer-events: none;
-}
-
-.color-swatch {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.5);
-    cursor: pointer;
-}
-
+#color-picker-menu.hidden, #language-selector-menu.hidden { opacity: 0; transform: translateY(-10px); pointer-events: none; }
+.color-swatch { width: 30px; height: 30px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.5); cursor: pointer; }
 .language-option {
-    background: rgba(255,255,255,0.1);
-    border: none;
-    color: white;
-    padding: 0.5rem;
-    border-radius: 5px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-family: inherit;
+    background: rgba(255,255,255,0.1); border: none; color: white; padding: 0.5rem;
+    border-radius: 5px; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; font-family: inherit;
 }
 .language-option:hover { background: rgba(255,255,255,0.2); }
 .language-option img { width: 20px; height: 20px; }
 
 /* Müzik Çalar */
 #music-player-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 320px;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    backdrop-filter: blur(20px);
-    border-radius: 15px;
-    z-index: var(--z-player);
-    overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    position: fixed; bottom: 20px; right: 20px; width: 320px;
+    background: var(--glass-bg); border: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px); border-radius: 15px; z-index: var(--z-player);
+    overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.4);
 }
-
-#music-player-container.hidden {
-    display: none;
-}
-
-.player-header {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.5rem 1rem;
-    background: rgba(0,0,0,0.3);
-    font-weight: 600;
-}
-
-#close-music-player {
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    font-size: 1.2rem;
-}
+#music-player-container.hidden { display: none; }
+.player-header { display: flex; justify-content: space-between; padding: 0.5rem 1rem; background: rgba(0,0,0,0.3); font-weight: 600; }
+#close-music-player { background: none; border: none; color: white; cursor: pointer; font-size: 1.2rem; }
 
 /* Çerez Bandı */
 #cookie-consent-banner {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: rgba(26, 26, 46, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: var(--z-banner);
-    transform: translateY(100%);
-    transition: transform 0.3s ease;
+    position: fixed; bottom: 0; left: 0; width: 100%;
+    background: rgba(26, 26, 46, 0.95); backdrop-filter: blur(10px);
+    padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center;
+    z-index: var(--z-banner); transform: translateY(100%); transition: transform 0.3s ease;
     border-top: 1px solid var(--glass-border);
 }
-
-#cookie-consent-banner.show {
-    transform: translateY(0);
-}
-
+#cookie-consent-banner.show { transform: translateY(0); }
 .cookie-buttons button {
-    padding: 0.5rem 1.5rem;
-    border-radius: 20px;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-    margin-left: 0.5rem;
+    padding: 0.5rem 1.5rem; border-radius: 20px; border: none;
+    cursor: pointer; font-weight: 600; margin-left: 0.5rem;
 }
-
 #cookie-accept-btn { background: var(--primary-color); color: white; }
 #cookie-decline-btn { background: transparent; border: 1px solid white; color: white; }
 
 /* Footer */
-footer {
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(20px);
-    padding: 3rem 2rem;
-    text-align: center;
-    margin-top: auto;
-}
+footer { background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(20px); padding: 3rem 2rem; text-align: center; margin-top: auto; }
+.footer-legal { margin-bottom: 1rem; cursor: pointer; user-select: none; }
+.footer-legal a { color: var(--text-secondary); margin: 0 10px; text-decoration: none; }
 
-.footer-legal {
-    margin-bottom: 1rem;
-}
-.footer-legal a {
-    color: var(--text-secondary);
-    margin: 0 10px;
-    text-decoration: none;
-}
-
-/* Easter Egg */
-.easter-egg {
-    position: fixed;
-    bottom: 10px;
-    left: 10px;
-    width: 20px;
-    height: 20px;
-    opacity: 0;
-    cursor: default;
-}
+/* Easter Egg Trigger Alanı */
+.easter-egg { position: fixed; bottom: 10px; left: 10px; width: 20px; height: 20px; opacity: 0; cursor: default; }
 
 /* =========================================
    6. ANİMASYONLAR
    ========================================= */
-@keyframes slideInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-@keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-}
+@keyframes slideInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
 /* =========================================
-   7. MOBİL UYUMLULUK (RESPONSIVE)
+   7. GİZLİ MİNECRAFT OYUNU STİLLERİ
+   ========================================= */
+#secret-game-modal {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
+    z-index: var(--z-modal); display: flex; justify-content: center; align-items: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+}
+#secret-game-modal.active { opacity: 1; pointer-events: all; }
+
+.game-content {
+    background: #2b2b2b; border: 4px solid #7e7e7e; padding: 2rem;
+    text-align: center; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    width: 320px; image-rendering: pixelated;
+}
+
+#close-game {
+    position: absolute; top: -15px; right: -15px; background: #ff5555;
+    color: white; border: 2px solid white; width: 30px; height: 30px;
+    cursor: pointer; font-weight: bold; box-shadow: 2px 2px 0 #a00;
+    font-family: monospace; font-size: 1.2rem;
+}
+
+.game-stats {
+    margin: 1rem 0; font-size: 1.2rem; font-weight: bold;
+    color: #4facfe; background: rgba(0,0,0,0.3); padding: 0.5rem; border-radius: 5px;
+}
+
+.mining-area {
+    margin-top: 1.5rem; display: flex; justify-content: center;
+    position: relative; height: 150px; align-items: center;
+}
+
+.block {
+    width: 128px; height: 128px; background-color: #757575;
+    background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/c/c0/Stone.png');
+    background-size: cover; cursor: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/2/2e/Iron_Pickaxe.png'), pointer;
+    image-rendering: pixelated; transition: transform 0.05s;
+    box-shadow: 8px 8px 0 rgba(0,0,0,0.3); position: relative;
+}
+.block:active { transform: scale(0.95); }
+.block.diamond-ore { background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/a/ab/Diamond_Ore.png'); }
+
+.click-particle {
+    position: absolute; pointer-events: none; color: white; font-weight: bold;
+    font-size: 1.5rem; animation: floatUp 0.8s ease-out forwards;
+    text-shadow: 2px 2px 0 #000; z-index: 3001;
+}
+@keyframes floatUp { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-60px) scale(1.2); opacity: 0; } }
+@keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-5px) rotate(-5deg); } 75% { transform: translateX(5px) rotate(5deg); } 100% { transform: translateX(0); } }
+.shake { animation: shake 0.2s ease-in-out; }
+
+/* =========================================
+   8. MOBİL UYUMLULUK (RESPONSIVE)
    ========================================= */
 @media (max-width: 1024px) {
     .grid-centered { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
-    /* Navigasyon */
     .nav-toggle { display: block; z-index: 1002; position: relative; }
-    
     .nav-links {
-        position: fixed;
-        top: 0; right: 0;
-        height: 100vh;
-        width: 250px;
-        background: rgba(0, 0, 0, 0.95);
-        backdrop-filter: blur(20px);
-        flex-direction: column;
-        padding: 5rem 2rem;
-        transform: translateX(100%);
-        transition: transform 0.3s ease;
-        z-index: 1001;
+        position: fixed; top: 0; right: 0; height: 100vh; width: 250px;
+        background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(20px);
+        flex-direction: column; padding: 5rem 2rem; transform: translateX(100%);
+        transition: transform 0.3s ease; z-index: 1001;
     }
-    
     .nav-links.active { transform: translateX(0); }
-    
-    /* Hero */
     .hero h1 { font-size: 2.5rem; }
     .hero-buttons { flex-direction: column; width: 100%; }
     .cta-button { width: 100%; }
-    
-    /* Hakkımda Panelleri */
     .panel-container { flex-direction: column; height: auto; }
     .panel { height: 200px; width: 100%; flex: none; }
     .panel.active { height: 400px; }
     .panel-content { opacity: 1; position: relative; bottom: 0; left: 0; padding: 1rem; background: rgba(0,0,0,0.5); }
-
-    /* Timeline */
     .timeline-container::after { left: 20px; }
     .timeline-item { width: 100%; padding-left: 50px; text-align: left; }
     .timeline-item:nth-child(odd), .timeline-item:nth-child(even) { left: 0; }
     .timeline-icon { left: 0 !important; right: auto; }
-    
-    /* Çerez Bandı */
     #cookie-consent-banner { flex-direction: column; gap: 1rem; text-align: center; }
-    
-    /* Gridler */
     .grid-centered, .video-gallery-grid, .stats-grid { grid-template-columns: 1fr; }
 }
-
-
-// === 🕹️ GİZLİ MİNECRAFT OYUNU KODLARI (Dosyanın sonuna ekle) ===
-document.addEventListener('DOMContentLoaded', () => {
-    const gameModal = document.getElementById('secret-game-modal');
-    const closeGameBtn = document.getElementById('close-game');
-    const miningBlock = document.getElementById('mining-block');
-    const diamondCountSpan = document.getElementById('diamond-count');
-    // Footer'daki yasal metin alanı tetikleyici olacak
-    const footerTrigger = document.querySelector('.footer-legal'); 
-    
-    // LocalStorage'dan elmas sayısını çek, yoksa 0 yap
-    let diamonds = 0;
-    try {
-        diamonds = parseInt(localStorage.getItem('userDiamonds') || '0');
-    } catch(e) { console.log('Storage hatası'); }
-
-    let clicks = 0;
-    let triggerClicks = 0; // Oyunu açmak için sayaç
-    
-    if(diamondCountSpan) diamondCountSpan.textContent = diamonds;
-
-    // 1. Oyunu Açma (Footer'a 5 kere tıkla)
-    if(footerTrigger) {
-        footerTrigger.addEventListener('click', (e) => {
-            // Linklere tıklayınca sayma
-            if(e.target.tagName === 'A') return;
-            
-            triggerClicks++;
-            console.log(`Easter Egg: ${triggerClicks}/5`);
-            
-            if(triggerClicks >= 5) {
-                gameModal.classList.add('active');
-                triggerClicks = 0;
-                alert("⛏️ GİZLİ MADENİ BULDUN! Ekrana tıkla ve elmasları topla!");
-            }
-        });
-    }
-
-    // 2. Oyunu Kapatma
-    if(closeGameBtn) {
-        closeGameBtn.addEventListener('click', () => {
-            gameModal.classList.remove('active');
-        });
-    }
-
-    // 3. Maden Kazma Mantığı
-    if(miningBlock) {
-        miningBlock.addEventListener('click', (e) => {
-            clicks++;
-            
-            // Görsel Sallanma Efekti
-            miningBlock.classList.add('shake');
-            setTimeout(() => miningBlock.classList.remove('shake'), 200);
-
-            // +1 Yazı Efekti
-            const particle = document.createElement('div');
-            particle.className = 'click-particle';
-            particle.textContent = '+1';
-            const rect = miningBlock.getBoundingClientRect();
-            
-            // Tıklanan yere koy
-            const x = e.clientX ? e.clientX - rect.left : rect.width / 2;
-            const y = e.clientY ? e.clientY - rect.top : rect.height / 2;
-            
-            particle.style.left = x + 'px';
-            particle.style.top = y + 'px';
-            
-            // Efekti ekle
-            document.getElementById('click-effect-container').appendChild(particle);
-            setTimeout(() => particle.remove(), 800);
-
-            // Elmas Çıkma Şansı (%10 veya her 10 tıklamada bir)
-            if (clicks % 10 === 0 || Math.random() < 0.1) {
-                diamonds++;
-                if(diamondCountSpan) diamondCountSpan.textContent = diamonds;
-                
-                try {
-                    localStorage.setItem('userDiamonds', diamonds);
-                } catch(e) {}
-                
-                // Elmas Görünümü (Mavi Cevher)
-                miningBlock.classList.add('diamond-ore');
-                setTimeout(() => miningBlock.classList.remove('diamond-ore'), 300);
-            }
-        });
-    }
-});
