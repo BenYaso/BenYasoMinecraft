@@ -17,16 +17,20 @@
 
     <script>
         try {
-            const hasConsented = localStorage.getItem('cookieConsent') === 'true';
-            if (hasConsented) {
-                const savedTheme = localStorage.getItem('savedColorTheme');
-                if (savedTheme) {
-                    const theme = JSON.parse(savedTheme);
-                    const root = document.documentElement;
-                    root.style.setProperty('--primary-color', theme.primary);
-                    root.style.setProperty('--secondary-color', theme.secondary);
-                    root.style.setProperty('--bg-primary', theme.bg);
-                }
+            // Çerez onayı beklemeden direkt hafızadaki temayı yüklüyoruz
+            const savedTheme = localStorage.getItem('savedColorTheme');
+            if (savedTheme) {
+                const theme = JSON.parse(savedTheme);
+                const root = document.documentElement;
+                root.style.setProperty('--primary-color', theme.primary);
+                root.style.setProperty('--secondary-color', theme.secondary);
+                root.style.setProperty('--bg-primary', theme.bg);
+            }
+            
+            // Kayıtlı dili de hemen yüklüyoruz
+            const savedLang = localStorage.getItem('savedLanguage');
+            if (savedLang) {
+                document.documentElement.lang = savedLang;
             }
         } catch(e) {
             console.warn('localStorage erişim hatası:', e);
@@ -381,6 +385,23 @@
         <div class="cookie-buttons">
             <button id="cookie-accept-btn">Kabul Et</button>
             <button id="cookie-decline-btn">Reddet</button>
+        </div>
+    </div>
+
+    <div id="secret-game-modal" class="hidden">
+        <div class="game-content">
+            <button id="close-game">✖</button>
+            <h2>Gizli Maden</h2>
+            <p>Bloğu kırmak için tıkla!</p>
+            
+            <div class="game-stats">
+                <span>💎 Elmas: <span id="diamond-count">0</span></span>
+            </div>
+
+            <div class="mining-area">
+                <div id="mining-block" class="block stone"></div>
+                <div id="click-effect-container"></div>
+            </div>
         </div>
     </div>
 
