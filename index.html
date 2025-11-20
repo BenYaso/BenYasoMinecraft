@@ -17,7 +17,7 @@
 
     <script>
         try {
-            // Çerez onayı beklemeden direkt hafızadaki temayı yüklüyoruz
+            // Tema rengini hafızadan çek
             const savedTheme = localStorage.getItem('savedColorTheme');
             if (savedTheme) {
                 const theme = JSON.parse(savedTheme);
@@ -27,7 +27,7 @@
                 root.style.setProperty('--bg-primary', theme.bg);
             }
             
-            // Kayıtlı dili de hemen yüklüyoruz
+            // Dili hafızadan çek
             const savedLang = localStorage.getItem('savedLanguage');
             if (savedLang) {
                 document.documentElement.lang = savedLang;
