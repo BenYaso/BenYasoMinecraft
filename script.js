@@ -1,6 +1,6 @@
 // === YAPILANDIRMA VE AYARLAR ===
 const CONFIG = {
-    youtubeApiKey: 'AIzaSyAwC6sByfoq9n4G72tfFtwf2XETXaSdg04', // Not: API Keylerin frontend'de görünmesi risklidir.
+    youtubeApiKey: 'AIzaSyAwC6sByfoq9n4G72tfFtwf2XETXaSdg04',
     channelId: 'UCTYeNjk3VZnXNfcC8ssvevQ',
     lofiVideoId: 'jfKfPfyJRdk'
 };
@@ -160,14 +160,12 @@ const YouTubeManager = {
         if (!container) return;
 
         try {
-            // 1. Uploads playlist ID'sini al
             const chRes = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=${CONFIG.channelId}&key=${CONFIG.youtubeApiKey}`);
             const chData = await chRes.json();
             const uploadsId = chData.items?.[0]?.contentDetails?.relatedPlaylists?.uploads;
 
             if (!uploadsId) throw new Error('Playlist bulunamadı');
 
-            // 2. Videoları çek
             const vidRes = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${uploadsId}&maxResults=9&key=${CONFIG.youtubeApiKey}`);
             const vidData = await vidRes.json();
 
@@ -189,7 +187,7 @@ const YouTubeManager = {
             });
         } catch (e) {
             console.error('Video çekme hatası:', e);
-            container.innerHTML = `<div class="card">Videolar yüklenemedi.</div>`;
+            container.innerHTML = `<div class="card" style="text-align: center;">Videolar yüklenemedi.</div>`;
         }
     }
 };
@@ -234,7 +232,6 @@ const LanguageManager = {
 
         document.querySelectorAll('[data-key]').forEach(el => {
             const key = el.dataset.key;
-            // Orijinal metni sakla
             if (!el.dataset.originalText) el.dataset.originalText = el.textContent.trim();
             
             let newText = el.dataset.originalText;
@@ -243,7 +240,6 @@ const LanguageManager = {
             } else if (lang === 'tr') {
                 newText = el.dataset.originalText;
             }
-            
             el.textContent = newText;
         });
 
@@ -261,21 +257,16 @@ const LanguageManager = {
 // === SEKME (TAB) SİSTEMİ ===
 const TabManager = {
     show: (tabName) => {
-        // Tüm içerikleri gizle
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
 
-        // İlgili içeriği göster (Eşleştirme gerekmez, index.html ile ID'ler aynı)
         const target = document.getElementById(tabName);
         const link = document.querySelector(`a[data-tab="${tabName}"]`);
 
         if (target) target.classList.add('active');
         if (link) link.classList.add('active');
 
-        // Mobil menüyü kapat
         document.getElementById('nav-links')?.classList.remove('active');
-        
-        // Kaydet
         Storage.set('lastActiveTab', tabName);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     },
@@ -294,7 +285,7 @@ const TabManager = {
     }
 };
 
-// === SAYFA YÜKLENDİĞİNDE (MAIN) ===
+// === 🚀 MAIN (SAYFA HAZIR OLDUĞUNDA) ===
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🚀 BenYaso Web Başlatılıyor...');
 
@@ -306,18 +297,40 @@ document.addEventListener('DOMContentLoaded', () => {
     LanguageManager.init();
     TabManager.init();
 
-    // Event Listener'lar
-    
-    // 1. Mobil Menü
+    // --- 1. INTERAKTİF PANELLER (GÖREV: Animasyonları Düzeltmek) ---
+    // Hakkımda (My World) Panelleri
+    const panels = document.querySelectorAll('.panel');
+    if (panels.length > 0) {
+        panels.forEach(panel => {
+            panel.addEventListener('click', () => {
+                panels.forEach(p => p.classList.remove('active'));
+                panel.classList.add('active');
+            });
+        });
+    }
+
+    // Ekipman Panelleri
+    const equipmentPanels = document.querySelectorAll('.equipment-panel');
+    if (equipmentPanels.length > 0) {
+        equipmentPanels.forEach(panel => {
+            panel.addEventListener('click', () => {
+                equipmentPanels.forEach(p => p.classList.remove('active'));
+                panel.classList.add('active');
+            });
+        });
+    }
+
+    // --- 2. EVENT LISTENER'LAR ---
+    // Mobil Menü
     document.getElementById('nav-toggle')?.addEventListener('click', () => {
         document.getElementById('nav-links')?.classList.toggle('active');
     });
 
-    // 2. Müzik Çalar
+    // Müzik Çalar
     document.getElementById('music-toggle-button')?.addEventListener('click', YouTubeManager.toggleMusic);
     document.getElementById('close-music-player')?.addEventListener('click', YouTubeManager.stopMusic);
 
-    // 3. Renk Seçici
+    // Renk Seçici
     const colorToggle = document.getElementById('color-picker-toggle');
     const colorMenu = document.getElementById('color-picker-menu');
     if (colorToggle && colorMenu) {
@@ -338,7 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 4. Dil Seçici
+    // Dil Seçici
     const langToggle = document.getElementById('language-selector-toggle');
     const langMenu = document.getElementById('language-selector-menu');
     if (langToggle && langMenu) {
@@ -355,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 5. Rastgele Video
+    // Rastgele Video Butonu
     document.getElementById('random-video-button')?.addEventListener('click', (e) => {
         e.preventDefault();
         const videos = document.querySelectorAll('.video-gallery-card');
@@ -367,7 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // 6. Çerez Uyarısı
+    // Çerez Uyarısı
     const banner = document.getElementById('cookie-consent-banner');
     if (banner && !Storage.get('cookieConsent')) {
         setTimeout(() => banner.classList.add('show'), 2000);
@@ -383,13 +396,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 7. Genel Tıklama (Menüleri kapatmak için)
+    // Genel Tıklama (Menüleri kapat)
     document.body.addEventListener('click', () => {
         if (colorMenu && !colorMenu.classList.contains('hidden')) colorMenu.classList.add('hidden');
         if (langMenu && !langMenu.classList.contains('hidden')) langMenu.classList.add('hidden');
     });
 
-    // 8. Scroll Bar
+    // Scroll Progress Bar
     window.addEventListener('scroll', () => {
         const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
         const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -397,4 +410,78 @@ document.addEventListener('DOMContentLoaded', () => {
         const bar = document.querySelector('.scroll-progress');
         if (bar) bar.style.width = scrolled + "%";
     });
+
+    // === 🕹️ GİZLİ MİNECRAFT OYUNU (EASTER EGG) ===
+    const gameModal = document.getElementById('secret-game-modal');
+    const closeGameBtn = document.getElementById('close-game');
+    const miningBlock = document.getElementById('mining-block');
+    const diamondCountSpan = document.getElementById('diamond-count');
+    const footerTrigger = document.querySelector('.footer-legal'); // Tetikleyici alan
+    
+    let diamonds = parseInt(Storage.get('userDiamonds') || '0');
+    let clicks = 0;
+    let triggerClicks = 0; // Oyunu açmak için sayaç
+    
+    if(diamondCountSpan) diamondCountSpan.textContent = diamonds;
+
+    // Oyunu Açma (Footer'daki linklerin olduğu banda 5 kere tıkla)
+    if(footerTrigger) {
+        footerTrigger.addEventListener('click', (e) => {
+            // Linklere tıklayınca tetiklenmesin
+            if(e.target.tagName === 'A') return;
+            
+            triggerClicks++;
+            console.log(`Easter Egg: ${triggerClicks}/5`);
+            
+            if(triggerClicks >= 5) {
+                gameModal.classList.add('active');
+                triggerClicks = 0;
+                alert("⛏️ GİZLİ MADENİ BULDUN! KAZMAYA BAŞLA!");
+            }
+        });
+    }
+
+    // Oyunu Kapat
+    if(closeGameBtn) {
+        closeGameBtn.addEventListener('click', () => {
+            gameModal.classList.remove('active');
+        });
+    }
+
+    // Maden Kazma
+    if(miningBlock) {
+        miningBlock.addEventListener('click', (e) => {
+            clicks++;
+            
+            // Görsel Sallanma
+            miningBlock.classList.add('shake');
+            setTimeout(() => miningBlock.classList.remove('shake'), 200);
+
+            // +1 Efekti
+            const particle = document.createElement('div');
+            particle.className = 'click-particle';
+            particle.textContent = '+1';
+            const rect = miningBlock.getBoundingClientRect();
+            
+            // Efekti mouse konumuna veya bloğun ortasına koy
+            const x = e.clientX ? e.clientX - rect.left : rect.width / 2;
+            const y = e.clientY ? e.clientY - rect.top : rect.height / 2;
+            
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            document.getElementById('click-effect-container').appendChild(particle);
+            setTimeout(() => particle.remove(), 800);
+
+            // Elmas Kazanma Şansı (%10)
+            if (clicks % 10 === 0 || Math.random() < 0.1) {
+                diamonds++;
+                diamondCountSpan.textContent = diamonds;
+                Storage.set('userDiamonds', diamonds);
+                
+                // Elmas görünümü
+                miningBlock.classList.add('diamond-ore');
+                setTimeout(() => miningBlock.classList.remove('diamond-ore'), 300);
+            }
+        });
+    }
 });
