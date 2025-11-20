@@ -243,9 +243,8 @@ const LanguageManager = {
             el.textContent = newText;
         });
 
-        if (Storage.get('cookieConsent') === 'true') {
-            Storage.set('savedLanguage', lang);
-        }
+        // Çerez onayı beklemeden hemen kaydet (F5 sorununu çözer)
+        Storage.set('savedLanguage', lang);
     },
 
     init: () => {
@@ -297,8 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
     LanguageManager.init();
     TabManager.init();
 
-    // --- 1. INTERAKTİF PANELLER (GÖREV: Animasyonları Düzeltmek) ---
-    // Hakkımda (My World) Panelleri
+    // --- 1. INTERAKTİF PANELLER (Animasyonlar) ---
     const panels = document.querySelectorAll('.panel');
     if (panels.length > 0) {
         panels.forEach(panel => {
@@ -309,7 +307,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Ekipman Panelleri
     const equipmentPanels = document.querySelectorAll('.equipment-panel');
     if (equipmentPanels.length > 0) {
         equipmentPanels.forEach(panel => {
@@ -345,7 +342,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.documentElement.style.setProperty('--primary-color', theme.primary);
                 document.documentElement.style.setProperty('--secondary-color', theme.secondary);
                 document.documentElement.style.setProperty('--bg-primary', theme.bg);
-                if (Storage.get('cookieConsent') === 'true') Storage.set('savedColorTheme', JSON.stringify(theme));
+                // Çerez onayı beklemeden hemen kaydet
+                Storage.set('savedColorTheme', JSON.stringify(theme));
                 colorMenu.classList.add('hidden');
             }
         });
@@ -390,8 +388,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         document.getElementById('cookie-decline-btn')?.addEventListener('click', () => {
             Storage.set('cookieConsent', 'false');
-            Storage.remove('savedColorTheme');
-            Storage.remove('savedLanguage');
             banner.classList.remove('show');
         });
     }
@@ -416,22 +412,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeGameBtn = document.getElementById('close-game');
     const miningBlock = document.getElementById('mining-block');
     const diamondCountSpan = document.getElementById('diamond-count');
-    const footerTrigger = document.querySelector('.footer-legal'); // Tetikleyici alan
+    const footerTrigger = document.querySelector('.footer-legal'); 
     
     let diamonds = parseInt(Storage.get('userDiamonds') || '0');
     let clicks = 0;
-    let triggerClicks = 0; // Oyunu açmak için sayaç
+    let triggerClicks = 0;
     
     if(diamondCountSpan) diamondCountSpan.textContent = diamonds;
 
-    // Oyunu Açma (Footer'daki linklerin olduğu banda 5 kere tıkla)
+    // Oyunu Açma
     if(footerTrigger) {
         footerTrigger.addEventListener('click', (e) => {
-            // Linklere tıklayınca tetiklenmesin
             if(e.target.tagName === 'A') return;
             
             triggerClicks++;
-            console.log(`Easter Egg: ${triggerClicks}/5`);
             
             if(triggerClicks >= 5) {
                 gameModal.classList.add('active');
@@ -463,7 +457,6 @@ document.addEventListener('DOMContentLoaded', () => {
             particle.textContent = '+1';
             const rect = miningBlock.getBoundingClientRect();
             
-            // Efekti mouse konumuna veya bloğun ortasına koy
             const x = e.clientX ? e.clientX - rect.left : rect.width / 2;
             const y = e.clientY ? e.clientY - rect.top : rect.height / 2;
             
@@ -482,127 +475,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 miningBlock.classList.add('diamond-ore');
                 setTimeout(() => miningBlock.classList.remove('diamond-ore'), 300);
             }
-
-            /* =========================================
-   🎮 GİZLİ MİNECRAFT OYUNU STİLLERİ
-   (Bunu dosyanın en altına ekle)
-   ========================================= */
-#secret-game-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(10px);
-    z-index: 3000; /* Her şeyin üstünde */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-}
-
-#secret-game-modal.active {
-    opacity: 1;
-    pointer-events: all;
-}
-
-.game-content {
-    background: #2b2b2b;
-    border: 4px solid #7e7e7e; /* Minecraft taşı çerçevesi */
-    padding: 2rem;
-    text-align: center;
-    position: relative;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-    width: 320px;
-    image-rendering: pixelated;
-}
-
-#close-game {
-    position: absolute;
-    top: -15px;
-    right: -15px;
-    background: #ff5555;
-    color: white;
-    border: 2px solid white;
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-    font-weight: bold;
-    box-shadow: 2px 2px 0 #a00;
-    font-family: monospace;
-    font-size: 1.2rem;
-}
-
-.game-stats {
-    margin: 1rem 0;
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #4facfe;
-    background: rgba(0,0,0,0.3);
-    padding: 0.5rem;
-    border-radius: 5px;
-}
-
-.mining-area {
-    margin-top: 1.5rem;
-    display: flex;
-    justify-content: center;
-    position: relative;
-    height: 150px; /* Alanı sabitle */
-    align-items: center;
-}
-
-.block {
-    width: 128px;
-    height: 128px;
-    background-color: #757575;
-    background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/c/c0/Stone.png');
-    background-size: cover;
-    cursor: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/2/2e/Iron_Pickaxe.png'), pointer; /* Kazma imleci */
-    image-rendering: pixelated;
-    transition: transform 0.05s;
-    box-shadow: 8px 8px 0 rgba(0,0,0,0.3);
-    position: relative;
-}
-
-.block:active {
-    transform: scale(0.95);
-}
-
-.block.diamond-ore {
-    background-image: url('https://static.wikia.nocookie.net/minecraft_gamepedia/images/a/ab/Diamond_Ore.png');
-}
-
-/* Tıklama +1 Efekti */
-.click-particle {
-    position: absolute;
-    pointer-events: none;
-    color: white;
-    font-weight: bold;
-    font-size: 1.5rem;
-    animation: floatUp 0.8s ease-out forwards;
-    text-shadow: 2px 2px 0 #000;
-    z-index: 3001;
-}
-
-@keyframes floatUp {
-    0% { transform: translateY(0) scale(1); opacity: 1; }
-    100% { transform: translateY(-60px) scale(1.2); opacity: 0; }
-}
-
-@keyframes shake {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-5px) rotate(-5deg); }
-    75% { transform: translateX(5px) rotate(5deg); }
-    100% { transform: translateX(0); }
-}
-
-.shake {
-    animation: shake 0.2s ease-in-out;
-}
         });
     }
 });
