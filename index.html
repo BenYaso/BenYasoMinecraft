@@ -9,6 +9,8 @@
     <link rel="shortcut icon" type="image/png" href="https://i.postimg.cc/26bQdp4h/image-20-preview-rev-1-1.png">
     <link rel="apple-touch-icon" href="https://i.postimg.cc/26bQdp4h/image-20-preview-rev-1-1.png">
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="style.css">
@@ -39,22 +41,23 @@
     <header>
         <nav>
             <a href="#" class="logo">
-                <img src="https://i.postimg.cc/26bQdp4h/image-20-preview-rev-1-1.png" alt="BenYaso" style="width: 32px; height: 32px; margin-right: 0.5rem;">
+                <img src="https://i.postimg.cc/26bQdp4h/image-20-preview-rev-1-1.png" alt="BenYaso Logo" style="width: 32px; height: 32px; margin-right: 0.5rem;">
             </a>
-            <button class="nav-toggle" id="nav-toggle">☰</button>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Menüyü Aç">☰</button>
+            
             <ul class="nav-links" id="nav-links">
                 <li><a href="#" data-tab="youtube" data-key="navHome">Ana Sayfa</a></li>
-                <li><a href="#" data-tab="videos" data-key="navVideos">Videolar</a></li>
-                <li><a href="#" data-tab="equipment" data-key="navEquipment">Ekipmanlarım</a></li>
-                <li><a href="#" data-tab="announcements" data-key="navAnnouncements">Duyurular</a></li>
-                <li><a href="#" data-tab="support" data-key="navSupport">Destek Ol</a></li>
+                <li><a href="#" data-tab="videolar" data-key="navVideos">Videolar</a></li>
+                <li><a href="#" data-tab="ekipmanlar" data-key="navEquipment">Ekipmanlarım</a></li>
+                <li><a href="#" data-tab="duyurular" data-key="navAnnouncements">Duyurular</a></li>
+                <li><a href="#" data-tab="destek" data-key="navSupport">Destek Ol</a></li>
                 <li><a href="#" data-tab="discord" data-key="navDiscord">Discord</a></li>
-                <li><a href="#" data-tab="qa" data-key="navQA">Soru & Cevap</a></li>
+                <li><a href="#" data-tab="sohbet" data-key="navQA">Soru & Cevap</a></li>
             </ul>
 
             <div class="header-buttons-wrapper">
                 <div class="color-picker-container">
-                    <button class="theme-toggle" id="color-picker-toggle">🎨</button>
+                    <button class="theme-toggle" id="color-picker-toggle" aria-label="Tema Değiştir">🎨</button>
                     <div id="color-picker-menu" class="hidden">
                         <button class="color-swatch" data-theme='{"primary": "#4facfe", "secondary": "#00f2fe", "bg": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"}' style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></button>
                         <button class="color-swatch" data-theme='{"primary": "#ff8c00", "secondary": "#ff4500", "bg": "linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%)"}' style="background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);"></button>
@@ -67,10 +70,11 @@
                         <button class="color-swatch" data-theme='{"primary": "#ff416c", "secondary": "#ff4b2b", "bg": "linear-gradient(135deg, #870000 0%, #190a05 100%)"}' style="background: linear-gradient(135deg, #870000 0%, #190a05 100%);"></button>
                     </div>
                 </div>
-                <button class="theme-toggle" id="music-toggle-button">🎵</button>
+
+                <button class="theme-toggle" id="music-toggle-button" aria-label="Müzik Çalar">🎵</button>
                 
                 <div class="language-selector-container">
-                    <button class="theme-toggle" id="language-selector-toggle">
+                    <button class="theme-toggle" id="language-selector-toggle" aria-label="Dil Seç">
                         <img id="current-lang-flag" src="https://flagsapi.com/TR/shiny/24.png" alt="Türkçe">
                     </button>
                     <div id="language-selector-menu" class="hidden">
@@ -83,340 +87,278 @@
         </nav>
     </header>
 
-    <!-- ANA İÇERİK ALANI -->
-    
-    <!-- YouTube Tab -->
-    <div id="youtube" class="tab-content active">
-        <section class="hero">
-            <div class="hero-content">
-                <h1 data-key="heroTitle">BenYasoMinecraft</h1>
-                <p class="hero-subtitle" data-key="heroSubtitle">YouTube Kanalım ve Topluluk Merkezi</p>
-                <p class="hero-description" data-key="heroDescription">Minecraft maceralarımı takip et, toplulukla sohbet et ve daha fazlasını keşfet!</p>
-                <div class="hero-buttons">
-                    <a href="https://www.youtube.com/@BenYasoMinecraft" class="cta-button" target="_blank">
-                        <span>🎥</span> <span data-key="buttonChannel">Kanala Git</span>
-                    </a>
-                    <a href="#" class="cta-button secondary" onclick="scrollToSection('about')">
-                        <span>👤</span> <span data-key="buttonAbout">Hakkımda</span>
-                    </a>
-                    <a href="#" id="random-video-button" class="cta-button secondary">
-                        <span>🎲</span> <span data-key="buttonRandom">Rastgele Video</span>
-                    </a>
+    <main id="main-content">
+        
+        <div id="youtube" class="tab-content active">
+            <section class="hero">
+                <div class="hero-content">
+                    <h1 data-key="heroTitle">BenYasoMinecraft</h1>
+                    <p class="hero-subtitle" data-key="heroSubtitle">YouTube Kanalım ve Topluluk Merkezi</p>
+                    <p class="hero-description" data-key="heroDescription">Minecraft maceralarımı takip et, toplulukla sohbet et ve daha fazlasını keşfet!</p>
+                    <div class="hero-buttons">
+                        <a href="https://www.youtube.com/@BenYasoMinecraft" class="cta-button" target="_blank">
+                            <span>🎥</span> <span data-key="buttonChannel">Kanala Git</span>
+                        </a>
+                        <a href="#" class="cta-button secondary" onclick="scrollToSection('interactive-about')">
+                            <span>👤</span> <span data-key="buttonAbout">Hakkımda</span>
+                        </a>
+                        <a href="#" id="random-video-button" class="cta-button secondary">
+                            <span>🎲</span> <span data-key="buttonRandom">Rastgele Video</span>
+                        </a>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section class="section" id="interactive-about">
-            <div class="container">
-                <h2 class="section-title" data-key="aboutTitle">Benim Dünyam</h2>
-                <div class="interactive-container">
-                    <div class="panel-container">
-                        <div class="panel active" style="background-image: url('https://media.forgecdn.net/attachments/1322/486/2025-09-03_21.png');">
-                            <div class="panel-content">
-                                <h3 data-key="aboutCard1Title">OYUNCU</h3>
-                                <p data-key="aboutCard1Text">Minecraft'ta saatlerimi harcamayı seviyorum. Bazen devasa yapılarla uğraşıp kafa dağıtıyorum, bazen de en tekinsiz korku modlarına girip şöyle güzelce bir geriliyorum. Benim için her ikisi de harika birer hikaye</p>
+            <section class="section" id="interactive-about">
+                <div class="container">
+                    <h2 class="section-title" data-key="aboutTitle">Benim Dünyam</h2>
+                    <div class="interactive-container">
+                        <div class="panel-container">
+                            <div class="panel active" style="background-image: url('https://media.forgecdn.net/attachments/1322/486/2025-09-03_21.png');">
+                                <div class="panel-content">
+                                    <h3 data-key="aboutCard1Title">OYUNCU</h3>
+                                    <p data-key="aboutCard1Text">Minecraft'ta saatlerimi harcamayı seviyorum. Bazen devasa yapılarla uğraşıp kafa dağıtıyorum, bazen de en tekinsiz korku modlarına girip şöyle güzelce bir geriliyorum.</p>
+                                </div>
+                            </div>
+                            <div class="panel" style="background-image: url('https://i.postimg.cc/QCxrs8kT/2025-09-18-23-11-30.png');">
+                                <div class="panel-content">
+                                    <h3 data-key="aboutCard2Title">İÇERİK ÜRETİCİSİ</h3>
+                                    <p data-key="aboutCard2Text">Oyunda yaşadığım o anları başkalarıyla paylaşmak hoşuma gidiyor. Basit bir kaydı alıp, üzerine biraz kafa yorarak o anki heyecanı yansıtan bir videoya dönüştürmeye çalışıyorum.</p>
+                                </div>
+                            </div>
+                            <div class="panel" style="background-image: url('https://i.postimg.cc/4xhS0cb7/image-20.png');">
+                                <div class="panel-content">
+                                    <h3 data-key="aboutCard3Title">GELİŞTİRİCİ</h3>
+                                    <p data-key="aboutCard3Text">Boş zamanlarımda kodlarla uğraşmayı da seviyorum. Topluluğumuz için hayatı kolaylaştıran, eğlenceli Discord botları yazıyorum.</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="panel" style="background-image: url('https://i.postimg.cc/QCxrs8kT/2025-09-18-23-11-30.png');">
-                            <div class="panel-content">
-                                <h3 data-key="aboutCard2Title">İÇERİK ÜRETİCİSİ</h3>
-                                <p data-key="aboutCard2Text">Oyunda yaşadığım o anları başkalarıyla paylaşmak hoşuma gidiyor. Basit bir kaydı alıp, üzerine biraz kafa yorarak o anki heyecanı veya gerilimi yansıtan bir videoya dönüştürmeye çalışıyorum. Bu süreç benim için en az oynamak kadar eğlenceli.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="section">
+                <div class="container">
+                    <h2 class="section-title" data-key="statsTitle">Canlı Kanal İstatistikleri</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="live-subscribers">Yükleniyor..</div>
+                            <div class="stat-label" data-key="statsSubscribers">Abone</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="live-views">Yükleniyor..</div>
+                            <div class="stat-label" data-key="statsViews">Toplam İzlenme</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="live-videos">Yükleniyor..</div>
+                            <div class="stat-label" data-key="statsVideos">Video Sayısı</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="videolar" class="tab-content">
+            <section class="hero hero-small">
+                <div class="hero-content">
+                    <h1 data-key="videosTitle">Son Videolarım</h1>
+                </div>
+            </section>
+            <section class="section">
+                <div class="container">
+                    <div id="video-gallery-container" class="video-gallery-grid">
+                        <div class="card" style="text-align: center;">Videolar Yükleniyor...</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div id="ekipmanlar" class="tab-content">
+            <section class="hero hero-small">
+                <div class="hero-content">
+                    <h1 data-key="equipmentTitle">Kullandığım Ekipmanlar</h1>
+                </div>
+            </section>
+            <section class="section">
+                <div class="container">
+                    <h3>🖥️ Bilgisayar Donanımları</h3>
+                    <div class="equipment-container">
+                        <div class="equipment-panel" style="background-image: url('https://img-itopya.mncdn.com/cdn/1000/yeni-proje-2-6849e9-bd5253.png');">
+                            <div class="panel-info">
+                                <h4>İşlemci (CPU)</h4>
+                                <p>AMD Ryzen 7 9800x3d</p>
+                            </div>
+                            <a href="https://www.akakce.com/islemci/en-ucuz-amd-ryzen-7-9800x3d-sekiz-cekirdek-4-7-ghz-fiyati,812013733.html" class="panel-button" target="_blank">Satın Al</a>
+                        </div>
+                        <div class="equipment-panel" style="background-image: url('https://itgadgetsonline.com/wp-content/uploads/2025/02/ASUS-TUF-Gaming-GeForce-RTX-5070-Ti-16GB-GDDR7-OC-Edition-Graphic-Card-4.webp');">
+                            <div class="panel-info">
+                                <h4>Ekran Kartı (GPU)</h4>
+                                <p>NVIDIA GeForce RTX 5070 Ti</p>
+                            </div>
+                            <a href="https://www.akakce.com/ekran-karti/en-ucuz-asus-rtx-5070-ti-oc-edition-tuf-rtx5070ti-o16g-gaming-256-bit-gddr7-16-gb-fiyati,903187631.html" class="panel-button" target="_blank">Satın Al</a>
+                        </div>
+                        <div class="equipment-panel" style="background-image: url('https://img-itopya.mncdn.com/cdn/1000/ld5u16g72c34la-rgd-a74b03.png');">
+                            <div class="panel-info">
+                                <h4>Bellek (RAM)</h4>
+                                <p>32GB (2x16) DDR5 6000MHz</p>
+                            </div>
+                            <a href="https://www.akakce.com/ram/en-ucuz-lexar-ares-rgb-32-gb-2x16-6000-mhz-cl30-ld5bu016g-r6000gdla-ddr5-fiyati,397643992.html" class="panel-button" target="_blank">Satın Al</a>
+                        </div>
+                    </div>
+
+                    <h3>⌨️ Çevre Birimleri</h3>
+                    <div class="equipment-container">
+                        <div class="equipment-panel" style="background-image: url('https://www.level.com.tr/wp-content/uploads/2019/03/1553498331_QuadCast.png');">
+                            <div class="panel-info">
+                                <h4>Mikrofon</h4>
+                                <p>HyperX QuadCast</p>
+                            </div>
+                            <a href="https://www.akakce.com/profesyonel-mikrofon/en-ucuz-hyperx-quadcast-oyuncu-mikrofonu-fiyati,518267481.html" class="panel-button" target="_blank">Satın Al</a>
+                        </div>
+                        <div class="equipment-panel" style="background-image: url('https://akkogear.eu/cdn/shop/files/MonsGeek-FUN60-Ultra-Black-1.png?v=1736244541&width=2000');">
+                            <div class="panel-info">
+                                <h4>Klavye</h4>
+                                <p>AKKO FUN60 Max Shine</p>
+                            </div>
+                            <a href="https://www.akakce.com/klavye/en-ucuz-akko-monsgeek-fun60-max-shine-through-black-argb-60-tkl-glare-magnetic-switch-kablolu-kablosuz-mekanik-oyuncu-si-fiyati,966576952.html" class="panel-button" target="_blank">Satın Al</a>
+                        </div>
+                        <div class="equipment-panel" style="background-image: url('https://resource.logitechg.com/w_1440,h_810,ar_16:9,c_fill,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/gaming/en/non-braid/hyjal-g502-hero/2025/g502-hero-mouse-intro.png');">
+                            <div class="panel-info">
+                                <h4>Mouse</h4>
+                                <p>Logitech G502 HERO</p>
+                            </div>
+                            <a href="https://www.akakce.com/mouse/en-ucuz-logitech-g502-hero-rgb-910-005471-kablolu-oyuncu-mouse-fiyati,550756380.html" class="panel-button" target="_blank">Satın Al</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <div id="duyurular" class="tab-content">
+            <section class="hero hero-small">
+                <div class="hero-content">
+                    <h1 data-key="announcementsTitle">Duyurular</h1>
+                </div>
+            </section>
+            <section class="section">
+                <div class="container">
+                    <div class="timeline-container">
+                        <div class="timeline-item">
+                            <div class="timeline-icon">✨</div>
+                            <div class="announcement-card">
+                                <p class="announcement-date">18 Eylül 2025</p>
+                                <p class="announcement-text">Web sitemiz yeni özelliklerle güncellendi! Videolar, Ekipmanlarım, Soru-cevap, ve Destek Ol kısımları eklendi! güncellenmeye devam edecek.</p>
                             </div>
                         </div>
-                        <div class="panel" style="background-image: url('https://i.postimg.cc/4xhS0cb7/image-20.png');">
-                            <div class="panel-content">
-                                <h3 data-key="aboutCard3Title">GELİŞTİRİCİ</h3>
-                                <p data-key="aboutCard3Text">Boş zamanlarımda kodlarla uğraşmayı da seviyorum. Topluluğumuz için hayatı kolaylaştıran, eğlenceli Discord botları yazıyorum. Bu, benim için hem yeni şeyler öğrendiğim hem de hepimiz için daha keyifli bir ortam yarattığım bir hobi.</p>
+
+                        <div class="timeline-item">
+                            <div class="timeline-icon">🚀</div>
+                            <div class="announcement-card">
+                                <p class="announcement-date">15 Eylül 2025</p>
+                                <p class="announcement-text">Haftada kaç video gelmeli? Bu arada abone olmayı unutmayın! eğer istiyorsanız 'Destek Ol' bölümünden bağış yapabilirsiniz!</p>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-        
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title" data-key="statsTitle">Canlı Kanal İstatistikleri</h2>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-number" id="live-subscribers">Yükleniyor..</div>
-                        <div class="stat-label" data-key="statsSubscribers">Abone</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="live-views">Yükleniyor..</div>
-                        <div class="stat-label" data-key="statsViews">Toplam İzlenme</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="live-videos">Yükleniyor..</div>
-                        <div class="stat-label" data-key="statsVideos">Video Sayısı</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
+            </section>
+        </div>
 
-    <!-- Videolar Tab -->
-    <div id="videolar" class="tab-content">
-        <section class="hero hero-small">
-            <div class="hero-content">
-                <h1 data-key="videosTitle">Son Videolarım</h1>
-            </div>
-        </section>
-        <section class="section">
-            <div class="container">
-                <div id="video-gallery-container" class="video-gallery-grid">
-                    <div class="card" style="text-align: center;">Videolar Yükleniyor...</div>
+        <div id="destek" class="tab-content">
+            <section class="hero hero-small">
+                <div class="hero-content">
+                    <h1 data-key="supportTitle">Destek Ol</h1>
+                    <p class="hero-subtitle" style="margin-top:1rem;">Projelerimi ve kanalımı destekleyerek daha kaliteli içerikler üretmeme yardımcı ol!</p>
                 </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- Ekipmanlar Tab -->
-    <div id="ekipmanlar" class="tab-content">
-        <section class="hero hero-small">
-            <div class="hero-content">
-                <h1 data-key="equipmentTitle">Kullandığım Ekipmanlar</h1>
-            </div>
-        </section>
-        <section class="section">
-            <div class="container">
-                <h3>🖥️ Bilgisayar Donanımları</h3>
-                <div class="equipment-container">
-                    <div class="equipment-panel" style="background-image: url('https://img-itopya.mncdn.com/cdn/1000/yeni-proje-2-6849e9-bd5253.png');">
-                        <div class="panel-info">
-                            <h4>İşlemci (CPU)</h4>
-                            <p>AMD Ryzen 7 9800x3d</p>
+            </section>
+            <section class="section">
+                <div class="container">
+                    <div class="support-grid">
+                        <div class="card">
+                            <div class="card-icon" style="font-weight: 800; color: #00C76E;">ByNoGame</div>
+                            <h3>Tek Seferlik Bağış Yap</h3>
+                            <p>Oyun içi eşyalar veya doğrudan bağış göndererek tek seferlik destekte bulunabilirsin. Profilime giderek kolayca bağış yapabilirsin.</p>
+                            <a href="https://donate.bynogame.com/benyasominecraft" target="_blank" class="cta-button">ByNoGame ile Destekle</a>
                         </div>
-                        <a href="https://www.akakce.com/islemci/en-ucuz-amd-ryzen-7-9800x3d-sekiz-cekirdek-4-7-ghz-fiyati,812013733.html" class="panel-button" target="_blank">Satın Al</a>
-                    </div>
-                    <div class="equipment-panel" style="background-image: url('https://itgadgetsonline.com/wp-content/uploads/2025/02/ASUS-TUF-Gaming-GeForce-RTX-5070-Ti-16GB-GDDR7-OC-Edition-Graphic-Card-4.webp');">
-                        <div class="panel-info">
-                            <h4>Ekran Kartı (GPU)</h4>
-                            <p>NVIDIA GeForce RTX 5070 Ti</p>
-                        </div>
-                        <a href="https://www.akakce.com/ekran-karti/en-ucuz-asus-rtx-5070-ti-oc-edition-tuf-rtx5070ti-o16g-gaming-256-bit-gddr7-16-gb-fiyati,903187631.html" class="panel-button" target="_blank">Satın Al</a>
-                    </div>
-                    <div class="equipment-panel" style="background-image: url('https://img-itopya.mncdn.com/cdn/1000/ld5u16g72c34la-rgd-a74b03.png');">
-                        <div class="panel-info">
-                            <h4>Bellek (RAM)</h4>
-                            <p>32GB (2x16) DDR5 6000MHz</p>
-                        </div>
-                        <a href="https://www.akakce.com/ram/en-ucuz-lexar-ares-rgb-32-gb-2x16-6000-mhz-cl30-ld5bu016g-r6000gdla-ddr5-fiyati,397643992.html" class="panel-button" target="_blank">Satın Al</a>
-                    </div>
-                </div>
-
-                <h3>⌨️ Çevre Birimleri</h3>
-                <div class="equipment-container">
-                    <div class="equipment-panel" style="background-image: url('https://www.level.com.tr/wp-content/uploads/2019/03/1553498331_QuadCast.png');">
-                        <div class="panel-info">
-                            <h4>Mikrofon</h4>
-                            <p>HyperX QuadCast</p>
-                        </div>
-                        <a href="https://www.akakce.com/profesyonel-mikrofon/en-ucuz-hyperx-quadcast-oyuncu-mikrofonu-fiyati,518267481.html" class="panel-button" target="_blank">Satın Al</a>
-                    </div>
-                    <div class="equipment-panel" style="background-image: url('https://akkogear.eu/cdn/shop/files/MonsGeek-FUN60-Ultra-Black-1.png?v=1736244541&width=2000');">
-                        <div class="panel-info">
-                            <h4>Klavye</h4>
-                            <p>AKKO FUN60 Max Shine</p>
-                        </div>
-                        <a href="https://www.akakce.com/klavye/en-ucuz-akko-monsgeek-fun60-max-shine-through-black-argb-60-tkl-glare-magnetic-switch-kablolu-kablosuz-mekanik-oyuncu-si-fiyati,966576952.html" class="panel-button" target="_blank">Satın Al</a>
-                    </div>
-                    <div class="equipment-panel" style="background-image: url('https://resource.logitechg.com/w_1440,h_810,ar_16:9,c_fill,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/gaming/en/non-braid/hyjal-g502-hero/2025/g502-hero-mouse-intro.png');">
-                        <div class="panel-info">
-                            <h4>Mouse</h4>
-                            <p>Logitech G502 HERO</p>
-                        </div>
-                        <a href="https://www.akakce.com/mouse/en-ucuz-logitech-g502-hero-rgb-910-005471-kablolu-oyuncu-mouse-fiyati,550756380.html" class="panel-button" target="_blank">Satın Al</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
-    
-    <!-- Duyurular Tab -->
-    <div id="duyurular" class="tab-content">
-        <section class="hero hero-small">
-            <div class="hero-content">
-                <h1 data-key="announcementsTitle">Duyurular</h1>
-            </div>
-        </section>
-        <section class="section">
-            <div class="container">
-                <div class="timeline-container">
-                    <div class="timeline-item">
-                        <div class="timeline-icon">✨</div>
-                        <div class="announcement-card">
-                            <p class="announcement-date">18 Eylül 2025</p>
-                            <p class="announcement-text">Web sitemiz yeni özelliklerle güncellendi! Videolar, Ekipmanlarım, Soru-cevap, ve Destek Ol kısımları eklendi! güncellenmeye devam edecek.</p>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item">
-                        <div class="timeline-icon">🚀</div>
-                        <div class="announcement-card">
-                            <p class="announcement-date">15 Eylül 2025</p>
-                            <p class="announcement-text">Haftada kaç video gelmeli? Bu arada abone olmayı unutmayın! eğer istiyorsanız 'Destek Ol' bölümünden bağış yapabilirsiniz!</p>
+                        
+                        <div class="card">
+                            <div class="card-icon" style="font-weight: 800; color: #FF424D;">Patreon</div>
+                            <h3>Aylık Destekçi Ol</h3>
+                            <p>Aylık düzenli destekte bulunarak özel Discord rollerine, erken erişimlere ve isminin videolarda görünmesi gibi birçok ayrıcalığa sahip olabilirsin.</p>
+                            <a href="https://www.patreon.com/cw/BenYasoMinecraft" target="_blank" class="cta-button">Patreon'da Katıl</a>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    </div>
+            </section>
+        </div>
 
-    <!-- Destek Ol Tab -->
-    <div id="destek" class="tab-content">
-        <section class="hero hero-small">
-            <div class="hero-content">
-                <h1 data-key="supportTitle">Destek Ol</h1>
-                <p class="hero-subtitle" style="margin-top:1rem;">Projelerimi ve kanalımı destekleyerek daha kaliteli içerikler üretmeme yardımcı ol!</p>
-            </div>
-        </section>
-        <section class="section">
-            <div class="container">
-                <div class="support-grid">
-                    <div class="card">
-                        <div class="card-icon" style="font-weight: 800; color: #00C76E;">ByNoGame</div>
-                        <h3>Tek Seferlik Bağış Yap</h3>
-                        <p>Oyun içi eşyalar veya doğrudan bağış göndererek tek seferlik destekte bulunabilirsin. Profilime giderek kolayca bağış yapabilirsin.</p>
-                        <a href="https://donate.bynogame.com/benyasominecraft" target="_blank" class="cta-button">ByNoGame ile Destekle</a>
-                    </div>
-                    
-                    <div class="card">
-                        <div class="card-icon" style="font-weight: 800; color: #FF424D;">Patreon</div>
-                        <h3>Aylık Destekçi Ol</h3>
-                        <p>Aylık düzenli destekte bulunarak özel Discord rollerine, erken erişimlere ve isminin videolarda görünmesi gibi birçok ayrıcalığa sahip olabilirsin.</p>
-                        <a href="https://www.patreon.com/cw/BenYasoMinecraft" target="_blank" class="cta-button">Patreon'da Katıl</a>
+        <div id="discord" class="tab-content">
+            <section class="hero">
+                <div class="hero-content">
+                    <h1 data-key="discordTitle">Topluluğa Katıl!</h1>
+                    <p class="hero-subtitle">Discord Sunucumuz ve Özel Botumuz</p>
+                    <p class="hero-description">Topluluğa katıl, botun özelliklerini keşfet ve anlık sunucu durumunu gör!</p>
+                </div>
+            </section>
+            
+            <section class="section" id="features">
+                <div class="container">
+                    <h2 class="section-title">Bot Özellikleri</h2>
+                    <div class="grid">
+                        <div class="card">
+                            <div class="card-icon">🤖</div>
+                            <h3>Yapay Zeka Asistanı</h3>
+                            <p>Groq API ile çalışan Llama 3.1 70B modeli. Günde 6000 mesaj limiti ile ultra hızlı ve akıllı yanıtlar.</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-icon">🌐</div>
+                            <h3>Çok Dilli Çevirmen</h3>
+                            <p>Sınırları kaldırın! 8 farklı dilde anlık ve akıcı çeviri gücü ile dünyayla konuşun.</p>
+                        </div>
+                        <div class="card"><div class="card-icon">🎭</div><h3>Dinamik Kişilikler</h3><p>Sohbetinize renk katın! 8 farklı kişilik modundan birini seçin.</p></div>
+                         <div class="card"><div class="card-icon">🧠</div><h3>Akıllı Profil Sistemi</h3><p>Sizi tanıyan bir dost. Ruh halinizi ve konuları öğrenir.</p></div>
+                         <div class="card"><div class="card-icon">💰</div><h3>Ekonomi & Ticaret</h3><p>YASO Coin kazanın, zombi avlayın ve ticaret yapın.</p></div>
+                         <div class="card"><div class="card-icon">🛡️</div><h3>Akıllı Moderasyon</h3><p>Gelişmiş küfür ve spam filtreleri ile sunucumuz korunur.</p></div>
                     </div>
                 </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- Discord Tab -->
-    <div id="discord" class="tab-content">
-        <section class="hero">
-            <div class="hero-content">
-                <h1 data-key="discordTitle">Topluluğa Katıl!</h1>
-                <p class="hero-subtitle">Discord Sunucumuz ve Özel Botumuz</p>
-                <p class="hero-description">Topluluğa katıl, botun özelliklerini keşfet ve anlık sunucu durumunu gör!</p>
-            </div>
-        </section>
-        
-        <section class="section" id="features">
-            <div class="container">
-                <h2 class="section-title">Bot Özellikleri</h2>
-                <div class="grid">
-                    <div class="card">
-                        <div class="card-icon">🤖</div>
-                        <h3>Yapay Zeka Asistanı</h3>
-                        <p>Groq API ile çalışan Llama 3.1 70B modeli. Günde 6000 mesaj limiti ile ultra hızlı ve akıllı yanıtlar.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">🌐</div>
-                        <h3>Çok Dilli Çevirmen</h3>
-                        <p>Sınırları kaldırın! 8 farklı dilde anlık ve akıcı çeviri gücü ile dünyayla konuşun.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">🎭</div>
-                        <h3>Dinamik Kişilikler</h3>
-                        <p>Sohbetinize renk katın! 8 farklı kişilik modundan birini seçerek yapay zeka ile bambaşka tarzlarda konuşun.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">🧠</div>
-                        <h3>Akıllı Profil Sistemi</h3>
-                        <p>Sizi tanıyan bir dost. Ruh halinizi, favori konularınızı ve aktif saatlerinizi öğrenir, size özel bir sohbet deneyimi sunar.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">💾</div>
-                        <h3>Gelişmiş Hafıza</h3>
-                        <p>Hiçbir anı kaybolmaz. Tüm sohbet geçmişiniz, tercihleriniz ve verileriniz güvenle saklanır ve istediğiniz an silinebilir.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">🎙️</div>
-                        <h3>Sesli Zeka</h3>
-                        <p>Yazmakla uğraşmayın, konuşun! Sesli mesajlarınızı dinler, anlar ve size sesli veya yazılı olarak cevap verir.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">🎨</div>
-                        <h3>AI Görsel Stüdyosu</h3>
-                        <p>Hayal gücünüzü serbest bırakın! Pollinations Flux entegrasyonu ile saniyeler içinde, 6 farklı stilde sanat eserleri yaratın.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">💰</div>
-                        <h3>Ekonomi & Ticaret Merkezi</h3>
-                        <p>Sunucunun kralı olun! YASO Coin kazanın, zombi avlayın, ticaret yapın ve bankada faizle servetinizi katlayın.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">🎲</div>
-                        <h3>Oyun ve Eğlence Dünyası</h3>
-                        <p>Asla sıkılmayın! 5 farklı bahis oyunu, akıllı oyun önerileri ve eğlenceli sosyal komutlarla her anınız keyif dolu geçsin.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">🏆</div>
-                        <h3>Seviye Atlama Sistemi</h3>
-                        <p>Topluluğun efsanesi olun! Mesaj atarak XP kazanın, seviye atlayın ve özel rollere sahip olarak statünüzü gösterin.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">🎶</div>
-                        <h3>Kesintisiz Müzik Keyfi</h3>
-                        <p>Ritmi yakalayın! YouTube entegrasyonu ile en sevdiğiniz şarkıları çalın, kuyruk oluşturun ve müziğin kontrolü sizde olsun.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">🛡️</div>
-                        <h3>Akıllı Moderasyon</h3>
-                        <p>Güvenli ve huzurlu bir ortam. Gelişmiş küfür ve spam filtreleri ile sunucumuz 7/24 korunur.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">🛠️</div>
-                        <h3>Kullanışlı Araçlar</h3>
-                        <p>Hayatı kolaylaştırın! Hava durumu, ezan saatleri, film bilgileri ve güncel haberler gibi birçok araca tek komutla ulaşın.</p>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon">🚪</div>
-                        <h3>Otomatik Oda Sistemi</h3>
-                        <p>Kendi alanınızı yaratın! Tek tıkla kişisel veya grup sesli odaları oluşturun ve arkadaşlarınızla özgürce takılın.</p>
-                    </div>
+            </section>
+            
+            <section class="section">
+                <div class="container discord-widget-container">
+                    <h2 class="section-title">Canlı Sunucu Durumu</h2>
+                    <iframe src="https://discord.com/widget?id=1385317817888411729&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
                 </div>
-            </div>
-        </section>
-        
-        <section class="section">
-            <div class="container discord-widget-container">
-                <h2 class="section-title">Canlı Sunucu Durumu</h2>
-                <iframe src="https://discord.com/widget?id=1385317817888411729&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
-            </div>
-        </section>
-    </div>
+            </section>
+        </div>
 
-    <!-- Soru-Cevap Tab -->
-    <div id="sohbet" class="tab-content">
-        <section class="hero hero-small">
-            <div class="hero-content">
-                <h1 data-key="qaTitle">Soru-Cevap</h1>
-            </div>
-        </section>
-        <section class="section">
-            <div class="container">
-                <script src="https://giscus.app/client.js"
-                        data-repo="BenYaso/BenYasoMinecraft"
-                        data-repo-id="R_kgDOPPWmDg"
-                        data-category="Q&A"
-                        data-category-id="DIC_kwDOPPWmDs4Cvm49"
-                        data-mapping="pathname"
-                        data-strict="0"
-                        data-reactions-enabled="1"
-                        data-emit-metadata="0"
-                        data-input-position="top"
-                        data-theme="dark"
-                        data-lang="tr"
-                        crossorigin="anonymous"
-                        async>
-                </script>
-            </div>
-        </section>
-    </div>
-    
-    <!-- Footer -->
+        <div id="sohbet" class="tab-content">
+            <section class="hero hero-small">
+                <div class="hero-content">
+                    <h1 data-key="qaTitle">Soru-Cevap</h1>
+                </div>
+            </section>
+            <section class="section">
+                <div class="container">
+                    <script src="https://giscus.app/client.js"
+                            data-repo="BenYaso/BenYasoMinecraft"
+                            data-repo-id="R_kgDOPPWmDg"
+                            data-category="Q&A"
+                            data-category-id="DIC_kwDOPPWmDs4Cvm49"
+                            data-mapping="pathname"
+                            data-strict="0"
+                            data-reactions-enabled="1"
+                            data-emit-metadata="0"
+                            data-input-position="top"
+                            data-theme="dark"
+                            data-lang="tr"
+                            crossorigin="anonymous"
+                            async>
+                    </script>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
     <footer>
         <div class="footer-legal">
             <a href="kullanim-kosullari.html" target="_blank">Kullanım Koşulları</a>
@@ -424,16 +366,16 @@
             <a href="cerez-politikasi.html" target="_blank">Çerez Politikası</a>
         </div>
         <p style="margin-top: 1rem; color: var(--text-secondary);">&copy; 2025 BenYaso. Tüm hakları saklıdır.</p>
+        
         <div id="music-player-container" class="hidden">
-        <div class="player-header">
-            <span>Lofi Radio</span>
-            <button id="close-music-player">&times;</button>
+            <div class="player-header">
+                <span>Lofi Radio</span>
+                <button id="close-music-player">&times;</button>
+            </div>
+            <div id="youtube-player"></div>
         </div>
-        <div id="youtube-player"></div>
-    </div>
     </footer>
 
-    <!-- Çerez Onay Bandı -->
     <div id="cookie-consent-banner">
         <p>Sitemiz, kullanıcı deneyimini geliştirmek ve tema tercihlerinizi hatırlamak için çerezleri kullanır. <a href="cerez-politikasi.html" target="_blank">Daha fazla bilgi</a></p>
         <div class="cookie-buttons">
@@ -442,13 +384,6 @@
         </div>
     </div>
 
-    <!-- JavaScript -->
     <script type="module" src="script.js" defer></script>
 </body>
-</html>="font-weight: 800; color: #FF424D;">Patreon</div>
-                        <h3>Aylık Destekçi Ol</h3>
-                        <p>Aylık düzenli destekte bulunarak özel Discord rollerine, erken erişimlere ve isminin videolarda görünmesi gibi birçok ayrıcalığa sahip olabilirsin.</p>
-                        <a href="https://www.patreon.com/cw/BenYasoMinecraft" target="_blank" class="cta-button">Patreon'da Katıl</a>
-                    </div>
-                    <div class="card">
-                        <div class="card-icon" style
+</html>
